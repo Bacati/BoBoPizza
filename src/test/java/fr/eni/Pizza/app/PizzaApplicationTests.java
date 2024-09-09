@@ -1,4 +1,4 @@
-package com.example.Pizza;
+package fr.eni.Pizza.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
