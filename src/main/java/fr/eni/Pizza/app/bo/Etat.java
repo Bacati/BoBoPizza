@@ -2,6 +2,7 @@ package fr.eni.Pizza.app.bo;
 
 public final class Etat {
 
+
     private Long id;
     //Libelles autorises : CREEE, PREPAREE, EN_LIVRAISON, LIVREE, PAYEE
     private String libelle;

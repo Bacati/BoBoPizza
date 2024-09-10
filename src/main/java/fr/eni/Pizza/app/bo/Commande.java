@@ -7,17 +7,29 @@ public final class Commande {
 
     private Long id;
     private Client client;
+    private List<Produit> produits;
+    private Utilisateur livreur;
+    private Etat etat;
     private LocalDate dateHeureLivraison;
     private boolean estLivree;
     private boolean estPayee;
-    private Etat etat;
-    private Utilisateur utilisateur;
     private double prixTotal;
-
-    private List<Produit> produits;
 
     public Commande() {
         super();
+    }
+
+    public Commande(Long id, Client client, List<Produit> produits, Utilisateur livreur) {
+        this();
+        setId(id);
+        setClient(client);
+        setProduits(produits);
+        setLivreur(livreur);
+        setEtat(new Etat(1L, "CREEE"));
+        setDateHeureLivraison(LocalDate.now());
+        setEstLivree(false);
+        setEstPayee(false);
+        setPrixTotal();
     }
 
     public Long getId() {
@@ -68,20 +80,28 @@ public final class Commande {
         this.etat = etat;
     }
 
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
+    public Utilisateur getLivreur() {
+        return livreur;
     }
 
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
+    public void setLivreur(Utilisateur livreur) {
+        this.livreur = livreur;
     }
 
     public double getPrixTotal() {
         return prixTotal;
     }
 
-    public void setPrixTotal(double prixTotal) {
-        this.prixTotal = prixTotal;
+    public void setPrixTotal() {
+        prixTotal = 0;
+
+        if(produits == null || produits.isEmpty()){
+            return;
+        }
+
+        for (Produit p : produits) {
+            prixTotal += p.getPrixTotal();
+        }
     }
 
     public List<Produit> getProduits() {
@@ -101,7 +121,7 @@ public final class Commande {
                 ", estLivree=" + estLivree +
                 ", estPaye=" + estPayee +
                 ", etat=" + etat +
-                ", utilisateur=" + utilisateur +
+                ", utilisateur=" + livreur +
                 ", prixTotal=" + prixTotal +
                 ", produits={\n"
                 ;

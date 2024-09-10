@@ -42,4 +42,4 @@ INSERT INTO ROLE_UTILISATEUR (UTILISATEUR_id_utilisateur, ROLE_id_role) VALUES
 
 -- Insertion client
 INSERT INTO CLIENT (prenom, nom, rue, code_postal, ville) VALUES
-('Stpéhane', 'GOBIN', '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN'); 
+('Stéphane', 'GOBIN', '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN'); 

@@ -23,7 +23,7 @@ public final class Produit {
         setDescription(description);
         setPrixUnitaire(prixUnitaire);
         setQuantite(quantite);
-        prixTotal = prixUnitaire * quantite;
+        setPrixTotal(quantite);
     }
 
     public Long getId() {
@@ -79,15 +79,22 @@ public final class Produit {
     }
 
     public void setQuantite(Integer quantite) {
+
         this.quantite = quantite;
+        this.setPrixTotal(quantite);
     }
 
     public double getPrixTotal() {
         return prixTotal;
     }
 
-    public void setPrixTotal(double prixTotal) {
-        this.prixTotal = prixTotal;
+    private void setPrixTotal(double quantite) {
+        if (quantite <= 0){
+            prixTotal = 0;
+            return;
+        }
+
+        prixTotal = quantite * getPrixUnitaire();
     }
 
     @Override
