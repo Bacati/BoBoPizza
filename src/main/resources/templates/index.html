@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <div class="header">
+        <div class="commande">
+            Commandez en ligne :
+            <div class="online">
+                <a class="online" href="/"><img src="/images/bike.svg"> Livraion</a>
+            </div>
+            ou
+            <div class="inplace">
+                <a class="inplace" href="/"><img src="/images/house.svg">A emporter</a>
+            </div>
+        </div>
+    </div>
+    <div class="pres">
+        <img src="/images/pizzaiolo.png">
+        <div class="text">
+        <p>Bienvenue chez Bobopizza, votre nouvelle destination gastronomique au cœur de Nantes. Située dans un cadre élégant et raffiné, Bobopizza redéfinit l’art de la pizza avec une touche de luxe et de sophistication.
+            <br><br>
+                <strong>Notre Concept</strong><br>
+            Chez Bobopizza, nous croyons que chaque pizza est une œuvre d’art. Nos chefs talentueux utilisent des ingrédients de la plus haute qualité, soigneusement sélectionnés pour leur fraîcheur et leur saveur exceptionnelle. Chaque pizza est préparée avec passion et précision, offrant une expérience culinaire inégalée.
+            <br><br>
+                <strong>Ambiance et Décor</strong><br>
+            Notre pizzeria vous accueille dans une atmosphère chic et contemporaine, où chaque détail a été pensé pour votre confort et plaisir. Que ce soit pour un dîner romantique, une soirée entre amis ou un repas d’affaires, Bobopizza est l’endroit idéal pour savourer des moments mémorables.
+            <br><br>
+                    <strong>Notre Menu</strong><br>
+            Découvrez notre menu varié, où tradition et innovation se rencontrent. Des classiques italiens revisités aux créations uniques, chaque pizza est une invitation à un voyage gustatif. Accompagnez votre repas de notre sélection de vins fins et de desserts maison pour une expérience complète.
+            <br><br>
+                        <strong>Service d’Exception</strong><br>
+            Chez Bobopizza, votre satisfaction est notre priorité. Notre équipe dévouée est là pour vous offrir un service impeccable, attentif à chaque détail pour que votre visite soit parfaite.
+            <br><br>
+            Venez découvrir Bobopizza, où la pizza devient un luxe. Nous avons hâte de vous accueillir et de partager avec vous notre passion pour la cuisine italienne.</p>
+        </div>
+    </div>
+</body>
+</html>

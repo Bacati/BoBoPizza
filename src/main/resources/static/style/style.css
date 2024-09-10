@@ -1,0 +1,95 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Lora", serif;
+    background:linear-gradient(90deg,rgba(0, 0, 0, 1) -50%, rgba(92, 92, 91, 0) 150%),
+            url('https://wallpapercave.com/wp/E7VdJQX.jpg') bottom/cover no-repeat;
+}
+.navbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    margin: 0 auto;
+    img{
+        width: 65%;
+        margin-bottom: 5%;
+        border-radius: 5%;
+    }
+}
+.nav{
+    display: flex;
+    gap: 1rem;
+    background: linear-gradient(90deg, rgba(0,0,0,1) -20%, rgba(223,180,98,1) 50%, rgba(0,0,0,1) 130%);
+    border-radius: 3rem;
+    padding: 1rem;
+    a {
+        text-decoration: none;
+        color: #c7c7c7;
+    }
+}
+.header{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.commande{
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(223,180,98,1) 48%, rgba(0,0,0,1) 100%);;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    padding: 4rem;
+}
+.online{
+    background: #a47f15;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    a {
+        color: white;
+        text-decoration: none;
+    }
+}
+.inplace{
+    background: black;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    a {
+        color: white;
+        text-decoration: none;
+    }
+}
+.pres{
+    font-family: "Playwrite CU", cursive;
+    display: flex;
+    margin-top: 5%;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    .text{
+        color: white;
+        width: 50%;
+    }
+}
+.separator{
+    width: 95%;
+    height: 1px;
+    background: red;
+    margin: 0 auto;
+}
+.carte{
+    margin-top: 1rem;
+    margin-left: 5%;
+}
