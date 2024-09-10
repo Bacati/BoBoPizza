@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Modif carte</title>
+  <link rel="stylesheet" href="/style/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+<div class="separator"></div>
+<div class="lacarte">
+  <img class="imgCarte" src="/images/carte.png">
+  <form data-th-object="${produits}" data-th-action="@{/films/creer}" method="post">
+    <div class="carte">
+      <div class="text">
+        <img src="/images/logo.png">
+           <div class="donne" data-th-each="produit : ${pizzaProduits}">
+             <input data-th-value="${produit.nom} + ' ' + ${produit.prixUnitaire}"></input>
+             <input data-th-value="${produit.description}"></input>
+           </div>
+        <button type="submit">Enregistrer</button>
+      </div>
+    </div>
+     <div class="lacarte">
+       <img class="imgCarte" src="/images/boisson.png">
+       <div class="carte">
+         <div class="text">
+           <img src="/images/logo.png">
+           <div class="donne" data-th-each="boisson : ${boissonProduits}">
+             <input data-th-value="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></input>
+             <input data-th-value="${boisson.description}"></input>
+             <!--<img data-th-src="${boisson.urlImage}">-->
+          </div>
+           <button type="submit">Enregistrer</button>
+        </div>
+      </div>
+  </form>
+</div>
+</body>
+</html>

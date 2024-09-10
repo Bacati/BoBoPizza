@@ -25,4 +25,13 @@ public class PizzaController {
 
         return "laCarte";
     }
+    @GetMapping("/modifLaCarte")
+    public String modifLaCarte(Model model) {
+
+        model.addAttribute("produits", produitManager.getAllProduits());
+        model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
+        model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
+
+        return "modifCarte";
+    }
 }

@@ -103,8 +103,8 @@ body{
     display: flex;
     gap:2rem;
     .text{
-        width: 35rem;
-        height: 45rem;
+        width: 31rem;
+        height: 40rem;
         margin-left: 10%;
         background: url('../images/encadre.png') center/cover no-repeat;
         display: flex;
