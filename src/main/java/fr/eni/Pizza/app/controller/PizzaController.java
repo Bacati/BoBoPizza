@@ -20,8 +20,8 @@ public class PizzaController {
     public String laCarte(Model model) {
 
         model.addAttribute("produits", produitManager.getAllProduits());
-        //model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
-        //model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
+        model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
+        model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
 
         return "laCarte";
     }

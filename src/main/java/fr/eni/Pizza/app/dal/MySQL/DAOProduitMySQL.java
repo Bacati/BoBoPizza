@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +72,7 @@ public class DAOProduitMySQL implements IDAOProduit {
     public List<Produit> findAllProduitsByIdTypeProduit(Long id_type_produit) {
         String sql = "SELECT id_type_produit FROM type_produit";
 
-        List <Long> ids = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Long.class));
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
 
         if (id_type_produit <= 0 || id_type_produit > ids.size()) {
             return null;
@@ -81,7 +82,7 @@ public class DAOProduitMySQL implements IDAOProduit {
         List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_type_produit);
 
         List<Produit> sortedProduits = produits.stream()
-                .sorted((p1, p2) -> p1.getNom().compareTo(p2.getNom()))
+                .sorted(Comparator.comparing(Produit::getNom))
                 .collect(Collectors.toList());
 
         return sortedProduits;
