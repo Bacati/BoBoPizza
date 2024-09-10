@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -20,9 +22,11 @@ import java.util.stream.Collectors;
 public class DAOProduitMySQL implements IDAOProduit {
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public DAOProduitMySQL(JdbcTemplate jdbcTemplate) {
+    public DAOProduitMySQL(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     static final RowMapper<Produit> PRODUIT_ROW_MAPPER = new RowMapper<Produit>() {
@@ -44,6 +48,28 @@ public class DAOProduitMySQL implements IDAOProduit {
             return produit;
         }
     };
+
+    /**
+     * Supprime -si il existe - l'objet {@link fr.eni.Pizza.app.bo.Produit} correspondant à l'{@code id_produit} passé en paramètre présent en table "produit" de la BDD "db_bobopizza"
+     *
+     * @param id_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
+     *
+     */
+    @Override
+    public void deleteProduitById(Long id_produit) {
+        String sql = "SELECT id_produit FROM produit";
+
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_produit <= 0 || id_produit > ids.size()) {
+            System.out.println("id_produit incorrect");
+            return ;
+        }
+
+        sql = "DELETE FROM produit WHERE id_produit = ?";
+
+        jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_produit);
+    }
 
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "produit" de la BDD "db_bobopizza".
@@ -98,7 +124,7 @@ public class DAOProduitMySQL implements IDAOProduit {
     public Produit findProduitById(Long id_produit) {
         String sql = "SELECT id_produit FROM produit";
 
-        List <Long> ids = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Long.class));
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
 
         if (id_produit <= 0 || id_produit > ids.size()) {
             return null;
@@ -107,5 +133,32 @@ public class DAOProduitMySQL implements IDAOProduit {
         sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_produit = ?";
 
         return jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_produit).get(0);
+    }
+
+    /**+
+     * Ajoute ou met à jour la table "produit" de la BDD "db_bobopizza" avec {@code produit}
+     *
+     * @param produit : {@link Produit}; si son {@link Produit#id} est non {@code null} et présent dans la table "produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
+     */
+    @Override
+    public void saveProduit(Produit produit) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("myID", produit.getId());
+        params.addValue("myNom", produit.getNom());
+        params.addValue("myDescription", produit.getDescription());
+        params.addValue("myPrixUnitaire", produit.getPrixUnitaire());
+        params.addValue("myURLImage", produit.getUrlImage());
+        params.addValue("myTypeProduitId", produit.getType().getId());
+
+        String sql;
+        if (produit.getId() != null && findProduitById(produit.getId()) != null) {
+            sql = "UPDATE PRODUIT SET nom= :myNom, description= :myDescription, prix= :myPrixUnitaire, image_url= :myURLImage, TYPE_PRODUIT_id_type_produit= :myTypeProduitId WHERE id_produit = :myID";
+            System.out.println("Produit " + produit.getNom() + " mis à jour en table produit de la BDD db_bobopizza :" + produit);
+        } else {
+            sql = "INSERT INTO PRODUIT (nom, description, prix, image_url, TYPE_PRODUIT_id_type_produit) VALUES (:myNom, :myDescription, :myPrixUnitaire, :myURLImage, :myTypeProduitId)";
+            System.out.println("Produit inséré en table produit de la BDD db_bobopizza :" + produit);
+        }
+        namedParameterJdbcTemplate.update(sql, params);
+
     }
 }

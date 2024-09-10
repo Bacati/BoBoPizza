@@ -40,10 +40,26 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
 
     };
 
-
+    /**
+     * Supprime -si il existe - l'objet {@link fr.eni.Pizza.app.bo.TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
+     *
+     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     *
+     */
     @Override
     public void deleteTypeProduitById(Long id_type_produit) {
-        return;
+        String sql = "SELECT id_type_produit FROM type_produit";
+
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_type_produit <= 0 || id_type_produit > ids.size()) {
+            System.out.println("id_type_produit incorrect");
+            return ;
+        }
+
+        sql = "DELETE FROM type_produit WHERE id_type_produit = ?";
+
+        jdbcTemplate.query(sql, TYPE_PRODUIT_ROW_MAPPER, id_type_produit);
     }
 
     /**
@@ -72,7 +88,7 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     public TypeProduit findTypeProduitById(Long id_type_produit) {
         String sql = "SELECT id_type_produit FROM type_produit";
 
-        List <Long> ids = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Long.class));
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
 
         if (id_type_produit <= 0 || id_type_produit > ids.size()) {
             return null;
@@ -97,10 +113,12 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
         String sql;
         if (typeProduit.getId() != null && findTypeProduitById(typeProduit.getId()) != null) {
             sql = "UPDATE TYPE_PRODUIT SET id_type_produit = :myID, libelle = :myLibelle WHERE id_type_produit = :myID";
+            System.out.println("TypeProduit " + typeProduit.getLibelle() + " mis à jour en table type_produit de la BDD db_bobopizza :" + typeProduit);
         } else {
             sql = "INSERT INTO TYPE_PRODUIT (id_type_produit, libelle) VALUES (:myID, :myLibelle)";
+            System.out.println("TypeProduit inséré en table type_produit de la BDD db_bobopizza :" + typeProduit);
         }
         namedParameterJdbcTemplate.update(sql, params);
-        System.out.println("TypeProduit inséré en table type_produit de la BDD db_bobopizza :" + typeProduit);
+
     }
 }

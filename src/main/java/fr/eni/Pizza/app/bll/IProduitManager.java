@@ -12,9 +12,5 @@ public interface IProduitManager {
     List<Produit> getAllProduitsByIdTypeProduit(Long id_type_produit);
 
     Produit getProduitById(Long id_produit);
-
-    List<TypeProduit> getAllTypeProduits();
-
-    TypeProduit getTypeProduitById (Long id_type_produit);
 }
 
