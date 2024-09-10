@@ -19,9 +19,9 @@ public class PizzaController {
     @GetMapping("/laCarte")
     public String laCarte(Model model) {
 
-        model.addAttribute("produits", produitManager.getAllProduitsByIdTypeProduit(1L));
-        model.addAttribute("pizza-produits", produitManager.getAllProduitsByIdTypeProduit(1L));
-        model.addAttribute("boisson-produits", produitManager.getAllProduitsByIdTypeProduit(1L));
+        model.addAttribute("produits", produitManager.getAllProduits());
+        //model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
+        //model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
 
         return "laCarte";
     }

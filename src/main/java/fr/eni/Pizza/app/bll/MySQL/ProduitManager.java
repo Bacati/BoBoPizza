@@ -17,6 +17,11 @@ public class ProduitManager implements IProduitManager {
     IDAOTypeProduit daoTypeProduit;
     IDAOProduit daoProduit;
 
+    public ProduitManager(IDAOTypeProduit daoTypeProduit, IDAOProduit daoProduit) {
+        this.daoTypeProduit = daoTypeProduit;
+        this.daoProduit = daoProduit;
+    }
+
     /**
      * Appelle la DAL
      * 

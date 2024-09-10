@@ -86,7 +86,7 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     /**+
      * Ajoute ou met à jour la table "type_produit" de la BDD "db_bobopizza" avec {@code typeProduit}
      *
-     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#id} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion
+     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#id} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
      */
     @Override
     public void saveTypeProduit(TypeProduit typeProduit) {
