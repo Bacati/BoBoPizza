@@ -11,10 +11,20 @@
 <body>
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
 <div class="separator"></div>
-<div class="carte">
-    <img src="/images/carte.png">
+<div class="lacarte">
+    <img class="imgCarte" src="/images/carte.png">
+    <div class="carte">
+        <div class="text">
+            <img src="/images/logo.png">
+            <table>
+
+            </table>
+            <div class="donne" data-th-each="produit : ${pizzaProduits}">
+                <p data-th-text="${produit.nom}"></p>
+            </div>
+
+        </div>
+    </div>
 </div>
-
-
 </body>
 </html>
