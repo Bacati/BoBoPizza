@@ -43,7 +43,7 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     /**
      * Supprime -si il existe - l'objet {@link fr.eni.Pizza.app.bo.TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
      *
-     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
      *
      */
     @Override

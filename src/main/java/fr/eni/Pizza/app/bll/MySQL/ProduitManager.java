@@ -13,10 +13,22 @@ import java.util.List;
 @Service
 public class ProduitManager implements IProduitManager {
 
+    private final DAOProduitMySQL dAOProduitMySQL;
     private IDAOProduit daoProduit;
 
-    public ProduitManager(IDAOProduit daoProduit) {
+    public ProduitManager(IDAOProduit daoProduit, DAOProduitMySQL dAOProduitMySQL) {
         this.daoProduit = daoProduit;
+        this.dAOProduitMySQL = dAOProduitMySQL;
+    }
+
+    /**
+     *Appelle la DAL au niveau de {@link DAOProduitMySQL#deleteProduitById(Long)}
+     *
+     * @param id_produit: Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
+     */
+    @Override
+    public void deleteProduitById(Long id_produit) {
+        daoProduit.deleteProduitById(id_produit);
     }
 
     /**
@@ -32,6 +44,7 @@ public class ProduitManager implements IProduitManager {
     /**
      * Appelle la DAL
      *
+     * @param id_type_produit : Long, identifiant du type d'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
      * @return le résultat de {@link DAOProduitMySQL#findAllProduitsByIdTypeProduit(Long)}
      */
     @Override
@@ -42,11 +55,22 @@ public class ProduitManager implements IProduitManager {
     /**
      * Appelle la DAL
      *
+     * @param id_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
      * @return le résultat de {@link DAOProduitMySQL#findProduitById(Long)}
      */
     @Override
     public Produit getProduitById(Long id_produit) {
         return daoProduit.findProduitById(id_produit);
+    }
+
+    /**
+     * Appelle la DAL au niveau de {@link DAOProduitMySQL#saveProduit(Produit)}
+     *
+     * @param produit : {@link Produit}; si son {@link Produit#id} est non {@code null} et présent dans la table "produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
+     */
+    @Override
+    public void saveProduit(Produit produit) {
+        daoProduit.saveProduit(produit);
     }
 
 }
