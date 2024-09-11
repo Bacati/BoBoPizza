@@ -10,20 +10,28 @@
     </head>
     <body>
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <div class="header">
+        <div class="commande">
+            Commandez en ligne :
+            <div class="online">
+                <a class="online" href="/commande"><img src="/images/bike.svg"> Livraison</a>
+            </div>
+            ou
+            <div class="inplace">
+                <a class="inplace" href="/commande"><img src="/images/house.svg">A emporter</a>
+            </div>
+        </div>
+    </div>
     <div class="separator"></div>
     <div class="lacarte">
         <img class="imgCarte" src="/images/carte.png">
         <div class="carte">
             <div class="text">
                 <img src="/images/logo.png">
-                <table>
-
-                </table>
                 <div class="donne" data-th-each="produit : ${pizzaProduits}">
                     <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
                     <p data-th-text="${produit.description}"></p>
                 </div>
-
             </div>
         </div>
     </div>
@@ -32,9 +40,6 @@
         <div class="carte">
             <div class="text">
                 <img src="/images/logo.png">
-                <table>
-
-                </table>
                 <div class="donne" data-th-each="boisson : ${boissonProduits}">
                     <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
                     <p data-th-text="${boisson.description}"></p>

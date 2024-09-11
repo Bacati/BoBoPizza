@@ -54,7 +54,6 @@ public class PizzaController {
         model.addAttribute("produit", p);
         return "carteDetail";
     }
-
     @GetMapping("/creer")
     public String creer(Model model) {
             Produit p = new Produit();
@@ -80,7 +79,19 @@ public class PizzaController {
         System.out.println("delete"+ produit.getId());
         return "redirect:/laCarte";
     }
+    @GetMapping("/commande")
+    public String commander(Model model) {
+        model.addAttribute("produits", produitManager.getAllProduits());
+        model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
+        model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
 
+        return "commande";
+
+    }
+    @GetMapping("/panier")
+    public String panier(){
+        return "panier";
+    }
     @ModelAttribute("typeSession")
     public List<TypeProduit> chargerTypeSession(){
         return typeProduitManager.getAllTypeProduits();
