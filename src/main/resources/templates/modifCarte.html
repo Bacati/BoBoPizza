@@ -12,32 +12,32 @@
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
 <div class="separator"></div>
 <div class="lacarte">
-  <img class="imgCarte" src="/images/carte.png">
-  <form data-th-object="${produits}" data-th-action="@{/films/creer}" method="post">
+    <img class="imgCarte" src="/images/carte.png">
     <div class="carte">
-      <div class="text">
-        <img src="/images/logo.png">
-           <div class="donne" data-th-each="produit : ${pizzaProduits}">
-             <input data-th-value="${produit.nom} + ' ' + ${produit.prixUnitaire}"></input>
-             <input data-th-value="${produit.description}"></input>
-           </div>
-        <button type="submit">Enregistrer</button>
-      </div>
-    </div>
-     <div class="lacarte">
-       <img class="imgCarte" src="/images/boisson.png">
-       <div class="carte">
-         <div class="text">
-           <img src="/images/logo.png">
-           <div class="donne" data-th-each="boisson : ${boissonProduits}">
-             <input data-th-value="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></input>
-             <input data-th-value="${boisson.description}"></input>
-             <!--<img data-th-src="${boisson.urlImage}">-->
-          </div>
-           <button type="submit">Enregistrer</button>
+        <div class="text">
+            <img src="/images/logo.png">
+            <div class="donne" data-th-each="produit : ${pizzaProduits}">
+                <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
+                <p data-th-text="${produit.description}"></p>
+                <a data-th-href="@{/detail(idProduit=${produit.id})}">Détail</a>
+            </div>
+            <a data-th-href="@{/creer}"><img src="/images/plus.svg"></a>
         </div>
-      </div>
-  </form>
+    </div>
+</div>
+<div class="lacarte">
+    <img class="imgCarte" src="/images/boisson.png">
+    <div class="carte">
+        <div class="text">
+            <img src="/images/logo.png">
+            <div class="donne" data-th-each="boisson : ${boissonProduits}">
+                <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
+                <p data-th-text="${boisson.description}"></p>
+                <!--<img data-th-src="${boisson.urlImage}">-->
+                <a data-th-href="@{/detail(idProduit=${boisson.id})}">Détail</a>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
