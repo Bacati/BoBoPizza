@@ -273,4 +273,8 @@ table{
         border: 1px solid white;
         padding: 1rem;
     }
+    td{
+        border: 1px solid white;
+        padding: 1rem;
+    }
 }

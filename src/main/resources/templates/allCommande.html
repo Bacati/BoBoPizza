@@ -14,7 +14,6 @@
         <thead>
         <tr>
             <th>Client</th>
-            <th>Produits</th>
             <th>Date et heure de création</th>
             <th>Etat</th>
             <th>Préparateur</th>
@@ -24,16 +23,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr data-th-each="film : ${films}">
-            <td data-th-text="${film.genre.titre}"></td>
-            <td data-th-text="${film.annee}"></td>
-            <td data-th-text="${film.titre}"></td>
-            <td
-                    data-th-text="${film.realisateur.prenom} + ' ' + ${film.realisateur.nom}"></td>
-            <td>
-                <a data-th-href="@{/films/detail(idFilm=${film.id})}">Détail</a>
-                <a data-th-if="${membreSession != null && membreSession.id > 0}" data-th-href="@{/avis/creer(idFilm=${film.id})}">Avis</a>
-            </td>
+        <tr data-th-each="commande : ${commandes}">
+            <td data-th-text="${commande.getClient().getNom() + ' ' + commande.getClient().getPrenom()}"></td>
+            <td data-th-text="${commande.getDateHeureCreation()}"></td>
+            <td data-th-text="${commande.getEtat().getLibelle()}"></td>
+            <td data-th-text="${commande.getPreparateur().getPrenom()}"></td>
+            <td data-th-text="${commande.getLivreur().getPrenom()}"></td>
+            <td data-th-text="${commande.getDateHeureLivraison()}"></td>
+            <td data-th-text="${commande.getPrixTotal()}"></td>
         </tr>
         </tbody>
     </table>

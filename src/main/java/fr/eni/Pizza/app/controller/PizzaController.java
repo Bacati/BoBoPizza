@@ -1,6 +1,7 @@
 package fr.eni.Pizza.app.controller;
 
 
+import fr.eni.Pizza.app.bll.MySQL.CommandeManager;
 import fr.eni.Pizza.app.bll.ProduitManager;
 import fr.eni.Pizza.app.bll.MySQL.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
@@ -17,11 +18,13 @@ import java.util.List;
 public class PizzaController {
 
     private final TypeProduitManager typeProduitManager;
+    private final CommandeManager commandeManager;
     ProduitManager produitManager;
 
-    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager) {
+    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
+        this.commandeManager = commandeManager;
     }
     @GetMapping("/")
     public String index( Model model) {
@@ -71,7 +74,8 @@ public class PizzaController {
 
     @GetMapping("/allCommande")
     public String afficherCommande(Model model){
-        //model.addAttribute("commandes", commandeManager.getAllCommandes());
+        model.addAttribute("commandes", commandeManager.getAllCommandes());
+        System.out.println( model.addAttribute("commandes", commandeManager.getAllCommandes()));
         return "allCommande";
     }
 
