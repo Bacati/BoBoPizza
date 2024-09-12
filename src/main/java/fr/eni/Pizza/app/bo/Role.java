@@ -3,7 +3,7 @@ package fr.eni.Pizza.app.bo;
 public final class Role {
 
     private Long id;
-    //Libelles autorises : PIZZAIOLO, GERANT, LIVREUR
+    //Libelles autorises : CLIENT, PIZZAIOLO, GERANT, LIVREUR
     private String libelle;
 
     public Role () {

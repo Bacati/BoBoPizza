@@ -1,34 +1,32 @@
 package fr.eni.Pizza.app.controller;
 
 
-import fr.eni.Pizza.app.bll.IProduitManager;
+import fr.eni.Pizza.app.bll.ProduitManager;
 import fr.eni.Pizza.app.bll.MySQL.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @SessionAttributes({"typeSession","membreSession","clientSession"})
-
 public class PizzaController {
 
     private final TypeProduitManager typeProduitManager;
-    IProduitManager produitManager;
+    ProduitManager produitManager;
 
-    public PizzaController(IProduitManager produitManager, TypeProduitManager typeProduitManager) {
+    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
     }
     @GetMapping("/")
     public String index( Model model) {
-        Utilisateur user = new Utilisateur(0L, "lievre", "lucas", "lucaslievre@gmail.com", "password", new Role(3L, "GERANT"));
-        Client client = new Client(0L, "lapin", "lucas", "3 rue fellonneau", "44000", "Nantes");
+        Employe user = new Employe(0L, "lievre", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslievre@gmail.com", "password", new Role(4L, "GERANT"));
+        Client client = new Client(0L, "lapin", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslapin@gmail.com", "password", new Role(1L, "CLIENT"));
         model.addAttribute("membreSession", user);
         model.addAttribute("clientSession", client);
         System.out.println(client);
@@ -76,8 +74,6 @@ public class PizzaController {
         //model.addAttribute("commandes", commandeManager.getAllCommandes());
         return "allCommande";
     }
-
-
 
     @PostMapping("/delete")
     public String deleteProduit(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {

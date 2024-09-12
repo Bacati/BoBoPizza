@@ -34,9 +34,6 @@ public final class TypeProduit {
 
     @Override
     public String toString() {
-        return "TypeProduit{" +
-                "id=" + id +
-                ", libelle='" + libelle + '\'' +
-                '}';
+        return "TypeProduit{" + "id=" + id + ", libelle='" + libelle + "'}'";
     }
 }

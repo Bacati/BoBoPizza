@@ -1,6 +1,6 @@
 package fr.eni.Pizza.app.controller.converter;
 
-import fr.eni.Pizza.app.bll.ITypeProduitManager;
+import fr.eni.Pizza.app.bll.TypeProduitManager;
 import fr.eni.Pizza.app.bo.TypeProduit;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class StringToTypeProduitConverter implements Converter<String, TypeProduit> {
 
-    private ITypeProduitManager typeProduitManager;
+    private TypeProduitManager typeProduitManager;
 
-    public StringToTypeProduitConverter(ITypeProduitManager typeProduitManager) {
+    public StringToTypeProduitConverter(TypeProduitManager typeProduitManager) {
         this.typeProduitManager = typeProduitManager;
     }
 

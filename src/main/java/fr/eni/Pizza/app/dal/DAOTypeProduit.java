@@ -1,17 +1,16 @@
-package fr.eni.Pizza.app.bll;
+package fr.eni.Pizza.app.dal;
 
 import fr.eni.Pizza.app.bo.TypeProduit;
 
 import java.util.List;
 
-public interface ITypeProduitManager {
+public interface DAOTypeProduit {
 
     void deleteTypeProduitById(Long id_type_produit);
 
-    List<TypeProduit> getAllTypeProduits();
+    List<TypeProduit> findAllTypeProduits();
 
-    TypeProduit getTypeProduitById (Long id_type_produit);
+    TypeProduit findTypeProduitById (Long id_type_produit);
 
     void saveTypeProduit(TypeProduit typeProduit);
-
 }

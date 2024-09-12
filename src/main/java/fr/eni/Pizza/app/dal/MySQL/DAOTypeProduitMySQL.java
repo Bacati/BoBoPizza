@@ -1,9 +1,8 @@
 package fr.eni.Pizza.app.dal.MySQL;
 
 import fr.eni.Pizza.app.bo.TypeProduit;
-import fr.eni.Pizza.app.dal.IDAOTypeProduit;
+import fr.eni.Pizza.app.dal.DAOTypeProduit;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Profile("MySQL")
 @Repository
-public class DAOTypeProduitMySQL implements IDAOTypeProduit {
+public class DAOTypeProduitMySQL implements DAOTypeProduit {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -29,6 +28,7 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     }
 
     static final RowMapper<TypeProduit> TYPE_PRODUIT_ROW_MAPPER = new RowMapper<TypeProduit>() {
+
         @Override
         public TypeProduit mapRow(ResultSet rs, int rowNum) throws SQLException {
             TypeProduit typeProduit = new TypeProduit();
@@ -41,9 +41,9 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     };
 
     /**
-     * Supprime -si il existe - l'objet {@link fr.eni.Pizza.app.bo.TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
+     * Supprime -si il existe - la donnée {@link TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
      *
-     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     * @param id_type_produit : Long, identifiant de l'objet {@link TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
      *
      */
     @Override
@@ -53,19 +53,21 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
         List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
 
         if (id_type_produit <= 0 || id_type_produit > ids.size()) {
-            System.out.println("id_type_produit incorrect");
+            System.out.println("id_type_produit incorrect : impossible de deleteTypeProduitById(Long id_type_produit)");
             return ;
         }
 
         sql = "DELETE FROM type_produit WHERE id_type_produit = ?";
 
-        jdbcTemplate.query(sql, TYPE_PRODUIT_ROW_MAPPER, id_type_produit);
+        jdbcTemplate.update(sql, id_type_produit);
+
+        System.out.println("Supression du Type Produit n°" + id_type_produit + " en table type_produit de la BDD db_bobopizza");
     }
 
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "type_produit" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link fr.eni.Pizza.app.bo.TypeProduit} triés par ordre alphabétique sur la base du {@link fr.eni.Pizza.app.bo.TypeProduit#libelle}
+     * @return une liste de d'objets {@link TypeProduit} triés par ordre alphabétique sur la base du {@link TypeProduit#libelle}
      */
     @Override
     public List<TypeProduit> findAllTypeProduits() {
@@ -79,10 +81,11 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
     }
 
     /**
-     * Retourne l'objet {@link fr.eni.Pizza.app.bo.TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
+     * Retourne la data {@link TypeProduit} correspondant à l'{@code id_type_produit} passé en paramètre présent en table "type_produit" de la BDD "db_bobopizza"
      *
-     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit-type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
-     * @return l'objet {@link fr.eni.Pizza.app.bo.TypeProduit} ou {@code null} en cas d'{@code id_type_produit} non valide
+     * @param id_type_produit : Long, identifiant de l'objet {@link TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     *
+     * @return l'objet {@link TypeProduit} ou {@code null} en cas d'{@code id_type_produit} non valide
      */
     @Override
     public TypeProduit findTypeProduitById(Long id_type_produit) {
@@ -113,7 +116,7 @@ public class DAOTypeProduitMySQL implements IDAOTypeProduit {
         String sql;
         if (typeProduit.getId() != null && findTypeProduitById(typeProduit.getId()) != null) {
             sql = "UPDATE TYPE_PRODUIT SET id_type_produit = :myID, libelle = :myLibelle WHERE id_type_produit = :myID";
-            System.out.println("TypeProduit " + typeProduit.getLibelle() + " mis à jour en table type_produit de la BDD db_bobopizza :" + typeProduit);
+            System.out.println("TypeProduit n°" + typeProduit.getId() + " mis à jour en table type_produit de la BDD db_bobopizza");
         } else {
             sql = "INSERT INTO TYPE_PRODUIT (id_type_produit, libelle) VALUES (:myID, :myLibelle)";
             System.out.println("TypeProduit inséré en table type_produit de la BDD db_bobopizza :" + typeProduit);

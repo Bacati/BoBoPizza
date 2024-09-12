@@ -6,10 +6,13 @@ import java.util.List;
 public final class Commande {
 
     private Long id;
-    private Client client;
+    private Utilisateur client;
     private List<Produit> produits;
-    private Utilisateur livreur;
+    private LocalDate dateHeureCreation;
     private Etat etat;
+    private Utilisateur preparateur;
+    private LocalDate dateHeurePreparation;
+    private Utilisateur livreur;
     private LocalDate dateHeureLivraison;
     private boolean estLivree;
     private boolean estPayee;
@@ -19,14 +22,18 @@ public final class Commande {
         super();
     }
 
-    public Commande(Long id, Client client, List<Produit> produits, Utilisateur livreur) {
+    //TODO mettre à jour
+    public Commande(Long id, Utilisateur client, List<Produit> produits, Etat etat) {
         this();
         setId(id);
         setClient(client);
         setProduits(produits);
-        setLivreur(livreur);
-        setEtat(new Etat(1L, "CREEE"));
-        setDateHeureLivraison(LocalDate.now());
+        setDateHeureCreation(LocalDate.now());
+        setEtat(new Etat(1L, "PANIER"));
+        setPreparateur(null);
+        setDateHeurePreparation(null);
+        setLivreur(null);
+        setDateHeureLivraison(null);
         setEstLivree(false);
         setEstPayee(false);
         setPrixTotal();
@@ -41,11 +48,69 @@ public final class Commande {
     }
 
     public Client getClient() {
-        return client;
+        return (Client) client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(Utilisateur client) {
+        if (!(client instanceof Client)) {
+            this.client = null;
+        }
+
         this.client = client;
+    }
+
+    public List<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
+    }
+
+    public Etat getEtat() {
+        return etat;
+    }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
+    }
+
+    public LocalDate getDateHeureCreation() {
+        return dateHeureCreation;
+    }
+
+    public void setDateHeureCreation(LocalDate dateHeureCreation) {
+        this.dateHeureCreation = dateHeureCreation;
+    }
+
+    public Employe getPreparateur() {
+        return (Employe) preparateur;
+    }
+
+    public void setPreparateur(Utilisateur preparateur) {
+        if (!(preparateur instanceof Employe)) {
+            this.preparateur = null;
+        }
+        this.preparateur = preparateur;
+    }
+
+    public LocalDate getDateHeurePreparation() {
+        return dateHeurePreparation;
+    }
+
+    public void setDateHeurePreparation(LocalDate dateHeurePreparation) {
+        this.dateHeurePreparation = dateHeurePreparation;
+    }
+
+    public Employe getLivreur() {
+        return (Employe) livreur;
+    }
+
+    public void setLivreur(Utilisateur livreur) {
+        if (!(livreur instanceof Employe)) {
+            this.livreur = null;
+        }
+        this.livreur = livreur;
     }
 
     public LocalDate getDateHeureLivraison() {
@@ -72,22 +137,6 @@ public final class Commande {
         this.estPayee = estPayee;
     }
 
-    public Etat getEtat() {
-        return etat;
-    }
-
-    public void setEtat(Etat etat) {
-        this.etat = etat;
-    }
-
-    public Utilisateur getLivreur() {
-        return livreur;
-    }
-
-    public void setLivreur(Utilisateur livreur) {
-        this.livreur = livreur;
-    }
-
     public double getPrixTotal() {
         return prixTotal;
     }
@@ -104,34 +153,27 @@ public final class Commande {
         }
     }
 
-    public List<Produit> getProduits() {
-        return produits;
-    }
-
-    public void setProduits(List<Produit> produits) {
-        this.produits = produits;
-    }
-
     @Override
     public String toString() {
-        String s = "Commande{" +
+        String str = "Commande{" +
                 "id=" + id +
                 ", client=" + client +
+                ", dateHeureCreation=" + dateHeureCreation +
+                ", etat=" + etat +
+                ", preparateur=" + preparateur +
+                ", dateHeurePreparation=" + dateHeurePreparation +
+                ", livreur=" + livreur +
                 ", dateHeureLivraison=" + dateHeureLivraison +
                 ", estLivree=" + estLivree +
-                ", estPaye=" + estPayee +
-                ", etat=" + etat +
-                ", utilisateur=" + livreur +
+                ", estPayee=" + estPayee +
                 ", prixTotal=" + prixTotal +
-                ", produits={\n"
-                ;
+                ", produits={\n";
 
         for (Produit p : produits) {
-            s += "   - " + p.toString() + ",\n";
+            str += "   - " + p.toString() + ",\n";
         }
 
-        s = "}";
-
-        return s;
+        str += "}\n}";
+        return str;
     }
 }

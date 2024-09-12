@@ -1,17 +1,18 @@
 package fr.eni.Pizza.app.dal;
 
 import fr.eni.Pizza.app.bo.Produit;
-import fr.eni.Pizza.app.bo.TypeProduit;
 
 import java.util.List;
 
-public interface IDAOProduit {
+public interface DAOProduit {
 
     void deleteProduitById(Long id_produit);
 
     List<Produit> findAllProduits();
 
     List<Produit> findAllProduitsByIdTypeProduit(Long id_type_produit);
+
+    List<Produit> findAllProduitsByIdCommande(Long id_commande);
 
     Produit findProduitById (Long id);
 

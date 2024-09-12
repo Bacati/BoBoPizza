@@ -18,30 +18,47 @@ INSERT INTO PRODUIT (nom, description, prix, image_url, TYPE_PRODUIT_id_type_pro
 
 -- Insertion Etat
 INSERT INTO ETAT (id_etat, libelle) VALUES
-(1, 'CREEE'),
-(2, 'PREPAREE'),
-(3, 'EN LIVRAISON'),
-(4, 'LIVREE'),
-(5, 'PAYEE');
+(1, 'PANIER'),
+(2, 'CREEE'),
+(3, 'EN PREPARATION'),
+(4, 'PREPAREE'),
+(5, 'EN LIVRAISON'),
+(6, 'LIVREE'),
+(7, 'PAYEE');
 
 -- Insertion ROLE
 INSERT INTO ROLE (id_role, libelle) VALUES
-(1, 'PIZZAIOLO'),
-(2, 'LIVREUR'),
-(3, 'GERANT');
+(1, 'CLIENT'),
+(2, 'PIZZAIOLO'),
+(3, 'LIVREUR'),
+(4, 'GERANT');
 
 -- INSERT UTILISATEUR
-INSERT INTO UTILISATEUR (nom, prenom, email, mot_de_passe) VALUES 
-('DOE', 'John', 'john.doe@email.com', 'password'),
-('LIEVRE', 'Lucas', 'lucas.lievre@email.com', 'password'),
-('JOUAND', 'Nicolas', 'nicolas.jouand@email.com', 'password');
+INSERT INTO UTILISATEUR (classe, nom, prenom, rue, code_postal, ville, email, mot_de_passe) VALUES 
+('E', 'LIEVRE', 'Lucas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'lucas.lievre@email.com', 'password'),
+('E', 'JOUAND', 'Nicolas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'nicolas.jouand@email.com', 'password'),
+('E', 'GOBIN', 'Stéphane', 'Entreprise BoBoPizza', '44000', 'Nantes', 'stephane.gobin@email.com', 'password'),
+('C', 'DUPONT', 'Martin',  '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN', 'martin.dupont@email.com', 'password'),
+('C', 'DOE', 'John',  '6 rue de la Liberté', '44000', 'NANTES', 'john.doe@email.com', 'password');
 
 -- Insertion role_utilisateur
 INSERT INTO ROLE_UTILISATEUR (UTILISATEUR_id_utilisateur, ROLE_id_role) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
+(1, 2),
+(2, 3),
+(3, 2),
+(4, 3),
+(5, 4),
+(6, 1),
+(7, 1);
 
--- Insertion client
-INSERT INTO CLIENT (prenom, nom, rue, code_postal, ville) VALUES
-('Stéphane', 'GOBIN', '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN'); 
+-- Insertion commande & details commande associes
+INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, UTILISATEUR_id_preparateur, UTILISATEUR_id_livreur, date_heure_livraison, livraison, prix_total, est_paye) VALUES
+(6, '2024-10-05 11:30:00', 1, 1, 2, '2024-10-05 14:30:00', 0, 28, 0),
+(7, '2024-10-05 11:40:00', 1, 1, 2, '2024-10-05 12:30:00', 0, 39, 0);
+
+INSERT INTO detail_commande (quantite, COMMANDE_id_commande, PRODUIT_id_produit, PRODUIT_nom, PRODUIT_description, PRODUIT_image_url, PRODUIT_prix, TYPE_PRODUIT_id_type_produit) VALUES
+(1, 1, 2, 'Pepperoni', 'Pizza avec sauce tomate, mozzarella et pepperoni', '/images/pizza-pepperoni.jpg', 20.00, 1),
+(2, 1, 4, 'Coca-Cola', 'Boisson gazeuse', '/images/cocacola-33cl.webp', 4.00, 2),
+(1, 2, 1, 'Margherita', 'Pizza avec sauce tomate, mozzarella et basilic', '/images/pizza-margherita.jpg', 14.00, 1),
+(1, 2, 3, 'Quattro Formaggi', 'Pizza avec sauce tomate et quatre fromages', '/images/pizza-4-fromages.jpg', 18.00, 1),
+(2, 2, 6, 'Eau Minérale Badoit', 'Eau minérale naturelle', '/images/badoit-33cl.jpg', 3.50, 2);

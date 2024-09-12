@@ -4,7 +4,7 @@ public final class Etat {
 
 
     private Long id;
-    //Libelles autorises : CREEE, PREPAREE, EN_LIVRAISON, LIVREE, PAYEE
+    //Libelles autorises : PANIER, CREEE, EN PREPARATION, PREPAREE, EN LIVRAISON, LIVREE, PAYEE
     private String libelle;
 
     public Etat() {

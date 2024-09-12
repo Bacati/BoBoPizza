@@ -2,9 +2,8 @@ package fr.eni.Pizza.app.dal.MySQL;
 
 import fr.eni.Pizza.app.bo.Produit;
 import fr.eni.Pizza.app.bo.TypeProduit;
-import fr.eni.Pizza.app.dal.IDAOProduit;
+import fr.eni.Pizza.app.dal.DAOProduit;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Profile("MySQL")
 @Repository
-public class DAOProduitMySQL implements IDAOProduit {
+public class DAOProduitMySQL implements DAOProduit {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -29,7 +28,7 @@ public class DAOProduitMySQL implements IDAOProduit {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    static final RowMapper<Produit> PRODUIT_ROW_MAPPER = new RowMapper<Produit>() {
+    static final RowMapper<Produit> PRODUIT_FROM_PRODUIT_ROW_MAPPER = new RowMapper<Produit>() {
 
         @Override
         public Produit mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -49,10 +48,30 @@ public class DAOProduitMySQL implements IDAOProduit {
         }
     };
 
+    static final RowMapper<Produit> PRODUIT_FROM_DETAIL_COMMANDE_ROW_MAPPER = new RowMapper<Produit>() {
+
+        @Override
+        public Produit mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Produit produit = new Produit();
+            produit.setId(rs.getLong("PRODUIT_id_produit"));
+            produit.setNom(rs.getString("PRODUIT_nom"));
+            TypeProduit typeProduit = new TypeProduit();
+            typeProduit.setId(rs.getLong("id_type_produit"));
+            typeProduit.setLibelle(rs.getString("libelle"));
+            produit.setType(typeProduit);
+            produit.setDescription(rs.getString("PRODUIT_description"));
+            produit.setPrixUnitaire(rs.getDouble("PRODUIT_prix"));
+            produit.setUrlImage(rs.getString("PRODUIT_image_url"));
+            produit.setQuantite(rs.getInt("quantite"));
+
+            return produit;
+        }
+    };
+
     /**
-     * Supprime -si il existe - l'objet {@link fr.eni.Pizza.app.bo.Produit} correspondant à l'{@code id_produit} passé en paramètre présent en table "produit" de la BDD "db_bobopizza"
+     * Supprime -si il existe - le produit correspondant à l'{@code id_produit} passé en paramètre présent en table "produit" de la BDD "db_bobopizza"
      *
-     * @param id_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
+     * @param id_produit : Long, identifiant de l'objet {@link Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
      *
      */
     @Override
@@ -62,27 +81,29 @@ public class DAOProduitMySQL implements IDAOProduit {
         List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
 
         if (id_produit <= 0 || id_produit > ids.size()) {
-            System.out.println("id_produit incorrect");
+            System.out.println("id_produit incorrect : impossible de deleteProduitById(Long id_produit)");
             return ;
         }
 
         sql = "DELETE FROM produit WHERE id_produit = ?";
 
-        jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_produit);
+        jdbcTemplate.update(sql, id_produit);
+
+        System.out.println("Supression du produit n°" + id_produit + " en table produit de la BDD db_bobopizza");
     }
 
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "produit" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link fr.eni.Pizza.app.bo.Produit} triés par ordre alphabétique sur la base du {@link fr.eni.Pizza.app.bo.Produit#nom}
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom}
      */
     @Override
     public List<Produit> findAllProduits() {
         String sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit";
-        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER);
+        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER);
 
         List<Produit> sortedProduits = produits.stream()
-                .sorted((p1, p2) -> p1.getNom().compareTo(p2.getNom()))
+                .sorted(Comparator.comparing(Produit::getNom))
                 .collect(Collectors.toList());
 
         return sortedProduits;
@@ -90,9 +111,9 @@ public class DAOProduitMySQL implements IDAOProduit {
 
     /**
      * Retourne la liste de l'ensemble des données présentes dans table "produit" de la BDD "db_bobopizza" ayant un "TYPE_PRODUIT_id_type_produit" égal à {@code id_type_produit}
-     *      *
-     *      * @param id_type_produit : Long, identifiant du type d'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
-     *      * @return une liste de d'objets {@link fr.eni.Pizza.app.bo.Produit} triés par ordre alphabétique sur la base du {@link fr.eni.Pizza.app.bo.Produit#nom} ou {@code null} en cas d'{@code id_type_produit} non valide
+     *
+     * @param id_type_produit : Long, identifiant du type d'objet {@link TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom} ou {@code null} en cas d'{@code id_type_produit} non valide
      */
     @Override
     public List<Produit> findAllProduitsByIdTypeProduit(Long id_type_produit) {
@@ -104,8 +125,9 @@ public class DAOProduitMySQL implements IDAOProduit {
             return null;
         }
 
+        
         sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_type_produit = ?";
-        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_type_produit);
+        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_type_produit);
 
         List<Produit> sortedProduits = produits.stream()
                 .sorted(Comparator.comparing(Produit::getNom))
@@ -115,10 +137,39 @@ public class DAOProduitMySQL implements IDAOProduit {
     }
 
     /**
-     * Retourne l'objet {@link fr.eni.Pizza.app.bo.Produit} correspondant à l'{@code id_produit} passé en paramètre présent en table "produit" de la BDD "db_bobopizza"
+     * Retourne la liste de l'ensemble des données présentes dans table "details_commandes" de la BDD "db_bobopizza" ayant un "COMMANDE_id_commande" égal à {@code id_commande}
      *
-     * @param id_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
-     * @return l'objet {@link fr.eni.Pizza.app.bo.Produit} ou {@code null} en cas d'{@code id_produit} non valide
+     * @param id_commande : Long, identifiant du type d'objet {@link Commande}; l'{@code id_commande} doit correspondre à une "COMMANDE_id_commande" présente en table "details_commandes" de la BDD "db_bobopizza"
+     *
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom} ou {@code null} en cas d'{@code id_commande} non valide
+     */
+    @Override
+    public List<Produit> findAllProduitsByIdCommande(Long id_commande) {
+        String sql = "SELECT id_commande FROM commande";
+
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_commande <= 0 || id_commande > ids.size()) {
+            return null;
+        }
+
+        sql = "SELECT * FROM detail_commande INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE COMMANDE_id_commande = ?";
+        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_DETAIL_COMMANDE_ROW_MAPPER, id_commande);
+
+
+        List<Produit> sortedProduits = produits.stream()
+                .sorted(Comparator.comparing(Produit::getNom))
+                .collect(Collectors.toList());
+
+        return sortedProduits;
+    }
+
+    /**
+     * Retourne l'objet {@link Produit} correspondant à l'{@code id_produit} passé en paramètre présent en table "produit" de la BDD "db_bobopizza"
+     *
+     * @param id_produit : Long, identifiant de l'objet {@link Produit}; l'{@code id_produit} doit correspondre à une "id_produit" présente en table "produit" de la BDD "db_bobopizza"
+     *
+     * @return l'objet {@link Produit} ou {@code null} en cas d'{@code id_produit} non valide
      */
     @Override
     public Produit findProduitById(Long id_produit) {
@@ -132,7 +183,7 @@ public class DAOProduitMySQL implements IDAOProduit {
 
         sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_produit = ?";
 
-        return jdbcTemplate.query(sql, PRODUIT_ROW_MAPPER, id_produit).get(0);
+        return jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_produit).get(0);
     }
 
     /**+

@@ -1,8 +1,7 @@
 package fr.eni.Pizza.app.bll.MySQL;
 
-import fr.eni.Pizza.app.bll.ITypeProduitManager;
 import fr.eni.Pizza.app.bo.TypeProduit;
-import fr.eni.Pizza.app.dal.IDAOTypeProduit;
+import fr.eni.Pizza.app.dal.DAOTypeProduit;
 import fr.eni.Pizza.app.dal.MySQL.DAOTypeProduitMySQL;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -11,18 +10,18 @@ import java.util.List;
 
 @Profile("MySQL")
 @Service
-public class TypeProduitManager implements ITypeProduitManager {
+public class TypeProduitManager implements fr.eni.Pizza.app.bll.TypeProduitManager {
 
-   private IDAOTypeProduit daoTypeProduit;
+   private DAOTypeProduit daoTypeProduit;
 
-   public TypeProduitManager(IDAOTypeProduit daoTypeProduit) {
+   public TypeProduitManager(DAOTypeProduit daoTypeProduit) {
        this.daoTypeProduit = daoTypeProduit;
    }
 
     /**
      * Appelle la DAL par l'appel à {@link DAOTypeProduitMySQL#deleteTypeProduitById(Long)}
      *
-     * @param id_type_produit : Long, identifiant de l'objet {@link fr.eni.Pizza.app.bo.TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
+     * @param id_type_produit : Long, identifiant de l'objet {@link TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
      */
     @Override
     public void deleteTypeProduitById(Long id_type_produit) {
@@ -57,6 +56,6 @@ public class TypeProduitManager implements ITypeProduitManager {
      */
     @Override
     public void saveTypeProduit(TypeProduit typeProduit) {
-
+        daoTypeProduit.saveTypeProduit(typeProduit);
     }
 }

@@ -80,6 +80,10 @@ public final class Produit {
 
     public void setQuantite(Integer quantite) {
 
+        if (quantite <= 0){
+            quantite = 1;
+        }
+
         this.quantite = quantite;
         this.setPrixTotal(quantite);
     }
@@ -99,15 +103,7 @@ public final class Produit {
 
     @Override
     public String toString() {
-        return "Produit{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", type=" + type +
-                ", urlImage='" + urlImage + '\'' +
-                ", description='" + description + '\'' +
-                ", prixUnitaire=" + prixUnitaire +
-                ", quantite=" + quantite +
-                ", prixTotal=" + prixTotal +
-                '}';
+        return "Produit{" + "id=" + id + ", nom='" + nom + ", type=" + type + ", urlImage='" + urlImage + ", description='" + description
+                + ", prixUnitaire=" + prixUnitaire + ", quantite=" + quantite + ", prixTotal=" + prixTotal + "}";
     }
 }
