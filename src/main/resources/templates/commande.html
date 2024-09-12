@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Commande</title>
@@ -8,6 +8,7 @@
 </head>
 <body>
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+<form data-th-object="${produit}" data-th-action="@{/creerPanier}" method="post">
 <div class="donne" data-th-each="produit : ${pizzaProduits}">
   <div class="panier">
     <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
@@ -15,7 +16,7 @@
   </div>
   <p data-th-text="${produit.description}"></p>
   <div class="myModal modal" data-th-attr="data-id=${produit.id}">
-    <div class="modal-content" data-th-field="*{produit}">
+    <div class="modal-content">
       <span class="close">&times;</span>
       <p data-th-text="${produit.getNom()}"></p>
       <p data-th-text="${produit.getPrixUnitaire()}"></p>
@@ -33,6 +34,7 @@
     </div>
   </div>
 </div>
+</form>
 <div class="donne" data-th-each="boisson : ${boissonProduits}">
   <div class="panier">
     <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>

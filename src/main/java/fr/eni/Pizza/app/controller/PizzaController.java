@@ -3,8 +3,7 @@ package fr.eni.Pizza.app.controller;
 
 import fr.eni.Pizza.app.bll.IProduitManager;
 import fr.eni.Pizza.app.bll.MySQL.TypeProduitManager;
-import fr.eni.Pizza.app.bo.Produit;
-import fr.eni.Pizza.app.bo.TypeProduit;
+import fr.eni.Pizza.app.bo.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"typeSession","membreSession"})
+@SessionAttributes({"typeSession","membreSession","clientSession"})
 
 public class PizzaController {
 
@@ -25,6 +24,16 @@ public class PizzaController {
     public PizzaController(IProduitManager produitManager, TypeProduitManager typeProduitManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
+    }
+    @GetMapping("/")
+    public String index( Model model) {
+        Utilisateur user = new Utilisateur(0L, "lievre", "lucas", "lucaslievre@gmail.com", "password", new Role(3L, "GERANT"));
+        Client client = new Client(0L, "lapin", "lucas", "3 rue fellonneau", "44000", "Nantes");
+        model.addAttribute("membreSession", user);
+        model.addAttribute("clientSession", client);
+        System.out.println(client);
+        System.out.println(user);
+        return "index";
     }
 
     //clés model "produits", "pizza-produits", "boisson-produits"
@@ -46,29 +55,29 @@ public class PizzaController {
 
         return "modifCarte";
     }
-    @GetMapping("/detail")
-    public String afficherUnProduit(@RequestParam("idProduit") long id, Model model) {
-        Produit p = this.produitManager.getProduitById(id);
+    @GetMapping("/produit")
+    public String afficherOuCreerProduit(@RequestParam(value = "idProduit", required = false) Long id, Model model) {
+        Produit p;
+        if (id != null) {
+            p = this.produitManager.getProduitById(id);
+            model.addAttribute("titre", "Modification d'un produit");
+        } else {
+            p = new Produit();
+            model.addAttribute("titre", "Création d'un produit");
+        }
         List<TypeProduit> typeSession = typeProduitManager.getAllTypeProduits();
         model.addAttribute("typeSession", typeSession);
         model.addAttribute("produit", p);
         return "carteDetail";
     }
-    @GetMapping("/creer")
-    public String creer(Model model) {
-            Produit p = new Produit();
-            model.addAttribute("produit", p);
-            return "carteNew";
 
+    @GetMapping("/allCommande")
+    public String afficherCommande(Model model){
+        //model.addAttribute("commandes", commandeManager.getAllCommandes());
+        return "allCommande";
     }
-    @PostMapping("/creer")
-    public String modifCarte(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "carteDetail";
-        }
-        produitManager.saveProduit(produit);
-        return "redirect:/laCarte";
-    }
+
+
 
     @PostMapping("/delete")
     public String deleteProduit(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
@@ -86,12 +95,26 @@ public class PizzaController {
         model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
 
         return "commande";
-
     }
     @GetMapping("/panier")
     public String panier(){
         return "panier";
     }
+    /*@PostMapping("/creerPanier")
+    public String creerPanier(){
+        if (bindingResult.hasErrors()) {
+            return "panier";
+        }
+        if (clientManager.hasCurrentBasket() === false){
+            commandeManager.createBasket(produit.getId());
+            System.out.println("création panier avec"+ produit.getId());
+        }else {
+            commandeManager.updateBasket(produit.getId());
+            System.out.println("ajout dans le panier avec"+ produit.getId());
+        }
+        return "redirect:/commande";
+    }*/
+
     @ModelAttribute("typeSession")
     public List<TypeProduit> chargerTypeSession(){
         return typeProduitManager.getAllTypeProduits();

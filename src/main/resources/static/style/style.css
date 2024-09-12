@@ -1,6 +1,7 @@
 body{
     margin: 0;
     padding: 0;
+    color: white;
     font-family: "Lora", serif;
     background:linear-gradient(90deg,rgba(0, 0, 0, 1) -50%, rgba(92, 92, 91, 0) 150%),
             url('https://wallpapercave.com/wp/E7VdJQX.jpg') bottom/cover no-repeat;
@@ -116,9 +117,6 @@ body{
         display: flex;
         flex-direction: column;
         align-items: center;
-        a{
-            width: 250px;
-        }
         img{
             margin-top: 5%;
             width: 40%;
@@ -137,6 +135,35 @@ body{
                 width: 20px;
                 height: 20px;
             }
+            .btnDetail{
+                display: flex;
+                align-items: center;
+            }
+            a{
+                display: flex;
+                justify-content: center;
+                color: white;
+                border-radius: 2rem;
+                padding: 1rem;
+                width: 70px;
+                background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(223,180,98,1) 48%, rgba(0,0,0,1) 100%);
+                text-decoration: none;
+            }
+        }
+        .btnAdd{
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-top-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            background: linear-gradient(90deg, rgba(223,180,98,1) 0%,  rgba(0,0,0,1) 48%, rgba(223,180,98,1) 100%);
+           a{
+               text-decoration: none;
+               display: flex;
+               align-items: center;
+           }
+        }
+        .imgAdd{
+            width: 50px;
         }
     }
     p{
@@ -195,4 +222,55 @@ body{
 .panier{
     display: flex;
     gap: 1rem;
+}
+.bodyDetail{
+    height: 100vh;
+}
+input{
+    background: 0;
+    border: 0;
+    color: white;
+    border-bottom: 1px solid white;
+}
+select{
+    background: 0;
+    border: 0;
+    color: white;
+    border-bottom: 1px solid white;
+}
+option{
+    background: black;
+    color: white;
+}
+.formDetail{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    .btnAdd{
+        margin-top: 1%;
+        width: fit-content;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-top-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        color: white;
+        background: linear-gradient(90deg, rgba(223,180,98,1) 0%,  rgba(0,0,0,1) 48%, rgba(223,180,98,1) 100%);
+        a{
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+    }
+    .imgAdd{
+        width: 50px;
+    }
+}
+table{
+    margin: 0 auto;
+    border: 1px solid white;
+    th{
+        border: 1px solid white;
+        padding: 1rem;
+    }
 }

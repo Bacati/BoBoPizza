@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Detail du produit</title>
+  <meta charset="UTF-8">
+  <title>Détail du produit</title>
+  <link rel="stylesheet" href="/style/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 </head>
-<body>
-<form data-th-object="${produit}" data-th-action="@{/creer}" method="post">
-  <h1>Modification d'un produit</h1>
+<body class="bodyDetail">
+<div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+<form class="formDetail" data-th-object="${produit}" data-th-action="@{/produit}" method="post">
+  <h1 th:text="${titre}"></h1>
   <input type="hidden" id="inputId" required data-th-field="*{id}" />
-  <ul class="flex-outer">
-    <li>
       <label for="inputGenre">Type : </label>
       <select id="inputGenre" data-th-field="*{type}">
         <option th:each="item : ${produit.getType()}"
+                th:if="${produit.getType() != null}"
                 th:text="${item.libelle}"
                 th:value="${item.id}">
         </option>
+
+        <option th:each="item : ${typeSession}"
+                th:if="${produit.getType() == null}"
+                th:text="${item.libelle}"
+                th:value="${item.id}">
+        </option>
+
       </select>
-    </li>
-    <li>
+
       <label for="inputNom">Nom : </label>
       <input type="text" id="inputNom" required data-th-field="*{nom}" />
-    </li>
-    <li>
+
       <label for="inputUrl">URL Image : </label>
       <input type="text" id="inputUrl" required data-th-field="*{urlImage}" />
-    </li>
-    <li>
+
       <label for="inputPrice">Prix Unitaire : </label>
       <input type="number" id="inputPrice" min="1" data-th-field="*{prixUnitaire}" />
-    </li>
-    <li>
+
       <label for="inputDescription">Description : </label>
       <input type="text" id="inputDescription" data-th-field="*{description}" />
-    </li>
-    <button type="submit">Enregistrer</button>
-  </ul>
+
+    <button class="btnAdd" type="submit">Enregistrer</button>
+
+
 </form>
-<form data-th-object="${produit}" data-th-action="@{/delete}" method="post">
+<form class="formDetail" data-th-object="${produit}" data-th-action="@{/delete}" method="post">
   <input type="hidden" id="Id" required data-th-field="*{id}" />
-  <button type="submit"><img src="/images/x.svg"></button>
+  <button class="btnAdd" type="submit"><img src="/images/x.svg"></button>
 </form>
-
-
-
 </body>
 </html>

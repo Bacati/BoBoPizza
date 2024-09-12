@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Toute les commandes</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body class="bodyDetail">
+    <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>Client</th>
+            <th>Produits</th>
+            <th>Date et heure de création</th>
+            <th>Etat</th>
+            <th>Préparateur</th>
+            <th>Livreur</th>
+            <th>Date et heure de livraison</th>
+            <th>Prix total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="film : ${films}">
+            <td data-th-text="${film.genre.titre}"></td>
+            <td data-th-text="${film.annee}"></td>
+            <td data-th-text="${film.titre}"></td>
+            <td
+                    data-th-text="${film.realisateur.prenom} + ' ' + ${film.realisateur.nom}"></td>
+            <td>
+                <a data-th-href="@{/films/detail(idFilm=${film.id})}">Détail</a>
+                <a data-th-if="${membreSession != null && membreSession.id > 0}" data-th-href="@{/avis/creer(idFilm=${film.id})}">Avis</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

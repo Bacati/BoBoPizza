@@ -29,8 +29,17 @@
             <div class="text">
                 <img src="/images/logo.png">
                 <div class="donne" data-th-each="produit : ${pizzaProduits}">
-                    <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
+                    <div class="btnDetail">
+                        <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
+                        <a sec:authorize="hasRole('GERANT')" data-th-href="@{/produit(idProduit=${produit.id})}">Détail</a>
+                    </div>
                     <p data-th-text="${produit.description}"></p>
+                </div>
+                <div class="btnAdd">
+                    <a sec:authorize="hasRole('GERANT')" data-th-href="@{/produit}">
+                        <p>Ajoutez une pizza</p>
+                        <img class="imgAdd" src="/images/plus.svg">
+                    </a>
                 </div>
             </div>
         </div>
@@ -41,9 +50,17 @@
             <div class="text">
                 <img src="/images/logo.png">
                 <div class="donne" data-th-each="boisson : ${boissonProduits}">
-                    <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
+                    <div class="btnDetail">
+                        <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
+                        <a sec:authorize="hasRole('GERANT')" data-th-href="@{/produit(idProduit=${boisson.id})}">Détail</a>
+                    </div>
                     <p data-th-text="${boisson.description}"></p>
-                    <!--<img data-th-src="${boisson.urlImage}">-->
+                </div>
+                <div class="btnAdd">
+                    <a sec:authorize="hasRole('GERANT')" data-th-href="@{/produit}">
+                        <p>Ajoutez une boisson</p>
+                        <img class="imgAdd" src="/images/plus.svg">
+                    </a>
                 </div>
             </div>
         </div>
