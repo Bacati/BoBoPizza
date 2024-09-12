@@ -56,7 +56,7 @@ public class DAOCommandeMySQL implements DAOCommande {
             // Convertir DATETIME en LocalDate
             LocalDateTime dateTime = rs.getObject("co_date_heure_creation", LocalDateTime.class);
             if (dateTime != null) {
-                commande.setDateHeureCreation(dateTime.toLocalDate());
+                commande.setDateHeureCreation(dateTime);
             }
 
             Etat etat = new Etat();
@@ -82,7 +82,7 @@ public class DAOCommandeMySQL implements DAOCommande {
             // Convertir DATETIME en LocalDate
             dateTime = rs.getObject("co_date_heure_preparation", LocalDateTime.class);
             if (dateTime != null) {
-                commande.setDateHeurePreparation(dateTime.toLocalDate());
+                commande.setDateHeurePreparation(dateTime);
             }
 
             Utilisateur livreur = new Employe();
@@ -103,7 +103,7 @@ public class DAOCommandeMySQL implements DAOCommande {
             // Convertir DATETIME en LocalDate
             dateTime = rs.getObject("co_date_heure_livraison", LocalDateTime.class);
             if (dateTime != null) {
-                commande.setDateHeureLivraison(dateTime.toLocalDate());
+                commande.setDateHeureLivraison(dateTime);
             }
 
             commande.setEstLivree(false);
@@ -117,7 +117,7 @@ public class DAOCommandeMySQL implements DAOCommande {
                 commande.setEstPayee(true);
             }
 
-            commande.setPrixTotal();
+            commande.setPrixTotal(rs.getDouble("co_prix_total"));
 
             return commande;
         }

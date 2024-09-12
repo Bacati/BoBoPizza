@@ -1,6 +1,6 @@
 package fr.eni.Pizza.app.bo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public final class Commande {
@@ -8,12 +8,12 @@ public final class Commande {
     private Long id;
     private Utilisateur client;
     private List<Produit> produits;
-    private LocalDate dateHeureCreation;
+    private LocalDateTime dateHeureCreation;
     private Etat etat;
     private Utilisateur preparateur;
-    private LocalDate dateHeurePreparation;
+    private LocalDateTime dateHeurePreparation;
     private Utilisateur livreur;
-    private LocalDate dateHeureLivraison;
+    private LocalDateTime dateHeureLivraison;
     private boolean estLivree;
     private boolean estPayee;
     private double prixTotal;
@@ -28,7 +28,7 @@ public final class Commande {
         setId(id);
         setClient(client);
         setProduits(produits);
-        setDateHeureCreation(LocalDate.now());
+        setDateHeureCreation(LocalDateTime.now());
         setEtat(new Etat(1L, "PANIER"));
         setPreparateur(null);
         setDateHeurePreparation(null);
@@ -36,7 +36,7 @@ public final class Commande {
         setDateHeureLivraison(null);
         setEstLivree(false);
         setEstPayee(false);
-        setPrixTotal();
+        calculatePrixTotal();
     }
 
     public Long getId() {
@@ -75,11 +75,11 @@ public final class Commande {
         this.etat = etat;
     }
 
-    public LocalDate getDateHeureCreation() {
+    public LocalDateTime getDateHeureCreation() {
         return dateHeureCreation;
     }
 
-    public void setDateHeureCreation(LocalDate dateHeureCreation) {
+    public void setDateHeureCreation(LocalDateTime dateHeureCreation) {
         this.dateHeureCreation = dateHeureCreation;
     }
 
@@ -94,11 +94,11 @@ public final class Commande {
         this.preparateur = preparateur;
     }
 
-    public LocalDate getDateHeurePreparation() {
+    public LocalDateTime getDateHeurePreparation() {
         return dateHeurePreparation;
     }
 
-    public void setDateHeurePreparation(LocalDate dateHeurePreparation) {
+    public void setDateHeurePreparation(LocalDateTime dateHeurePreparation) {
         this.dateHeurePreparation = dateHeurePreparation;
     }
 
@@ -113,11 +113,11 @@ public final class Commande {
         this.livreur = livreur;
     }
 
-    public LocalDate getDateHeureLivraison() {
+    public LocalDateTime getDateHeureLivraison() {
         return dateHeureLivraison;
     }
 
-    public void setDateHeureLivraison(LocalDate dateHeureLivraison) {
+    public void setDateHeureLivraison(LocalDateTime dateHeureLivraison) {
         this.dateHeureLivraison = dateHeureLivraison;
     }
 
@@ -141,7 +141,11 @@ public final class Commande {
         return prixTotal;
     }
 
-    public void setPrixTotal() {
+    public void setPrixTotal(double prixTotal){
+        this.prixTotal = prixTotal;
+    }
+
+    public void calculatePrixTotal() {
         prixTotal = 0;
 
         if(produits == null || produits.isEmpty()){
