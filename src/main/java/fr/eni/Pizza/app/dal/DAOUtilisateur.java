@@ -8,7 +8,9 @@ public interface DAOUtilisateur {
 
     List<Utilisateur> findAllUtilisateurs();
 
-    List<Utilisateur> findAllUtilisateursByClass(char Class);
+    List<Utilisateur> findAllUtilisateursByClass(char c);
+
+    List<Utilisateur> findAllUtilisateursByRole(String libelleRole);
 
     Utilisateur findUtilisateurById(Long id_utilisateur);
 

@@ -5,6 +5,7 @@ import fr.eni.Pizza.app.bo.Utilisateur;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
 
     public DAOUtilisateur(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -86,24 +88,167 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
         return sortedUtilisateurs;
     }
 
-
+    /**
+     *Retourne la liste de l'ensemble des données présentes dans table "utilisateur" de la BDD "db_bobopizza" ayant un "classe" égal à {@code c}
+     *
+     * @param c : char, classe du type d'objet {@link Utilisateur}; le {@code c} doit correspondre à une "classe" présente en table "utilisateur" de la BDD "db_bobopizza"
+     *          ATTENTION - c doit valoir 'C' pour Client ou 'E' pour Employe
+     * @return une liste de d'objets {@link Utilisateur} triés par Role puis par Ordre alphabétique sur la base du {@link Utilisateur#Role} et de {@link Utilisateur#nom} ou {@code null} en cas de {@code c} non valide
+     */
     @Override
-    public List<Utilisateur> findAllUtilisateursByClass(char Class) {
-        return List.of();
+    public List<Utilisateur> findAllUtilisateursByClass(char c) {
+
+        if (c != 'E' && c != 'C') {
+            return null;
+        }
+
+        String sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "WHERE classe = ?";
+
+        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, c);
+
+        List<Utilisateur> sortedUtilisateurs = utilisateurs.stream()
+                .sorted((u1, u2) -> {
+                    int roleComparison = u1.getRole().getLibelle().compareTo(u2.getRole().getLibelle());
+                    if (roleComparison != 0) {
+                        return roleComparison;
+                    } else {
+                        return u1.getNom().compareTo(u2.getNom());
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return sortedUtilisateurs;
     }
 
+    /**
+     *Retourne la liste de l'ensemble des données présentes dans table "utilisateur" de la BDD "db_bobopizza" ayant un "libelle" issu de la table role égal à {@code libelleRole}
+     *
+     * @param libelleRole : String, libelle du type d'objet {@link Utilisateur#role} ; le {@code libelleRole} doit correspondre à un "libelle" présent en table "role" de la BDD "db_bobopizza"
+     *          ATTENTION - libelleRole doit correspondre soit à "CLIENT", "PIZZAIOLO", "LIVREUR" ou "GERANT"
+     * @return une liste de d'objets {@link Utilisateur} triés par Ordre alphabétique sur la base du {@link Utilisateur#nom} ou {@code null} en cas de {@code c} non valide
+     */
+    @Override
+    public List<Utilisateur> findAllUtilisateursByRole(String libelleRole) {
+        String sql = "SELECT libelle FROM role";
+
+        List<String> libellesRoles = jdbcTemplate.queryForList(sql, String.class);
+
+        boolean libelleRoleInBDD = false;
+
+        for (String libelle : libellesRoles) {
+            if (libelle.equals(libelleRole.trim().toUpperCase())) {
+                libelleRoleInBDD = true;
+                break;
+            }
+        }
+
+        if (!libelleRoleInBDD) {
+            return null;
+        }
+
+        sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "WHERE libelle = ?";
+
+        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, libelleRole);
+
+        List<Utilisateur> sortedUtilisateurs = utilisateurs.stream()
+                .sorted(Comparator.comparing(Utilisateur::getNom))
+                .collect(Collectors.toList());
+
+        return sortedUtilisateurs;
+    }
+
+    /**
+     * Retourne la data {@link Utilisateur} correspondant à l'{@code id_utilisateur} passé en paramètre présent en table "utilisateur" de la BDD "db_bobopizza"
+     *
+     * @param id_utilisateur : Long, identifiant de l'objet {@link Utilisateur}; l'{@code id_utilisateur} doit correspondre à une "id_utilisateur" présente en table "utilisateur" de la BDD "db_bobopizza"
+     *
+     * @return l'objet {@link Utilisateur} ou {@code null} en cas d'{@code id_utilisateur} non valide
+     */
     @Override
     public Utilisateur findUtilisateurById(Long id_utilisateur) {
-        return null;
+        String sql = "SELECT id_utilisateur FROM utilisateur";
+
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_utilisateur <= 0 || id_utilisateur > ids.size()) {
+            return null;
+        }
+
+        sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "WHERE id_utilisateur = ?";
+
+        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, id_utilisateur);
+
+        if(utilisateurs.isEmpty()) {
+            return null;
+        }
+
+        return utilisateurs.get(0);
     }
 
+    /**
+     * Retourne la data {@link Utilisateur} correspondant au duo de {@code email} et {@code password} passés en paramètres présents en table "utilisateur" de la BDD "db_bobopizza"
+     *
+     * @param email : String, email de l'objet attendu {@link Utilisateur}
+     * @param password : String, password de l'objet attendu {@link Utilisateur}
+     *
+     * @return l'objet {@link Utilisateur} ou {@code null} en cas de {@code email} et {@code password} non valides
+     */
     @Override
     public Utilisateur findUtilisateurByEmailAndPassword(String email, String password) {
-        return null;
+        String sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "WHERE email = ? AND mot_de_passe = ?";
+
+        List <Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, email, password);
+
+        if(utilisateurs.isEmpty()) {
+            return null;
+        }
+
+        return utilisateurs.get(0);
     }
 
     @Override
     public void saveUtilisateur(Utilisateur utilisateur) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("idUtilisateur", utilisateur.getId());
+        params.addValue("nom", utilisateur.getNom());
+        params.addValue("prenom", utilisateur.getPrenom());
+        params.addValue("rue", utilisateur.getRue());
+        params.addValue("codePostal", utilisateur.getCodePostal());
+        params.addValue("ville", utilisateur.getVille());
+        params.addValue("email", utilisateur.getEmail());
+        params.addValue("password", utilisateur.getPassword());
+        params.addValue("idRole", utilisateur.getRole().getId());
+        params.addValue("idCommandeEnCours", utilisateur.getId_commande_en_cours());
+        char c = ' ';
+        if (utilisateur instanceof Client){
+            c = 'C';
+        }
+        if (utilisateur instanceof Employe){
+            c = 'E';
+        }
+        params.addValue("classe", c);
 
+        String sql;
+        if (utilisateur.getId() != null && findUtilisateurById(utilisateur.getId()) != null) {
+            sql = "UPDATE utilisateur SET id_utilisateur= :idUtilisateur, classe= :classe, nom = :nom, prenom = :prenom, rue = :rue, code_postal = :codePostal, ville = :ville, email = :email, mot_de_passe= :password, id_commande_en_cours= :idCommandeEnCours WHERE id_utilisateur = :idUtilisateur";
+            namedParameterJdbcTemplate.update(sql, params);
+            sql = "UPDATE role_utilisateur SET id_role = :idRole WHERE UTILISATEUR_id_utilisateur =:idUtilisateur";
+            namedParameterJdbcTemplate.update(sql, params);
+            System.out.println("Utilisateur " + utilisateur.getNom() + " " + utilisateur.getPrenom() + " mis à jour en table utilisateur de la BDD db_bobopizza);
+        } else {
+         //TODO ajouter en créant en base de donnée
+        }
     }
 }
