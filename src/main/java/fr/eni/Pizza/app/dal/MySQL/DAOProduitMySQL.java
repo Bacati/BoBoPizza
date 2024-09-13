@@ -183,7 +183,13 @@ public class DAOProduitMySQL implements DAOProduit {
 
         sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_produit = ?";
 
-        return jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_produit).get(0);
+        List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_produit);
+
+        if(produits.isEmpty()) {
+            return null;
+        }
+
+        return produits.get(0);
     }
 
     /**+

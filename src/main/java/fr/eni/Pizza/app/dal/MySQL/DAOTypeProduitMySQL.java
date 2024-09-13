@@ -32,7 +32,7 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
         @Override
         public TypeProduit mapRow(ResultSet rs, int rowNum) throws SQLException {
             TypeProduit typeProduit = new TypeProduit();
-            typeProduit.setId((rs.getLong("id_type_produit")));
+            typeProduit.setId(rs.getLong("id_type_produit"));
             typeProduit.setLibelle(rs.getString("libelle"));
 
             return typeProduit;
@@ -99,7 +99,13 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
 
         sql = "SELECT * FROM type_produit WHERE id_type_produit = ?";
 
-        return jdbcTemplate.query(sql, TYPE_PRODUIT_ROW_MAPPER, id_type_produit).get(0);
+        List<TypeProduit> typeproduits = jdbcTemplate.query(sql, TYPE_PRODUIT_ROW_MAPPER, id_type_produit);
+
+        if(typeproduits.isEmpty()) {
+            return null;
+        }
+
+        return typeproduits.get(0);
     }
 
     /**+

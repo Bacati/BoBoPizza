@@ -156,7 +156,7 @@ public class DAOCommandeMySQL implements DAOCommande {
      * commande, client, etat, utilisateur, role_utilisateur et role de la BDD "db_bobopizza".
      * ATTENTION - l'attribut {@link Commande#produits} est null
      *
-     * @return la liste de tous les {@link Commande} existantes
+     * @return la liste de toutes les {@link Commande} existantes
      */
     @Override
     public List<Commande> findAllCommandes() {
@@ -346,7 +346,13 @@ public class DAOCommandeMySQL implements DAOCommande {
                 "WHERE\n" +
                 "    co.id_commande = ?";
 
-        return jdbcTemplate.query(sql, COMMANDE_ROW_MAPPER, id_commande).get(0);
+        List <Commande> commandes = jdbcTemplate.query(sql, COMMANDE_ROW_MAPPER, id_commande);
+
+        if(commandes.isEmpty()){
+            return null;
+        }
+
+        return commandes.get(0);
     }
 
     /**
