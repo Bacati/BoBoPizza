@@ -121,3 +121,8 @@ INNER JOIN
     role ro_livreur ON ru_livreur.ROLE_id_role = ro_livreur.id_role
 WHERE
     co.id_commande = 1;
+    
+SELECT * FROM utilisateur
+INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur
+INNER JOIN role ON ROLE_id_role = id_role
+WHERE classe = 'C';

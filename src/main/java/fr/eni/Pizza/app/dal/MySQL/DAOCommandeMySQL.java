@@ -385,7 +385,7 @@ public class DAOCommandeMySQL implements DAOCommande {
 
     @Override
     public Long obtainIDFromLastCreatedCommande() {
-        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID() FROM commande", Long.class);
+        return jdbcTemplate.queryForObject("SELECT MAX(id_commande) FROM commande", Long.class);
     }
 
     /**
@@ -417,8 +417,9 @@ public class DAOCommandeMySQL implements DAOCommande {
                     "WHERE id_commande = :idCommande";
             System.out.println("Commande du " + commande.getDateHeureCreation() + " du client " + commande.getClient().getNom() + " " + commande.getClient().getPrenom() + " mis à jour en table commande de la BDD db_bobopizza");
         } else {
-            sql = "INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, UTILISATEUR_id_preparateur, date_heure_preparation, UTILISATEUR_id_livreur, livraison, prix_total, est_paye) VALUES\n" +
-                    "(:idClient, :dateHeureCreation, :idEtat, :idPreparateur, :dateHeurePreparation, :idLivreur, :estLivree, :prixTotal, :estPayee)";
+            sql = "INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, livraison, prix_total, est_paye) \n" +
+                    "VALUES(:idClient, :dateHeureCreation, :idEtat, :estLivree, :prixTotal, :estPayee);";
+
             System.out.println("Commande du " + commande.getDateHeureCreation() + " du client " + commande.getClient().getNom() + " " + commande.getClient().getPrenom() + " ajoutée en table commande de la BDD db_bobopizza");
         }
         namedParameterJdbcTemplate.update(sql, params);

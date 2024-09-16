@@ -182,7 +182,7 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
 
         sql = "SELECT * FROM utilisateur\n" +
                 "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
-                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "INNER JOIN role ON ROLE_id_role = id_role " +
                 "WHERE id_utilisateur = ?";
 
         List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, id_utilisateur);
@@ -219,6 +219,11 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
     }
 
     @Override
+    public Long obtainIDFromLastCreatedUtilisateur() {
+        return jdbcTemplate.queryForObject("SELECT MAX(id_utilisateur) FROM utilisateur", Long.class);
+    }
+
+    @Override
     public void saveUtilisateur(Utilisateur utilisateur) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("idUtilisateur", utilisateur.getId());
@@ -231,12 +236,12 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
         params.addValue("password", utilisateur.getPassword());
         params.addValue("idRole", utilisateur.getRole().getId());
         params.addValue("idCommandeEnCours", utilisateur.getId_commande_en_cours());
-        char c = ' ';
+        String c = "";
         if (utilisateur instanceof Client){
-            c = 'C';
+            c = "C";
         }
         if (utilisateur instanceof Employe){
-            c = 'E';
+            c = "E";
         }
         params.addValue("classe", c);
 
@@ -244,13 +249,14 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
         if (utilisateur.getId() != null && findUtilisateurById(utilisateur.getId()) != null) {
             sql = "UPDATE utilisateur SET id_utilisateur= :idUtilisateur, classe= :classe, nom = :nom, prenom = :prenom, rue = :rue, code_postal = :codePostal, ville = :ville, email = :email, mot_de_passe= :password, id_commande_en_cours= :idCommandeEnCours WHERE id_utilisateur = :idUtilisateur";
             namedParameterJdbcTemplate.update(sql, params);
-            sql = "UPDATE role_utilisateur SET id_role = :idRole WHERE UTILISATEUR_id_utilisateur =:idUtilisateur";
+            sql = "UPDATE role_utilisateur SET ROLE_id_role = :idRole WHERE UTILISATEUR_id_utilisateur = :idUtilisateur";
             namedParameterJdbcTemplate.update(sql, params);
             System.out.println("Utilisateur " + utilisateur.getNom() + " " + utilisateur.getPrenom() + " mis à jour en table utilisateur de la BDD db_bobopizza");
         } else {
             sql = "INSERT INTO utilisateur (classe, nom, prenom, rue, code_postal, ville, email, mot_de_passe) VALUES (:classe, :nom, :prenom, :rue, :codePostal, :ville, :email, :password)";
             namedParameterJdbcTemplate.update(sql, params);
-            sql = "INSERT INTO role_utilisateur (id_role) VALUES (:idRole) WHERE UTILISATEUR_id_utilisateur = LAST_INSERT_ID()";
+            params.addValue("idUtilisateur", obtainIDFromLastCreatedUtilisateur());
+            sql = "INSERT INTO role_utilisateur (ROLE_id_role) VALUES (:idRole) WHERE UTILISATEUR_id_utilisateur = :idUtilisateur";
             namedParameterJdbcTemplate.update(sql, params);
             System.out.println("Utilisateur " + utilisateur.getNom() + " " + utilisateur.getPrenom() + " ajouté en table utilisateur de la BDD db_bobopizza");
         }

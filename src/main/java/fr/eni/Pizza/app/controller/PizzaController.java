@@ -35,7 +35,7 @@ public class PizzaController {
     @GetMapping("/")
     public String index( Model model) {
         Employe user = new Employe(0L, "lievre", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslievre@gmail.com", "password", new Role(4L, "GERANT"));
-        Client client = new Client(0L, "DUPONT", "Martin", "2b rue Michael FARADAY", "44300", "SAINT-HERBLAIN", "martin.dupont@email.com", "password", new Role(1L, "CLIENT"));
+        Client client = new Client(6L, "DUPONT", "Martin", "2b rue Michael FARADAY", "44300", "SAINT-HERBLAIN", "martin.dupont@email.com", "password", new Role(1L, "CLIENT"));
         model.addAttribute("membreSession", user);
         model.addAttribute("clientSession", client);
         return "index";
@@ -117,6 +117,7 @@ public class PizzaController {
     public String panier(){
         return "panier";
     }
+
     @PostMapping("/creerPanier")
     public String creerPanier(@RequestParam(value = "idProduit", required = true) Long idProduit,
                               @RequestParam(value = "quantite", required = true) int quantite,

@@ -46,9 +46,9 @@ CREATE TABLE COMMANDE
      date_heure_creation DATETIME NOT NULL,
      ETAT_id_etat INTEGER NOT NULL ,
      UTILISATEUR_id_preparateur INTEGER DEFAULT 1,
-     date_heure_preparation DATETIME,
+     date_heure_preparation DATETIME DEFAULT NULL,
      UTILISATEUR_id_livreur INTEGER DEFAULT 2,
-     date_heure_livraison DATETIME NOT NULL, 
+     date_heure_livraison DATETIME DEFAULT NULL, 
      livraison BIT NOT NULL , 
 	 prix_total decimal(10,2) NOT NULL , 
      est_paye BIT NOT NULL 

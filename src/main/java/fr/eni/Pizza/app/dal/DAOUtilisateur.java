@@ -16,5 +16,7 @@ public interface DAOUtilisateur {
 
     Utilisateur findUtilisateurByEmailAndPassword(String email, String password);
 
+    Long obtainIDFromLastCreatedUtilisateur();
+
     void saveUtilisateur(Utilisateur utilisateur);
 }
