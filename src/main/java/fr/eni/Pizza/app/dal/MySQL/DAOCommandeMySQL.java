@@ -383,6 +383,11 @@ public class DAOCommandeMySQL implements DAOCommande {
         return commandes.get(0);
     }
 
+    @Override
+    public Long obtainIDFromLastCreatedCommande() {
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID() FROM commande", Long.class);
+    }
+
     /**
      * Insère une commande en tables "commande" et "detail_commande" de la BDD "db_bobopizza" avec {@code commande}
      *
@@ -391,6 +396,7 @@ public class DAOCommandeMySQL implements DAOCommande {
     @Override
     public void saveCommande(Commande commande) {
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("idCommande", commande.getId());
         params.addValue("idClient", commande.getClient().getId());
         params.addValue("dateHeureCreation", commande.getDateHeureCreation());
         params.addValue("idEtat", commande.getEtat().getId());
@@ -402,28 +408,40 @@ public class DAOCommandeMySQL implements DAOCommande {
         params.addValue("prixTotal", commande.getPrixTotal());
         params.addValue("estPayee", (commande.getEstPayee()? 1 : 0));
 
-        String sql = "INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, UTILISATEUR_id_preparateur, date_heure_preparation, UTILISATEUR_id_livreur, date_heure_livraison, livraison, prix_total, est_paye) VALUES\n" +
-                "(:idClient, :dateHeureCreation, :idEtat, :idPreparateur, :dateHeurePreparation, :idLivreur, :dateHeureLivraison, :estLivree, :prixTotal, :estPaye)";
-        namedParameterJdbcTemplate.update(sql, params);
-        System.out.println("Commande du " + commande.getDateHeureCreation() + " ajoutée en table commande de la BDD db_bobopizza");
+        String sql;
+        if (commande.getId() != null && findCommandeById(commande.getId()) != null) {
 
-        List<Produit> produits = commande.getProduits();
-
-        for (Produit produit : produits) {
-            MapSqlParameterSource map = new MapSqlParameterSource();
-            map.addValue("quantite", produit.getQuantite());
-            map.addValue("idProduit", produit.getId());
-            map.addValue("nom", produit.getNom());
-            map.addValue("description", produit.getDescription());
-            map.addValue("prixUnitaire", produit.getPrixUnitaire());
-            map.addValue("imageURL", produit.getUrlImage());
-            map.addValue("idTypeProduit", produit.getType().getId());
-
-
-            sql = "INSERT INTO detail_commande (quantite, COMMANDE_id_commande, PRODUIT_id_produit, PRODUIT_nom, PRODUIT_description, PRODUIT_prix, PRODUIT_image_url, TYPE_PRODUIT_id_type_produit) VALUES\n" +
-                    "(:quantite, LAST_INSERT_ID(), :idProduit, :nom, :description, :prixUnitaire, :imageURL, :idTypeProduit)";
-            namedParameterJdbcTemplate.update(sql, map);
-            System.out.println(" - quantité " + produit.getQuantite() + " de " + produit.getNom() + " inséré en table detail_commande de la BDD db_bobopizza");
+            sql = "UPDATE commande " +
+                    "SET UTILISATEUR_id_client = :idClient, date_heure_creation = :dateHeureCreation, ETAT_id_etat = :idEtat, " +
+                    "UTILISATEUR_id_preparateur = :idPreparateur, date_heure_preparation = :dateHeurePreparation, UTILISATEUR_id_livreur = :idLivreur, " +
+                    "date_heure_livraison = :dateHeureLivraison, livraison = :estLivree, prix_total = :prixTotal, est_paye = :estPayee " +
+                    "WHERE id_commande = :idCommande";
+            System.out.println("Commande du " + commande.getDateHeureCreation() + " du client " + commande.getClient().getNom() + " " + commande.getClient().getPrenom() + " mis à jour en table commande de la BDD db_bobopizza");
+        } else {
+            sql = "INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, UTILISATEUR_id_preparateur, date_heure_preparation, UTILISATEUR_id_livreur, date_heure_livraison, livraison, prix_total, est_paye) VALUES\n" +
+                    "(:idClient, :dateHeureCreation, :idEtat, :idPreparateur, :dateHeurePreparation, :idLivreur, :dateHeureLivraison, :estLivree, :prixTotal, :estPaye)";
+            System.out.println("Commande du " + commande.getDateHeureCreation() + " du client " + commande.getClient().getNom() + " " + commande.getClient().getPrenom() +  " ajoutée en table commande de la BDD db_bobopizza");
         }
+        namedParameterJdbcTemplate.update(sql, params);
+        /**List<Produit> produits = commande.getProduits();
+
+        if (!produits.isEmpty()) {
+            for (Produit produit : produits) {
+                MapSqlParameterSource map = new MapSqlParameterSource();
+                map.addValue("quantite", produit.getQuantite());
+                map.addValue("idProduit", produit.getId());
+                map.addValue("nom", produit.getNom());
+                map.addValue("description", produit.getDescription());
+                map.addValue("prixUnitaire", produit.getPrixUnitaire());
+                map.addValue("imageURL", produit.getUrlImage());
+                map.addValue("idTypeProduit", produit.getType().getId());
+
+
+                sql = "INSERT INTO detail_commande (quantite, COMMANDE_id_commande, PRODUIT_id_produit, PRODUIT_nom, PRODUIT_description, PRODUIT_prix, PRODUIT_image_url, TYPE_PRODUIT_id_type_produit) VALUES\n" +
+                        "(:quantite, LAST_INSERT_ID(), :idProduit, :nom, :description, :prixUnitaire, :imageURL, :idTypeProduit)";
+                namedParameterJdbcTemplate.update(sql, map);
+                System.out.println(" - quantité " + produit.getQuantite() + " de " + produit.getNom() + " inséré en table detail_commande de la BDD db_bobopizza");
+            }
+        }**/
     }
 }

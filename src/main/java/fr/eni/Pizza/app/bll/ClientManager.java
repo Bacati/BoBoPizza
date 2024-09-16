@@ -17,4 +17,5 @@ public interface ClientManager {
     boolean hasCurrentBasket(Long id_utilisateur);
 
     Long getCurrentBasketId(Long id_utilisateur);
+
 }

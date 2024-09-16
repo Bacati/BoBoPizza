@@ -19,5 +19,9 @@ public interface CommandeManager {
 
     Long createBasket(Long id_utilisateur, Produit produit);
 
+    boolean  productInBasket (Long id_commande_en_cours, long id_produit);
+
     void updateBasket(Long id_commande_en_cours, Produit produit);
+
+    void finishBasket(Long id_commande_en_cours);
 }
