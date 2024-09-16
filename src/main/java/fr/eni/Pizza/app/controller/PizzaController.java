@@ -1,6 +1,7 @@
 package fr.eni.Pizza.app.controller;
 
 
+import fr.eni.Pizza.app.bll.MySQL.ClientManager;
 import fr.eni.Pizza.app.bll.MySQL.CommandeManager;
 import fr.eni.Pizza.app.bll.MySQL.EtatManager;
 import fr.eni.Pizza.app.bll.ProduitManager;
@@ -21,22 +22,22 @@ public class PizzaController {
     private final TypeProduitManager typeProduitManager;
     private final CommandeManager commandeManager;
     private final EtatManager etatManager;
+    private final ClientManager clientManager;
     ProduitManager produitManager;
 
-    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager) {
+    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager, ClientManager clientManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
         this.commandeManager = commandeManager;
         this.etatManager = etatManager;
+        this.clientManager = clientManager;
     }
     @GetMapping("/")
     public String index( Model model) {
         Employe user = new Employe(0L, "lievre", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslievre@gmail.com", "password", new Role(4L, "GERANT"));
-        Client client = new Client(0L, "lapin", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslapin@gmail.com", "password", new Role(1L, "CLIENT"));
+        Client client = new Client(0L, "DUPONT", "Martin", "2b rue Michael FARADAY", "44300", "SAINT-HERBLAIN", "martin.dupont@email.com", "password", new Role(1L, "CLIENT"));
         model.addAttribute("membreSession", user);
         model.addAttribute("clientSession", client);
-        System.out.println(client);
-        System.out.println(user);
         return "index";
     }
 
@@ -98,10 +99,11 @@ public class PizzaController {
         return "redirect:/laCarte";
     }
     @GetMapping("/commande")
-    public String commander(Model model) {
+    public String commander(Model model, @ModelAttribute ("clientSession") Client client) {
         model.addAttribute("produits", produitManager.getAllProduits());
         model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
         model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
+        System.out.println(client);
 
         return "commande";
     }
@@ -115,21 +117,28 @@ public class PizzaController {
     public String panier(){
         return "panier";
     }
-    /*
     @PostMapping("/creerPanier")
-    public String creerPanier( BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            return "panier";
+    public String creerPanier(@RequestParam(value = "idProduit", required = true) Long idProduit,
+                              @RequestParam(value = "quantite", required = true) int quantite,
+                              @ModelAttribute("clientSession") Client clientSession) {
+
+        Produit produit = produitManager.getProduitById(idProduit);
+        produit.setQuantite(quantite);
+
+        // Vérifier si l'utilisateur a déjà un panier en cours
+        if (clientSession.getId_commande_en_cours() == null) {
+            // Créer une nouvelle commande/panier
+            Long idNouvelleCommande = commandeManager.createBasket(clientSession.getId(), produit);
+            clientSession.setId_commande_en_cours(idNouvelleCommande); // Mise à jour de l'ID du panier en cours
+            System.out.println("Création d'un nouveau panier avec le produit " + produit.getNom());
+        } else {
+            // Mise à jour du panier existant
+            commandeManager.updateBasket(clientSession.getId_commande_en_cours(), produit);
+            System.out.println("Ajout du produit dans le panier existant : " + produit.getNom());
         }
-        if (clientManager.hasCurrentBasket() === false){
-            commandeManager.createBasket(produit.getId());
-            System.out.println("création panier avec"+ produit.getId());
-        }else {
-            commandeManager.updateBasket(produit.getId());
-            System.out.println("ajout dans le panier avec"+ produit.getId());
-        }
+
         return "redirect:/commande";
-    }*/
+    }
 
     @ModelAttribute("typeSession")
     public List<TypeProduit> chargerTypeSession(){
