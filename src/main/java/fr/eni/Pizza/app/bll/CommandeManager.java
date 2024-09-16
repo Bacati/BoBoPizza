@@ -11,11 +11,13 @@ public interface CommandeManager {
 
     List<Commande> getAllCommandes();
 
+    List<Commande> getCommandesByEtat(Long id_etat);
+
     Commande getCommandeById (Long id_commande);
 
     void saveCommande(Commande commande);
 
-    Long createBasket(Produit produit);
+    Long createBasket(Long id_utilisateur, Produit produit);
 
-    void updateBasket(Produit produit);
+    void updateBasket(Long id_commande_en_cours, Produit produit);
 }

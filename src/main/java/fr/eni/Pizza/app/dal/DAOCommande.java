@@ -10,6 +10,8 @@ public interface DAOCommande {
 
     List<Commande> findAllCommandes();
 
+    List<Commande> findAllCommandesByEtat(Long id_etat);
+
     Commande findCommandeById (Long id_commande);
 
     void saveCommande(Commande commande);

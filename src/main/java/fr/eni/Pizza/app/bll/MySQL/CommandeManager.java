@@ -55,6 +55,24 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     /**
      * Appelle la DAL
      *
+     * @param id_etat : Long, identifiant du type d'objet {@link fr.eni.Pizza.app.bo.Etat} présent dans l'objet {@link Commande}; l'{@code id_etat} doit correspondre à une "id_etat" présente en table "etat" de la BDD "db_bobopizza"
+     * @return le résultat de {@link DAOCommandeMySQL#findAllCommandesByEtat(Long)}
+     */
+    @Override
+    public List<Commande> getCommandesByEtat(Long id_etat) {
+        List <Commande> commandes = daoCommande.findAllCommandesByEtat(id_etat);
+
+        for (Commande commande: commandes) {
+            List<Produit> produits = daoProduit.findAllProduitsByIdCommande(commande.getId());
+            commande.setProduits(produits);
+        }
+
+        return commandes;
+    }
+
+    /**
+     * Appelle la DAL
+     *
      * @param id_commande : Long, identifiant du type d'objet {@link Commande}; l'{@code id_commande} doit correspondre à une "id_commande" présente en table "commande" de la BDD "db_bobopizza"
      * @return le résultat de {@link DAOCommandeMySQL#findCommandeById(Long)}
      */
@@ -80,12 +98,21 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     }
 
     @Override
-    public Long createBasket(Produit produit) {
-        return 0L;
+    public Long createBasket(Long id_utilisateur, Produit produit) {
+        //Créer une nouvelle commande en BDD pour l'id_utilisateur
+
+        //insérer en table details_commande
+
+        //récupérer l'id_commande nouvellement créé pour mettre à jour la BDD utilisateur au niveau de id_commande_en_cours
+
+        // retourner l'id_commande_en_cours
+
+     return 0L;
     }
 
     @Override
-    public void updateBasket(Produit produit) {
+    public void updateBasket(Long id_commande_en_cours, Produit produit) {
 
     }
+
 }

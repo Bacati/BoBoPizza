@@ -249,6 +249,34 @@ public class DAOCommandeMySQL implements DAOCommande {
     }
 
     /**
+     * Retourne la liste d'instances de {@link Commande} construites sur la base de l'ensemble des données présentes dans les tables
+     * commande, client, etat, utilisateur, role_utilisateur et role de la BDD "db_bobopizza"
+     * filtrée sur la base de l' {@code id_etat} présent en table "etat" de la même BDD.
+     * ATTENTION - l'attribut {@link Commande#produits} est null
+     *
+     * @return la liste de toutes les {@link Commande} existantes ayant un {@link Etat#id} égal à {code id_etat}
+     */
+    @Override
+    public List<Commande> findAllCommandesByEtat(Long id_etat) {
+        String sql = "SELECT id_etat FROM etat";
+
+        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_etat <= 0 || id_etat > ids.size()) {
+            return null;
+        }
+
+        List <Commande> commandes = findAllCommandes();
+
+        List<Commande> sortedCommandes = commandes.stream()
+                .filter(commande -> commande.getEtat().getId() == id_etat)
+                .sorted(Comparator.comparing(Commande::getDateHeureCreation).reversed())
+                .collect(Collectors.toList());
+
+        return sortedCommandes;
+    }
+
+    /**
      * Retourne l'objet {@link Commande} correspondant à l'{@code id_commande} passé en paramètre présent en table "commande" de la BDD "db_bobopizza"
      * ATTENTION - l'attribut {@link Commande#produits} est null
      * @param id_commande : Long, identifiant de l'objet {@link Commande}; l'{@code id_commande} doit correspondre à une "id_commande" présente en table "commande" de la BDD "db_bobopizza"
