@@ -223,6 +223,15 @@ body{
     gap: 1rem;
     align-items: center;
 }
+.panier-container{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    .total{
+        display: flex;
+        flex-direction: column;
+    }
+}
 .bodyDetail{
     height: 100vh;
 }

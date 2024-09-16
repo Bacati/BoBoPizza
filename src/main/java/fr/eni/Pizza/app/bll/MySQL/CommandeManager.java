@@ -138,7 +138,7 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
         daoDetailsCommandes.saveDetailsCommandes(idCommande, produit);
 
         // retourner l'id_commande_en_cours
-        System.out.println("Commande en état \"PANIER\" " + idCommande);
+        System.out.println("Commande en état \"PANIER\" id" + idCommande);
      return idCommande;
     }
 

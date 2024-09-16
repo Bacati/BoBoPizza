@@ -114,8 +114,30 @@ public class PizzaController {
         return "detailCommande";
     }
     @GetMapping("/panier")
-    public String panier(){
+    public String panier(Model model, @ModelAttribute("clientSession") Client clientSession){
+        if (clientSession.getId_commande_en_cours() != null){
+            model.addAttribute("commandes", commandeManager.getCommandeById(clientSession.getId_commande_en_cours()) );
+            model.addAttribute("produit", produitManager.getAllProduitsByIdCommande(clientSession.getId_commande_en_cours()));
+        }else {
+           return "commande";
+        }
         return "panier";
+    }
+    @PostMapping("/deleteCommande")
+        public String deleteCommande(@ModelAttribute("clientSession") Client clientSession){
+        commandeManager.deleteCommandeById(clientSession.getId_commande_en_cours());
+        return "commande";
+    }
+    @PostMapping("/commander")
+    public String passerCommande(@ModelAttribute("clientSession") Client clientSession){
+
+        if (clientSession.getId_commande_en_cours() != null) {
+            commandeManager.finishBasket(clientSession.getId_commande_en_cours());
+            System.out.println("commande passer");
+        }else {
+            return "commande";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/creerPanier")
