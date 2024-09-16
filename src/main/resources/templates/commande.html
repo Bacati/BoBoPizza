@@ -6,15 +6,15 @@
   <script type="module" src="/javascript/script.js" defer></script>
   <link rel="stylesheet" href="/style/style.css">
 </head>
-<body>
+<body class="bodyCommande">
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
 
 <div class="donne" data-th-each="produit : ${pizzaProduits}">
   <div class="panier">
-    <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
+    <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p><hr>
+    <p data-th-text="${produit.description}"></p>
     <button class="myBtn" type="button" data-th-attr="data-id=${produit.id}">Ajouter au panier <img src="/images/shopping-cart.svg"></button>
   </div>
-  <p data-th-text="${produit.description}"></p>
 
   <!-- Modal pour ajouter le produit au panier avec la quantité -->
   <div class="myModal modal" data-th-attr="data-id=${produit.id}">
@@ -36,8 +36,7 @@
           <option value="6">6</option>
           <option value="7">7</option>
         </select>
-
-        <button type="submit">Ajouter au panier</button>
+        <button class="addBucket" type="submit">Ajouter au panier</button>
       </form>
     </div>
   </div>
@@ -45,10 +44,10 @@
 
 <div class="donne" data-th-each="boisson : ${boissonProduits}">
   <div class="panier">
-    <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
+    <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p> <hr>
+    <p data-th-text="${boisson.description}"></p>
     <button class="myBtn" type="button" data-th-attr="data-id=${boisson.id}">Ajouter au panier <img src="/images/shopping-cart.svg"></button>
   </div>
-  <p data-th-text="${boisson.description}"></p>
   <div class="myModal modal" data-th-attr="data-id=${boisson.id}">
     <div class="modal-content">
       <span class="close">&times;</span>

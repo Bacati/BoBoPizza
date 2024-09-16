@@ -34,7 +34,7 @@
             <td data-th-text="${commande.getDateHeureLivraison()}"></td>
             <td data-th-text="${commande.getPrixTotal()}"></td>
             <td data-th-text="${commande.getEtat().getLibelle()}"></td>
-            <td><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
+            <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
         </tr>
         </tbody>
     </table>

@@ -193,8 +193,7 @@ body{
 
 /* Modal Content */
 .modal-content {
-    display: flex;
-    gap: 1rem;
+    gap: 2rem;
     background-color: #000;
     margin: auto;
     padding: 20px;
@@ -222,6 +221,7 @@ body{
 .panier{
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 .bodyDetail{
     height: 100vh;
@@ -268,13 +268,61 @@ option{
 }
 table{
     margin: 0 auto;
-    border: 1px solid white;
     th{
-        border: 1px solid white;
+        margin: 0;
+        border: 2px solid rgba(223,180,98,1);
         padding: 1rem;
     }
     td{
-        border: 1px solid white;
+        border: 2px solid rgba(223,180,98,1);
         padding: 1rem;
     }
+    .btnDetail{
+        display: flex;
+        align-items: center;
+        a{
+            display: flex;
+            justify-content: center;
+            color: white;
+            border-radius: 2rem;
+            padding: 1rem;
+            width: 70px;
+            background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(223,180,98,1) 48%, rgba(0,0,0,1) 100%);
+            text-decoration: none;
+        }
+    }
 }
+.bodyCommande{
+    height: 100vh;
+    .donne{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .addBucket{
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-top-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            color: white;
+            background: linear-gradient(90deg, rgba(223,180,98,1) 0%,  rgba(0,0,0,1) 48%, rgba(223,180,98,1) 100%);
+        }
+        .myBtn{
+            gap: 1rem;
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-top-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            color: white;
+            background: linear-gradient(90deg, rgba(223,180,98,1) 0%,  rgba(0,0,0,1) 48%, rgba(223,180,98,1) 100%);
+        }
+    }
+}
+
