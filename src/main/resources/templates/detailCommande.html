@@ -14,7 +14,7 @@
         <h1>detail de la commande <span th:text="${param.idCommande}"></span></h1>
         <select data-th-field="*{etat}">
             <option th:each="item : ${etat}"
-                    th:text="${item.libelle}"
+                    th:text="${item.id} + ' - ' + ${item.libelle}"
                     th:value="${item.id}">
             </option>
         </select>

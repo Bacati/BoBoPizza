@@ -1,6 +1,7 @@
 package fr.eni.Pizza.app.controller;
 
 
+import fr.eni.Pizza.app.bll.EmployeManager;
 import fr.eni.Pizza.app.bll.MySQL.ClientManager;
 import fr.eni.Pizza.app.bll.MySQL.CommandeManager;
 import fr.eni.Pizza.app.bll.MySQL.EtatManager;
@@ -19,18 +20,20 @@ import java.util.List;
 @SessionAttributes({"typeSession","membreSession","clientSession"})
 public class PizzaController {
 
+    private final ProduitManager produitManager;
     private final TypeProduitManager typeProduitManager;
     private final CommandeManager commandeManager;
     private final EtatManager etatManager;
     private final ClientManager clientManager;
-    ProduitManager produitManager;
+    private final EmployeManager employeManager;
 
-    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager, ClientManager clientManager) {
+    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager, ClientManager clientManager, EmployeManager employeManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
         this.commandeManager = commandeManager;
         this.etatManager = etatManager;
         this.clientManager = clientManager;
+        this.employeManager = employeManager;
     }
     @GetMapping("/")
     public String index( Model model) {

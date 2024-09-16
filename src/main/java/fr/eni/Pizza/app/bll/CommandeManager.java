@@ -11,11 +11,15 @@ public interface CommandeManager {
 
     List<Commande> getAllCommandes();
 
+    List<Commande> getUncloturedCommandes();
+
     List<Commande> getCommandesByEtat(Long id_etat);
 
     Commande getCommandeById (Long id_commande);
 
     void saveCommande(Commande commande);
+
+    void updateEtatFromCommande(Commande commande);
 
     Long createBasket(Long id_utilisateur, Produit produit);
 

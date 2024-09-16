@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Profile("MySQL")
 @Service
@@ -57,6 +59,18 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
         return commandes;
     }
 
+    @Override
+    public List<Commande> getUncloturedCommandes() {
+        List<Commande> commandes = getAllCommandes();
+
+        List<Commande> sortedCommandes = commandes.stream()
+                .filter(commande -> commande.getEtat().getId() >= 2L && commande.getEtat().getId() <= 6L)
+                .sorted(Comparator.comparing(Commande::getDateHeureLivraison))
+                .collect(Collectors.toList());
+
+        return sortedCommandes;
+    }
+
     /**
      * Appelle la DAL
      *
@@ -72,7 +86,11 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
             commande.setProduits(produits);
         }
 
-        return commandes;
+        List<Commande> sortedCommandes = commandes.stream()
+                .sorted(Comparator.comparing(Commande::getDateHeureLivraison))
+                .collect(Collectors.toList());
+
+        return sortedCommandes;
     }
 
     /**
@@ -100,6 +118,11 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     public void saveCommande(Commande commande) {
 
         daoCommande.saveCommande(commande);
+    }
+
+    @Override
+    public void updateEtatFromCommande(Commande commande) {
+
     }
 
     @Override

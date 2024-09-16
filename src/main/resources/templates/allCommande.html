@@ -10,6 +10,18 @@
 </head>
 <body class="bodyDetail">
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <!--<center>
+        <h1>Trier les commandes par état <span th:text="${param.idCommande}"></span></h1>
+        <select data-th-field="*{etat}">
+            <option th:each="item : ${etat}"
+                    th:text="${item.id} + ' - ' + ${item.libelle}"
+                    th:value="${item.id}">
+            </option>
+            <option value="8">8 - Toutes les commandes créées et non livrées</option>
+            <option value="9">9 - Toutes les commandes (dont celles en panier actuellement)</option>
+        </select>
+        <button class="btnDetail"><a data-th-href="@{/allCommande(idEtat=${commande.getId()})}">Tri</a></button>
+    </center>-->
     <table>
         <thead>
         <tr>

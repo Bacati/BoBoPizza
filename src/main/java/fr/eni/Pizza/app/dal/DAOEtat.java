@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface DAOEtat {
 
+    boolean idEtatExist(Long id_etat);
+
     List<Etat> findAllEtats();
 
     Etat findEtatById (Long id_etat);

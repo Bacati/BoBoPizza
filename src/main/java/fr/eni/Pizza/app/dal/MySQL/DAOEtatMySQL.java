@@ -39,6 +39,19 @@ public class DAOEtatMySQL implements DAOEtat {
         }
     };
 
+    @Override
+    public boolean idEtatExist(Long id_etat) {
+        String sql = "SELECT id_etat FROM etat";
+
+        List<Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+
+        if (id_etat <= 0 || id_etat > ids.size()){
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "etat" de la BDD "db_bobopizza".
      *

@@ -5,6 +5,7 @@ import fr.eni.Pizza.app.bo.Commande;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+//TO DO supprimer car inutile ?
 @Component
 public class StringToCommandeConverter implements Converter<String, Commande> {
 
