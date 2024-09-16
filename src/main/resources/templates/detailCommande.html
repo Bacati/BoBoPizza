@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail commande</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body class="bodyDetail">
+    <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <center>
+        <h1>detail de la commande <span th:text="${param.idCommande}"></span></h1>
+        <select data-th-field="*{etat}">
+            <option th:each="item : ${etat}"
+                    th:text="${item.libelle}"
+                    th:value="${item.id}">
+            </option>
+        </select>
+    </center>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom du produit</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Prix total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="product : ${produitBycommande}">
+            <td data-th-text="${product.nom}"></td>
+            <td data-th-text="${product.type}"></td>
+            <td data-th-text="${product.getQuantite()}"></td>
+            <td data-th-text="${product.prixUnitaire}"></td>
+            <td data-th-text="${product.getPrixTotal()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

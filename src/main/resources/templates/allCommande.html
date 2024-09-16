@@ -20,6 +20,8 @@
             <th>Livreur</th>
             <th>Date et heure de livraison</th>
             <th>Prix total</th>
+            <th>Etat</th>
+            <th>Détails</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +33,8 @@
             <td data-th-text="${commande.getLivreur().getPrenom()}"></td>
             <td data-th-text="${commande.getDateHeureLivraison()}"></td>
             <td data-th-text="${commande.getPrixTotal()}"></td>
+            <td data-th-text="${commande.getEtat().getLibelle()}"></td>
+            <td><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
         </tr>
         </tbody>
     </table>

@@ -2,6 +2,7 @@ package fr.eni.Pizza.app.controller;
 
 
 import fr.eni.Pizza.app.bll.MySQL.CommandeManager;
+import fr.eni.Pizza.app.bll.MySQL.EtatManager;
 import fr.eni.Pizza.app.bll.ProduitManager;
 import fr.eni.Pizza.app.bll.MySQL.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
@@ -19,12 +20,14 @@ public class PizzaController {
 
     private final TypeProduitManager typeProduitManager;
     private final CommandeManager commandeManager;
+    private final EtatManager etatManager;
     ProduitManager produitManager;
 
-    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager) {
+    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
         this.commandeManager = commandeManager;
+        this.etatManager = etatManager;
     }
     @GetMapping("/")
     public String index( Model model) {
@@ -75,10 +78,16 @@ public class PizzaController {
     @GetMapping("/allCommande")
     public String afficherCommande(Model model){
         model.addAttribute("commandes", commandeManager.getAllCommandes());
-        System.out.println( model.addAttribute("commandes", commandeManager.getAllCommandes()));
         return "allCommande";
     }
-
+    @PostMapping("/produit")
+    public String modifCarte(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "carteDetail";
+        }
+        produitManager.saveProduit(produit);
+        return "redirect:/laCarte";
+    }
     @PostMapping("/delete")
     public String deleteProduit(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -96,12 +105,19 @@ public class PizzaController {
 
         return "commande";
     }
+    @GetMapping("/detailCommande")
+    public String detailCommande(@RequestParam(value = "idCommande") Long id, Model model) {
+        model.addAttribute("etat", etatManager.getAllEtats());
+        model.addAttribute("produitBycommande", produitManager.getAllProduitsByIdCommande(id));
+        return "detailCommande";
+    }
     @GetMapping("/panier")
     public String panier(){
         return "panier";
     }
-    /*@PostMapping("/creerPanier")
-    public String creerPanier(){
+    /*
+    @PostMapping("/creerPanier")
+    public String creerPanier( BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "panier";
         }
