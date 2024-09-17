@@ -159,7 +159,7 @@ public class PizzaController {
             System.out.println("Création d'un nouveau panier avec le produit " + produit.getNom());
         } else {
             // Mise à jour du panier existant
-            commandeManager.updateBasket(clientSession.getId_commande_en_cours(), produit);
+            commandeManager.updateProductInBasket(clientSession.getId_commande_en_cours(), produit);
             System.out.println("Ajout du produit dans le panier existant : " + produit.getNom());
         }
 

@@ -23,6 +23,15 @@ public class DAODetailsCommandes implements fr.eni.Pizza.app.dal.DAODetailsComma
     }
 
     @Override
+    public void deleteDetailsCommandesOfProductInBasket(Long id_commande, Long id_produit) {
+        if(detailsCommandesExist(id_commande, id_produit)) {
+            String sql ="DELETE FROM detail_commande WHERE COMMANDE_id_commande = ? AND PRODUIT_id_produit = ?";
+            jdbcTemplate.update(sql, id_commande, id_produit);
+            System.out.println("Supression du produit n°" + id_produit + " de la commande n°" + id_commande + " en table details_commandes de la BDD db_bobopizza.");
+        }
+    }
+
+    @Override
     public boolean detailsCommandesExist(Long id_commande, Long id_produit) {
         Integer count = null;
         String sql = "SELECT COUNT(*) FROM detail_commande WHERE COMMANDE_id_commande = ? AND PRODUIT_id_produit = ?";

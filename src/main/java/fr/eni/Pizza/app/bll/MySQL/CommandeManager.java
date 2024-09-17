@@ -126,6 +126,21 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     }
 
     @Override
+    public void cancelBasket(Long id_commande_en_cours) {
+        if (getCommandeById(id_commande_en_cours).getEtat().getId() == 1L){
+
+            Commande commande = daoCommande.findCommandeById(id_commande_en_cours);
+            Utilisateur client = daoUtilisateur.findUtilisateurById(commande.getClient().getId());
+            client.setId_commande_en_cours(null);
+            daoUtilisateur.saveUtilisateur(client);
+
+            daoCommande.deleteCommandeById(id_commande_en_cours);
+
+            System.out.println("Commande id°"+id_commande_en_cours+" annulée dans le panier");
+        }
+    }
+
+    @Override
     public Long createBasket(Long id_utilisateur, Produit produit) {
         //Créer une nouvelle commande
         Commande commande = new Commande();
@@ -166,12 +181,19 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     }
 
     @Override
-    public boolean productInBasket(Long id_commande_en_cours, long id_produit) {
+    public void deleteProductInBasket(Long id_commande_en_cours, Long id_product) {
+        if(productInBasket(id_commande_en_cours, id_product)){
+
+        }
+    }
+
+    @Override
+    public boolean productInBasket(Long id_commande_en_cours, Long id_produit) {
         return daoDetailsCommandes.detailsCommandesExist(id_commande_en_cours, id_produit);
     }
 
     @Override
-    public void updateBasket(Long id_commande_en_cours, Produit produit) {
+    public void updateProductInBasket(Long id_commande_en_cours, Produit produit) {
         if (getCommandeById(id_commande_en_cours).getEtat().getId() == 1L){
             Commande commande = daoCommande.findCommandeById(id_commande_en_cours);
 
@@ -198,7 +220,7 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
             etat.setId(2L);
             commande.setEtat(etat);
             daoCommande.saveCommande(commande);
-            System.out.println("Commande en état \"CREEE\" " + id_commande_en_cours);
+            System.out.println("Commande id°"+id_commande_en_cours+" : en état \"CREEE\" ");
 
             Utilisateur client = daoUtilisateur.findUtilisateurById(commande.getClient().getId());
             client.setId_commande_en_cours(null);

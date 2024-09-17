@@ -21,11 +21,15 @@ public interface CommandeManager {
 
     void updateEtatFromCommande(Commande commande);
 
+    void cancelBasket(Long id_commande_en_cours);
+
     Long createBasket(Long id_utilisateur, Produit produit);
 
-    boolean  productInBasket (Long id_commande_en_cours, long id_produit);
+    void deleteProductInBasket(Long id_commande_en_cours, Long id_product);
 
-    void updateBasket(Long id_commande_en_cours, Produit produit);
+    boolean  productInBasket (Long id_commande_en_cours, Long id_produit);
+
+    void updateProductInBasket(Long id_commande_en_cours, Produit produit);
 
     void finishBasket(Long id_commande_en_cours);
 }
