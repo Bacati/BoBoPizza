@@ -52,7 +52,7 @@ public class TypeProduitManager implements fr.eni.Pizza.app.bll.TypeProduitManag
     /**
      * Appelle la DAL par {@link DAOTypeProduitMySQL#saveTypeProduit(TypeProduit)}
      *
-     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#id} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
+     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#getId()} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
      */
     @Override
     public void saveTypeProduit(TypeProduit typeProduit) {

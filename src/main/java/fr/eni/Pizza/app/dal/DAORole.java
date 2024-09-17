@@ -9,4 +9,6 @@ public interface DAORole {
     List<Role> findAllRoles();
 
     Role findRoleById (Long id_role);
+
+    boolean idRoleExist(Long id_role);
 }

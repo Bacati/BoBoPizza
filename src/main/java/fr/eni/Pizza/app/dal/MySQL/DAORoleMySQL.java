@@ -39,7 +39,7 @@ public class DAORoleMySQL implements DAORole {
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "role" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link Role} triés par ordre d'id sur la base du {@link Role#id}
+     * @return une liste de d'objets {@link Role} triés par ordre d'id sur la base du {@link Role#getId()}
      */
     @Override
     public List<Role> findAllRoles() {
@@ -61,15 +61,12 @@ public class DAORoleMySQL implements DAORole {
      */
     @Override
     public Role findRoleById(Long id_role) {
-        String sql = "SELECT id_role FROM role";
 
-        List<Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_role <= 0 || id_role > ids.size()){
+        if (!idRoleExist(id_role)){
             return null;
         }
 
-        sql = "SELECT * FROM role WHERE id_role = ?";
+        String sql = "SELECT * FROM role WHERE id_role = ?";
 
         List<Role> roles = jdbcTemplate.query(sql, ROLE_ROW_MAPPER, id_role);
 
@@ -78,5 +75,20 @@ public class DAORoleMySQL implements DAORole {
         }
 
         return roles.get(0);
+    }
+
+    @Override
+    public boolean idRoleExist(Long id_role) {
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM role\n" +
+                "WHERE id_role = ?";
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_role);
+
+        if (count == null || count == 0) {
+            System.out.println("id_role inexistant");
+            return false;
+        }
+        return true;
     }
 }

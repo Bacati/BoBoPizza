@@ -131,16 +131,12 @@ public class DAOCommandeMySQL implements DAOCommande {
      */
     @Override
     public void deleteCommandeById(Long id_commande) {
-        String sql = "SELECT id_commande FROM commande";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_commande <= 0 || id_commande > ids.size()) {
-            System.out.println("id_commande incorrect");
-            return ;
+        if (!idCommandeExist(id_commande)) {
+            return;
         }
 
-        sql = "DELETE FROM detail_commande WHERE COMMANDE_id_commande = ?";
+        String sql = "DELETE FROM detail_commande WHERE COMMANDE_id_commande = ?";
 
         jdbcTemplate.update(sql, id_commande);
 
@@ -154,7 +150,7 @@ public class DAOCommandeMySQL implements DAOCommande {
     /**
      * Retourne la liste d'instances de {@link Commande} construite sur la base de l'ensemble des données présentes dans les tables
      * commande, client, etat, utilisateur, role_utilisateur et role de la BDD "db_bobopizza".
-     * ATTENTION - l'attribut {@link Commande#produits} est null
+     * ATTENTION - l'attribut {@link Commande#getProduits()} est null
      *
      * @return la liste de toutes les {@link Commande} existantes
      */
@@ -252,17 +248,20 @@ public class DAOCommandeMySQL implements DAOCommande {
      * Retourne la liste d'instances de {@link Commande} construites sur la base de l'ensemble des données présentes dans les tables
      * commande, client, etat, utilisateur, role_utilisateur et role de la BDD "db_bobopizza"
      * filtrée sur la base de l' {@code id_etat} présent en table "etat" de la même BDD.
-     * ATTENTION - l'attribut {@link Commande#produits} est null
+     * ATTENTION - l'attribut {@link Commande#getProduits()} est null
      *
-     * @return la liste de toutes les {@link Commande} existantes ayant un {@link Etat#id} égal à {code id_etat}
+     * @return la liste de toutes les {@link Commande} existantes ayant un {@link Etat#getId()} égal à {code id_etat}
      */
     @Override
     public List<Commande> findAllCommandesByEtat(Long id_etat) {
-        String sql = "SELECT id_etat FROM etat";
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM etat\n" +
+                "WHERE id_etat = ?";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_etat);
 
-        if (id_etat <= 0 || id_etat > ids.size()) {
+        if (count == null || count == 0) {
+            System.out.println("id_etat incorrect");
             return null;
         }
 
@@ -278,23 +277,18 @@ public class DAOCommandeMySQL implements DAOCommande {
 
     /**
      * Retourne l'objet {@link Commande} correspondant à l'{@code id_commande} passé en paramètre présent en table "commande" de la BDD "db_bobopizza"
-     * ATTENTION - l'attribut {@link Commande#produits} est null
+     * ATTENTION - l'attribut {@link Commande#getProduits()} est null
      * @param id_commande : Long, identifiant de l'objet {@link Commande}; l'{@code id_commande} doit correspondre à une "id_commande" présente en table "commande" de la BDD "db_bobopizza"
      * @return l'objet {@link Commande} ou {@code null} en cas d'{@code id_commande} non valide
      */
     @Override
     public Commande findCommandeById(Long id_commande) {
-        String sql = "SELECT COUNT(*)\n" +
-                "FROM commande\n" +
-                "WHERE id_commande = ?";
 
-        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_commande);
-
-        if (count <= 0) {
+        if (!idCommandeExist(id_commande)) {
             return null;
         }
 
-        sql = "\n" +
+        String sql = "\n" +
                 "SELECT\n" +
                 "    co.id_commande AS co_id_commande,\n" +
                 "    co.UTILISATEUR_id_client AS co_UTILISATEUR_id_client,\n" +
@@ -383,6 +377,22 @@ public class DAOCommandeMySQL implements DAOCommande {
         }
 
         return commandes.get(0);
+    }
+
+    @Override
+    public boolean idCommandeExist(Long id_commande) {
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM commande\n" +
+                "WHERE id_commande = ?";
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_commande);
+
+        if (count == null || count == 0) {
+            System.out.println("id_commande inexistant");
+            return false;
+        }
+
+        return true;
     }
 
     @Override

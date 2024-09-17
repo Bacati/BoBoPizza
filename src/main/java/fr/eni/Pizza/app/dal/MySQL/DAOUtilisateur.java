@@ -93,7 +93,7 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
      *
      * @param c : char, classe du type d'objet {@link Utilisateur}; le {@code c} doit correspondre à une "classe" présente en table "utilisateur" de la BDD "db_bobopizza"
      *          ATTENTION - c doit valoir 'C' pour Client ou 'E' pour Employe
-     * @return une liste de d'objets {@link Utilisateur} triés par Role puis par Ordre alphabétique sur la base du {@link Utilisateur#Role} et de {@link Utilisateur#nom} ou {@code null} en cas de {@code c} non valide
+     * @return une liste de d'objets {@link Utilisateur} triés par Role puis par Ordre alphabétique sur la base du {@link Utilisateur#getRole()} et de {@link Utilisateur#getNom()} ou {@code null} en cas de {@code c} non valide
      */
     @Override
     public List<Utilisateur> findAllUtilisateursByClass(char c) {
@@ -126,9 +126,9 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
     /**
      *Retourne la liste de l'ensemble des données présentes dans table "utilisateur" de la BDD "db_bobopizza" ayant un "libelle" issu de la table role égal à {@code libelleRole}
      *
-     * @param libelleRole : String, libelle du type d'objet {@link Utilisateur#role} ; le {@code libelleRole} doit correspondre à un "libelle" présent en table "role" de la BDD "db_bobopizza"
+     * @param libelleRole : String, libelle du type d'objet {@link Utilisateur#getRole()} ; le {@code libelleRole} doit correspondre à un "libelle" présent en table "role" de la BDD "db_bobopizza"
      *          ATTENTION - libelleRole doit correspondre soit à "CLIENT", "PIZZAIOLO", "LIVREUR" ou "GERANT"
-     * @return une liste de d'objets {@link Utilisateur} triés par Ordre alphabétique sur la base du {@link Utilisateur#nom} ou {@code null} en cas de {@code c} non valide
+     * @return une liste de d'objets {@link Utilisateur} triés par Ordre alphabétique sur la base du {@link Utilisateur#getNom()} ou {@code null} en cas de {@code c} non valide
      */
     @Override
     public List<Utilisateur> findAllUtilisateursByRole(String libelleRole) {
@@ -172,15 +172,12 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
      */
     @Override
     public Utilisateur findUtilisateurById(Long id_utilisateur) {
-        String sql = "SELECT id_utilisateur FROM utilisateur";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_utilisateur <= 0 || id_utilisateur > ids.size()) {
+        if (!idUtilisateurExist(id_utilisateur)) {
             return null;
         }
 
-        sql = "SELECT * FROM utilisateur\n" +
+        String sql = "SELECT * FROM utilisateur\n" +
                 "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
                 "INNER JOIN role ON ROLE_id_role = id_role " +
                 "WHERE id_utilisateur = ?";
@@ -216,6 +213,21 @@ public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
         }
 
         return utilisateurs.get(0);
+    }
+
+    @Override
+    public boolean idUtilisateurExist(Long id_utilisateur) {
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM utilisateur\n" +
+                "WHERE id_utilisateur = ?";
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_utilisateur);
+
+        if (count == null || count == 0) {
+            System.out.println("id_utilisateur inexistant");
+            return false;
+        }
+        return true;
     }
 
     @Override

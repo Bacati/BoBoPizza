@@ -12,5 +12,7 @@ public interface DAOTypeProduit {
 
     TypeProduit findTypeProduitById (Long id_type_produit);
 
+    boolean idTypeProduitExist(Long id_type_produit);
+
     void saveTypeProduit(TypeProduit typeProduit);
 }

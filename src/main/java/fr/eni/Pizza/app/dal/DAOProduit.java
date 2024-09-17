@@ -16,5 +16,7 @@ public interface DAOProduit {
 
     Produit findProduitById (Long id);
 
+    boolean idProduitExist(Long id_produit);
+
     void saveProduit(Produit produit);
 }

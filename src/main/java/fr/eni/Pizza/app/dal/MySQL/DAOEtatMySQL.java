@@ -41,21 +41,23 @@ public class DAOEtatMySQL implements DAOEtat {
 
     @Override
     public boolean idEtatExist(Long id_etat) {
-        String sql = "SELECT id_etat FROM etat";
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM etat\n" +
+                "WHERE id_etat = ?";
 
-        List<Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_etat);
 
-        if (id_etat <= 0 || id_etat > ids.size()){
+        if (count == null || count == 0) {
+            System.out.println("id_etat inexistant");
             return false;
         }
-
         return true;
     }
 
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "etat" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link Etat} triés par ordre d'id sur la base du {@link Etat#id}
+     * @return une liste de d'objets {@link Etat} triés par ordre d'id sur la base du {@link Etat#getId()}
      */
     @Override
     public List<Etat> findAllEtats() {
@@ -77,15 +79,13 @@ public class DAOEtatMySQL implements DAOEtat {
      */
     @Override
     public Etat findEtatById(Long id_etat) {
-        String sql = "SELECT id_etat FROM etat";
 
-        List<Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_etat <= 0 || id_etat > ids.size()){
+        if (!idEtatExist(id_etat)) {
+            System.out.println("id_etat incorrect");
             return null;
         }
 
-        sql = "SELECT * FROM etat WHERE id_etat = ?";
+        String sql = "SELECT * FROM etat WHERE id_etat = ?";
 
         List <Etat> etats = jdbcTemplate.query(sql, ETAT_ROW_MAPPER, id_etat);
 

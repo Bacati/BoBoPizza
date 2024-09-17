@@ -48,16 +48,12 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
      */
     @Override
     public void deleteTypeProduitById(Long id_type_produit) {
-        String sql = "SELECT id_type_produit FROM type_produit";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_type_produit <= 0 || id_type_produit > ids.size()) {
-            System.out.println("id_type_produit incorrect : impossible de deleteTypeProduitById(Long id_type_produit)");
+        if (!idTypeProduitExist(id_type_produit)) {
             return ;
         }
 
-        sql = "DELETE FROM type_produit WHERE id_type_produit = ?";
+        String sql = "DELETE FROM type_produit WHERE id_type_produit = ?";
 
         jdbcTemplate.update(sql, id_type_produit);
 
@@ -67,7 +63,7 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "type_produit" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link TypeProduit} triés par ordre alphabétique sur la base du {@link TypeProduit#libelle}
+     * @return une liste de d'objets {@link TypeProduit} triés par ordre alphabétique sur la base du {@link TypeProduit#getLibelle()}
      */
     @Override
     public List<TypeProduit> findAllTypeProduits() {
@@ -89,15 +85,12 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
      */
     @Override
     public TypeProduit findTypeProduitById(Long id_type_produit) {
-        String sql = "SELECT id_type_produit FROM type_produit";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_type_produit <= 0 || id_type_produit > ids.size()) {
+        if (!idTypeProduitExist(id_type_produit)) {
             return null;
         }
 
-        sql = "SELECT * FROM type_produit WHERE id_type_produit = ?";
+        String sql = "SELECT * FROM type_produit WHERE id_type_produit = ?";
 
         List<TypeProduit> typeproduits = jdbcTemplate.query(sql, TYPE_PRODUIT_ROW_MAPPER, id_type_produit);
 
@@ -108,10 +101,25 @@ public class DAOTypeProduitMySQL implements DAOTypeProduit {
         return typeproduits.get(0);
     }
 
+    @Override
+    public boolean idTypeProduitExist(Long id_type_produit) {
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM type_produit\n" +
+                "WHERE id_type_produit = ?";
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_type_produit);
+
+        if (count == null || count == 0) {
+            System.out.println("id_type_produit inexistant");
+            return false;
+        }
+        return true;
+    }
+
     /**+
      * Ajoute ou met à jour la table "type_produit" de la BDD "db_bobopizza" avec {@code typeProduit}
      *
-     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#id} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
+     * @param typeProduit : {@link TypeProduit}; si son {@link TypeProduit#getId()} est non {@code null} et présent dans la table "type_produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
      */
     @Override
     public void saveTypeProduit(TypeProduit typeProduit) {

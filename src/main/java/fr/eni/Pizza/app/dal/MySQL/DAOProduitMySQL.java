@@ -76,16 +76,12 @@ public class DAOProduitMySQL implements DAOProduit {
      */
     @Override
     public void deleteProduitById(Long id_produit) {
-        String sql = "SELECT id_produit FROM produit";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_produit <= 0 || id_produit > ids.size()) {
-            System.out.println("id_produit incorrect : impossible de deleteProduitById(Long id_produit)");
+        if (!idProduitExist(id_produit)) {
             return ;
         }
 
-        sql = "DELETE FROM produit WHERE id_produit = ?";
+        String sql = "DELETE FROM produit WHERE id_produit = ?";
 
         jdbcTemplate.update(sql, id_produit);
 
@@ -95,7 +91,7 @@ public class DAOProduitMySQL implements DAOProduit {
     /**
      * Retourne la liste de l'ensemble des données présentes dans la table "produit" de la BDD "db_bobopizza".
      *
-     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom}
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#getNom()}
      */
     @Override
     public List<Produit> findAllProduits() {
@@ -113,19 +109,21 @@ public class DAOProduitMySQL implements DAOProduit {
      * Retourne la liste de l'ensemble des données présentes dans table "produit" de la BDD "db_bobopizza" ayant un "TYPE_PRODUIT_id_type_produit" égal à {@code id_type_produit}
      *
      * @param id_type_produit : Long, identifiant du type d'objet {@link TypeProduit}; l'{@code id_type_produit} doit correspondre à une "id_type_produit" présente en table "type_produit" de la BDD "db_bobopizza"
-     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom} ou {@code null} en cas d'{@code id_type_produit} non valide
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#getNom()} ou {@code null} en cas d'{@code id_type_produit} non valide
      */
     @Override
     public List<Produit> findAllProduitsByIdTypeProduit(Long id_type_produit) {
-        String sql = "SELECT id_type_produit FROM type_produit";
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM type_produit\n" +
+                "WHERE id_type_produit = ?";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_type_produit);
 
-        if (id_type_produit <= 0 || id_type_produit > ids.size()) {
+        if (count == null || count == 0) {
+            System.out.println("id_type_produit inexistant");
             return null;
         }
 
-        
         sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_type_produit = ?";
         List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_type_produit);
 
@@ -139,17 +137,21 @@ public class DAOProduitMySQL implements DAOProduit {
     /**
      * Retourne la liste de l'ensemble des données présentes dans table "details_commandes" de la BDD "db_bobopizza" ayant un "COMMANDE_id_commande" égal à {@code id_commande}
      *
-     * @param id_commande : Long, identifiant du type d'objet {@link Commande}; l'{@code id_commande} doit correspondre à une "COMMANDE_id_commande" présente en table "details_commandes" de la BDD "db_bobopizza"
+     * @param id_commande : Long, identifiant du type d'objet {@link fr.eni.Pizza.app.bo.Commande}; l'{@code id_commande} doit correspondre à une "COMMANDE_id_commande" présente en table "details_commandes" de la BDD "db_bobopizza"
      *
-     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#nom} ou {@code null} en cas d'{@code id_commande} non valide
+     * @return une liste de d'objets {@link Produit} triés par ordre alphabétique sur la base du {@link Produit#getNom()} ou {@code null} en cas d'{@code id_commande} non valide
      */
     @Override
     public List<Produit> findAllProduitsByIdCommande(Long id_commande) {
-        String sql = "SELECT id_commande FROM commande";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM commande\n" +
+                "WHERE id_commande = ?";
 
-        if (id_commande <= 0 || id_commande > ids.size()) {
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_commande);
+
+        if (count == null || count == 0) {
+            System.out.println("id_commande inexistant");
             return null;
         }
 
@@ -173,15 +175,12 @@ public class DAOProduitMySQL implements DAOProduit {
      */
     @Override
     public Produit findProduitById(Long id_produit) {
-        String sql = "SELECT id_produit FROM produit";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
-
-        if (id_produit <= 0 || id_produit > ids.size()) {
+        if (!idProduitExist(id_produit)) {
             return null;
         }
 
-        sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_produit = ?";
+        String sql = "SELECT * FROM produit INNER JOIN type_produit ON TYPE_PRODUIT_id_type_produit = id_type_produit WHERE id_produit = ?";
 
         List<Produit> produits = jdbcTemplate.query(sql, PRODUIT_FROM_PRODUIT_ROW_MAPPER, id_produit);
 
@@ -192,10 +191,25 @@ public class DAOProduitMySQL implements DAOProduit {
         return produits.get(0);
     }
 
+    @Override
+    public boolean idProduitExist(Long id_produit) {
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM produit\n" +
+                "WHERE id_produit = ?";
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_produit);
+
+        if (count == null || count == 0) {
+            System.out.println("id_produit inexistant");
+            return false;
+        }
+        return true;
+    }
+
     /**+
      * Ajoute ou met à jour la table "produit" de la BDD "db_bobopizza" avec {@code produit}
      *
-     * @param produit : {@link Produit}; si son {@link Produit#id} est non {@code null} et présent dans la table "produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
+     * @param produit : {@link Produit}; si son {@link Produit#getId()} est non {@code null} et présent dans la table "produit" de la BDD "db_bobopizza", alors mise à jour ; sinon insertion d'une nouvelle entrée en base de donnée
      */
     @Override
     public void saveProduit(Produit produit) {

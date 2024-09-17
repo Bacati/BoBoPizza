@@ -15,6 +15,8 @@ public interface DAOCommande {
 
     Commande findCommandeById (Long id_commande);
 
+    boolean idCommandeExist(Long id_commande);
+
     Long obtainIDFromLastCreatedCommande();
 
     void saveCommande(Commande commande);
