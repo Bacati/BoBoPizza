@@ -387,3 +387,17 @@ table{
         color: white;
         background: linear-gradient(90deg, rgba(223, 180, 98, 1) 0%, rgba(0, 0, 0, 1) 48%, rgba(223, 180, 98, 1) 100%);
 }
+.tableau{
+    min-width: 1500px;
+    max-width: 1500px;
+}
+.produit{
+    .formPanier{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+.etat{
+    margin-bottom: 1rem;
+}

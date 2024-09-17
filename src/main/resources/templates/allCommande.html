@@ -14,7 +14,7 @@
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
     <center>
         <h1>Trier les commandes par état : </h1>
-        <select id="selectedEtatInAllCommandes" data-th-field="*{etat}">
+        <select class="etat" id="selectedEtatInAllCommandes" data-th-field="*{etat}">
             <option value="0">0 - Toutes les commandes</option>
             <option th:each="item : ${etat}"
                     th:text="${item.id} + ' - ' + ${item.libelle}"
@@ -22,11 +22,11 @@
             </option>
         </select>
     </center>
-    <table>
+    <table class="tableau">
         <thead>
             <tr>
                 <th>Client</th>
-                <th>Date et heure de création</th>
+                <th class="date">Date et heure de création</th>
                 <th>Etat</th>
                 <th>Préparateur</th>
                 <th>Livreur</th>
