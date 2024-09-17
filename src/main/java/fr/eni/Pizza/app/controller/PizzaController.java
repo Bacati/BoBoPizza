@@ -81,6 +81,7 @@ public class PizzaController {
 
     @GetMapping("/allCommande")
     public String afficherCommande(Model model){
+        model.addAttribute("etat", etatManager.getAllEtats());
         model.addAttribute("commandes", commandeManager.getAllCommandes());
         return "allCommande";
     }

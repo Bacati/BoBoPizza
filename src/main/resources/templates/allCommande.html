@@ -2,53 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Toute les commandes</title>
+    <title>Toutes les commandes</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/images/logo.png">
+    <script type="module" src="/javascript/commande.js" defer></script>
 </head>
 <body class="bodyDetail">
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
-    <!--<center>
-        <h1>Trier les commandes par état <span th:text="${param.idCommande}"></span></h1>
-        <select data-th-field="*{etat}">
+    <center>
+        <h1>Trier les commandes par état : </h1>
+        <select id="selectedEtatInAllCommandes" data-th-field="*{etat}">
+            <option value="0">0 - Toutes les commandes</option>
             <option th:each="item : ${etat}"
                     th:text="${item.id} + ' - ' + ${item.libelle}"
                     th:value="${item.id}">
             </option>
-            <option value="8">8 - Toutes les commandes créées et non livrées</option>
-            <option value="9">9 - Toutes les commandes (dont celles en panier actuellement)</option>
         </select>
-        <button class="btnDetail"><a data-th-href="@{/allCommande(idEtat=${commande.getId()})}">Tri</a></button>
-    </center>-->
+    </center>
     <table>
         <thead>
-        <tr>
-            <th>Client</th>
-            <th>Date et heure de création</th>
-            <th>Etat</th>
-            <th>Préparateur</th>
-            <th>Livreur</th>
-            <th>Date et heure de livraison</th>
-            <th>Prix total</th>
-            <th>Etat</th>
-            <th>Détails</th>
-        </tr>
+            <tr>
+                <th>Client</th>
+                <th>Date et heure de création</th>
+                <th>Etat</th>
+                <th>Préparateur</th>
+                <th>Livreur</th>
+                <th>Date et heure de livraison</th>
+                <th>Prix total</th>
+                <th>Etat</th>
+                <th>Détails</th>
+            </tr>
         </thead>
-        <tbody>
-        <tr data-th-each="commande : ${commandes}">
-            <td data-th-text="${commande.getClient().getNom() + ' ' + commande.getClient().getPrenom()}"></td>
-            <td data-th-text="${commande.getDateHeureCreation()}"></td>
-            <td data-th-text="${commande.getEtat().getLibelle()}"></td>
-            <td data-th-text="${commande.getPreparateur().getPrenom()}"></td>
-            <td data-th-text="${commande.getLivreur().getPrenom()}"></td>
-            <td data-th-text="${commande.getDateHeureLivraison()}"></td>
-            <td data-th-text="${commande.getPrixTotal()}"></td>
-            <td data-th-text="${commande.getEtat().getLibelle()}"></td>
-            <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
-        </tr>
+        <tbody id="tbodyInAllCommandes">
+            <tr th:class="'etat-' + ${commande.getEtat().getId()}" data-th-each="commande : ${commandes}">
+                <td data-th-text="${commande.getClient().getNom() + ' ' + commande.getClient().getPrenom()}"></td>
+                <td data-th-text="${commande.getDateHeureCreation()}"></td>
+                <td data-th-text="${commande.getEtat().getLibelle()}"></td>
+                <td data-th-text="${commande.getPreparateur().getPrenom()}"></td>
+                <td data-th-text="${commande.getLivreur().getPrenom()}"></td>
+                <td data-th-text="${commande.getDateHeureLivraison()}"></td>
+                <td data-th-text="${commande.getPrixTotal()}"></td>
+                <td data-th-text="${commande.getEtat().getLibelle()}"></td>
+                <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
+            </tr>
         </tbody>
     </table>
 </body>
