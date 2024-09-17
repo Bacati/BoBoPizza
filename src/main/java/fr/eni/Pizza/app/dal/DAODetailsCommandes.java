@@ -8,7 +8,7 @@ public interface DAODetailsCommandes {
 
     boolean detailsCommandesExist(Long id_commande, Long id_produit);
 
-    Integer findQuantityOfProductInBasket(Long id_commande, Produit produit);
+    int findQuantityOfProductInBasket(Long id_commande, Produit produit);
 
     void saveDetailsCommandes(Long id_commande, Produit produit);
 

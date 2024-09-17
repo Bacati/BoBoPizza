@@ -240,7 +240,7 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
             Commande commande = daoCommande.findCommandeById(id_commande_en_cours);
 
             if (productInBasket(id_commande_en_cours, produit.getId())) {
-                Integer quantite = daoDetailsCommandes.findQuantityOfProductInBasket(id_commande_en_cours, produit);
+                int quantite = daoDetailsCommandes.findQuantityOfProductInBasket(id_commande_en_cours, produit);
 
                 commande.setPrixTotal(commande.getPrixTotal() - (quantite*produit.getPrixUnitaire()));
             }

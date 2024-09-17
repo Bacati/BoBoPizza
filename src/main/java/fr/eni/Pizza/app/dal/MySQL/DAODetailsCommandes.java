@@ -45,13 +45,17 @@ public class DAODetailsCommandes implements fr.eni.Pizza.app.dal.DAODetailsComma
     }
 
     @Override
-    public Integer findQuantityOfProductInBasket(Long id_commande, Produit produit){
-        if(detailsCommandesExist(id_commande, produit.getId())){
-            return null;
+    public int findQuantityOfProductInBasket(Long id_commande, Produit produit){
+        if(!detailsCommandesExist(id_commande, produit.getId())){
+            return 0;
         }
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("idCommande", id_commande);
+        params.addValue("idProduit", produit.getId());
 
-        String sql = "SELECT quantite FROM detail_commande WHERE COMMANDE_id_commande = ? AND PRODUIT_id_produit = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, id_commande, produit.getId());
+        String sql = "SELECT quantite FROM detail_commande WHERE COMMANDE_id_commande = :idCommande AND PRODUIT_id_produit = :idProduit";
+        return namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        /*return jdbcTemplate.queryForObject(sql, Integer.class, id_commande, produit.getId());*/
     }
 
     @Override
