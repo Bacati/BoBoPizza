@@ -126,8 +126,21 @@ public class PizzaController {
         }
         return "panier";
     }
+    @PostMapping("/updateQuantite")
+    public String updateQuantite(@ModelAttribute("clientSession") Client clientSession,
+                                 @RequestParam("produitId") Long produitId,
+                                 @RequestParam(value = "quantite") int quantite) {
+        Produit produit = produitManager.getProduitById(produitId);
+        produit.setQuantite(quantite);
+        commandeManager.updateProductInBasket(clientSession.getId_commande_en_cours(), produit);
+        System.out.println("produitId: " + produitId);
+        System.out.println("quantite: " + quantite);
+        return "redirect:/panier";
+    }
+
     @PostMapping("/deleteProductInBasket")
     public String deleteProductInBasket(@ModelAttribute("clientSession") Client clientSession, @RequestParam("produitId") Long produitId) {
+
         commandeManager.deleteProductInBasket(clientSession.getId_commande_en_cours(), produitId);
         return "redirect:/panier";
     }
@@ -157,14 +170,11 @@ public class PizzaController {
         Produit produit = produitManager.getProduitById(idProduit);
         produit.setQuantite(quantite);
 
-        // Vérifier si l'utilisateur a déjà un panier en cours
         if (clientSession.getId_commande_en_cours() == null) {
-            // Créer une nouvelle commande/panier
             Long idNouvelleCommande = commandeManager.createBasket(clientSession.getId(), produit);
-            clientSession.setId_commande_en_cours(idNouvelleCommande); // Mise à jour de l'ID du panier en cours
+            clientSession.setId_commande_en_cours(idNouvelleCommande);
             System.out.println("Création d'un nouveau panier avec le produit " + produit.getNom());
         } else {
-            // Mise à jour du panier existant
             commandeManager.updateProductInBasket(clientSession.getId_commande_en_cours(), produit);
             System.out.println("Ajout du produit dans le panier existant : " + produit.getNom());
         }
