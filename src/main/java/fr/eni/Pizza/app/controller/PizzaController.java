@@ -122,14 +122,15 @@ public class PizzaController {
             model.addAttribute("commandes", commandeManager.getCommandeById(clientSession.getId_commande_en_cours()) );
             model.addAttribute("produit", produitManager.getAllProduitsByIdCommande(clientSession.getId_commande_en_cours()));
         }else {
-           return "commande";
+           return "redirect:/commande";
         }
         return "panier";
     }
     @PostMapping("/deleteCommande")
         public String deleteCommande(@ModelAttribute("clientSession") Client clientSession){
-        commandeManager.deleteCommandeById(clientSession.getId_commande_en_cours());
-        return "commande";
+        commandeManager.cancelBasket(clientSession.getId_commande_en_cours());
+        clientSession.setId_commande_en_cours(null);
+        return "redirect:/commande";
     }
     @PostMapping("/commander")
     public String passerCommande(@ModelAttribute("clientSession") Client clientSession){

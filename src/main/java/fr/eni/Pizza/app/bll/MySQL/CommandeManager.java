@@ -181,9 +181,10 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     }
 
     @Override
-    public void deleteProductInBasket(Long id_commande_en_cours, Long id_product) {
-        if(productInBasket(id_commande_en_cours, id_product)){
-
+    public void deleteProductInBasket(Long id_commande_en_cours, Long id_produit) {
+        if(productInBasket(id_commande_en_cours, id_produit)){
+            daoDetailsCommandes.deleteDetailsCommandesOfProductInBasket(id_commande_en_cours, id_produit);
+            System.out.println("BLL - Supression du produit n°" + id_produit + " de la commande n°" + id_commande_en_cours + " en table details_commandes de la BDD db_bobopizza");
         }
     }
 

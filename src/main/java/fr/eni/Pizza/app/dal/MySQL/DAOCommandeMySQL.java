@@ -284,11 +284,13 @@ public class DAOCommandeMySQL implements DAOCommande {
      */
     @Override
     public Commande findCommandeById(Long id_commande) {
-        String sql = "SELECT id_commande FROM commande";
+        String sql = "SELECT COUNT(*)\n" +
+                "FROM commande\n" +
+                "WHERE id_commande = ?";
 
-        List <Long> ids = jdbcTemplate.queryForList(sql, Long.class);
+        Long count = jdbcTemplate.queryForObject(sql, Long.class, id_commande);
 
-        if (id_commande <= 0 || id_commande > ids.size()) {
+        if (count <= 0) {
             return null;
         }
 
