@@ -126,6 +126,29 @@ public class PizzaController {
         }
         return "panier";
     }
+    @PostMapping("/deleteProductInBasket")
+    public String deleteProductInBasket(@ModelAttribute("clientSession") Client clientSession, @RequestParam("produitId") Long produitId) {
+        // Debug: Log les valeurs reçues
+        System.out.println("Client ID Commande: " + clientSession.getId_commande_en_cours());
+        System.out.println("Produit ID: " + produitId);
+
+        if (clientSession.getId_commande_en_cours() == null) {
+            // Log erreur si l'id de la commande est null
+            System.err.println("Erreur: ID de commande est nul.");
+            return "redirect:/panier";
+        }
+
+        try {
+            commandeManager.deleteProductInBasket(clientSession.getId_commande_en_cours(), produitId);
+        } catch (Exception e) {
+            // Log les exceptions
+            System.err.println("Erreur lors de la suppression du produit: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "redirect:/panier";
+    }
+
     @PostMapping("/deleteCommande")
         public String deleteCommande(@ModelAttribute("clientSession") Client clientSession){
         commandeManager.cancelBasket(clientSession.getId_commande_en_cours());
