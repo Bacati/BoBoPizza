@@ -139,7 +139,7 @@ public class PizzaController {
             commandeManager.finishBasket(clientSession.getId_commande_en_cours());
             System.out.println("commande passer");
         }else {
-            return "commande";
+            return "redirect:/commande";
         }
         return "redirect:/";
     }
