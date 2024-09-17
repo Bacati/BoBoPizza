@@ -19,7 +19,7 @@ public interface CommandeManager {
 
     void saveCommande(Commande commande);
 
-    void updateEtatFromCommande(Commande commande);
+    void updateEtatFromCommande(Long id_commande, Long id_etat);
 
     void cancelBasket(Long id_commande_en_cours);
 
