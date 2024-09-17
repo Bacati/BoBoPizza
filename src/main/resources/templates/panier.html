@@ -14,41 +14,42 @@
 <center>
     <h1>Votre Panier</h1>
 </center>
-<form class="formDetail" data-th-object="${produit}" data-th-action="@{/commander}" method="post">
 <div class="panier-container">
     <div class="product">
-        <div class="produit" data-th-each="commande : ${produit}">
-            <p data-th-text="${commande.nom}"></p>
-            <select name="quantite" data-th-value="${commande.quantite}">
-                <option value="1" th:selected="${commande.quantite == 1}">1</option>
-                <option value="2" th:selected="${commande.quantite == 2}">2</option>
-                <option value="3" th:selected="${commande.quantite == 3}">3</option>
-                <option value="4" th:selected="${commande.quantite == 4}">4</option>
-                <option value="5" th:selected="${commande.quantite == 5}">5</option>
-                <option value="6" th:selected="${commande.quantite == 6}">6</option>
-                <option value="7" th:selected="${commande.quantite == 7}">7</option>
-                <option value="8" th:selected="${commande.quantite == 8}">8</option>
-                <option value="9" th:selected="${commande.quantite == 9}">9</option>
-                <option value="10" th:selected="${commande.quantite == 10}">10</option>
-            </select>
-            <p data-th-text="${commande.prixUnitaire}"></p>
-            <p data-th-text="${commande.prixTotal}"></p>
-            <form class="formPanier" data-th-action="@{/deleteProductPanier}" method="post">
-                <button class="btnDelete" type="submit"><img src="/images/x.svg"></button>
-            </form>
-        </div>
-        <p class="total" data-th-each="item :${commandes}">
-            <span>Prix total</span>
-            <span data-th-text="${item.prixTotal + '€' }"></span>
-        </p>
+            <div class="produit" data-th-each="commande : ${produit}">
+                <p data-th-text="${commande.nom}"></p>
+                <select name="quantite" data-th-value="${commande.quantite}">
+                    <option value="1" th:selected="${commande.quantite == 1}">1</option>
+                    <option value="2" th:selected="${commande.quantite == 2}">2</option>
+                    <option value="3" th:selected="${commande.quantite == 3}">3</option>
+                    <option value="4" th:selected="${commande.quantite == 4}">4</option>
+                    <option value="5" th:selected="${commande.quantite == 5}">5</option>
+                    <option value="6" th:selected="${commande.quantite == 6}">6</option>
+                    <option value="7" th:selected="${commande.quantite == 7}">7</option>
+                    <option value="8" th:selected="${commande.quantite == 8}">8</option>
+                    <option value="9" th:selected="${commande.quantite == 9}">9</option>
+                    <option value="10" th:selected="${commande.quantite == 10}">10</option>
+                </select>
+                <p data-th-text="${commande.prixUnitaire}"></p>
+                <p data-th-text="${commande.prixTotal}"></p>
+                <form class="formPanier" data-th-object="${commande}" data-th-action="@{/deleteProductInBasket}" method="post">
+                    <input type="hidden" name="produitId" data-th-value="${commande.id}" />
+                    <button class="btnDelete" type="submit"><img src="/images/x.svg"></button>
+                </form>
+            </div>
+            <p class="total" data-th-each="item :${commandes}">
+                <span>Prix total</span>
+                <span data-th-text="${item.prixTotal + '€' }"></span>
+            </p>
     </div>
     <div class="btn">
-        <button class="btnAdd" type="submit" id="commander">Passer à la commande</button>
+        <form data-th-object="${produit}" data-th-action="@{/commander}" method="post">
+                <button class="btnAdd" type="submit" id="commander">Passer à la commande</button>
+        </form>
         <form class="formPanier" data-th-action="@{/deleteCommande}" method="post">
             <button class="btnAdd btnAddForm" type="submit">Supprimer votre panier<img src="/images/x.svg"></button>
         </form>
     </div>
 </div>
-</form>
 </body>
 </html>
