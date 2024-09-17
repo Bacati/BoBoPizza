@@ -7,19 +7,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
 </head>
 <body class="bodyDetail">
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
-<h1>Votre Panier</h1>
+<center>
+    <h1>Votre Panier</h1>
+</center>
 <form class="formDetail" data-th-object="${produit}" data-th-action="@{/commander}" method="post">
 <div class="panier-container">
-    <div data-th-each="commande : ${produit}">
+    <div class="produit" data-th-each="commande : ${produit}">
         <p data-th-text="${commande.nom}"></p>
         <p data-th-text="${commande.quantite}"></p>
         <p data-th-text="${commande.prixUnitaire}"></p>
         <p data-th-text="${commande.prixTotal}"></p>
         <form class="formDetail" data-th-action="@{/deleteCommande}" method="post">
-            <button class="btnAdd" type="submit"><img src="/images/x.svg"></button>
+            <button class="btnDelete" type="submit"><img src="/images/x.svg"></button>
         </form>
     </div>
     <p class="total" data-th-each="item :${commandes}">
@@ -27,7 +30,12 @@
         <span data-th-text="${item.prixTotal + '€' }"></span>
     </p>
 </div>
-<button id="commander">Passer à la commande</button>
+    <div class="btn">
+        <button class="btnAdd" type="submit" id="commander">Passer à la commande</button>
+        <form class="formPanier" data-th-action="@{/deleteCommande}" method="post">
+            <button class="btnAdd btnAddForm" type="submit">Supprimer votre panier<img src="/images/x.svg"></button>
+        </form>
+    </div>
 </form>
 </body>
 </html>
