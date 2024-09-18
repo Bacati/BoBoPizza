@@ -283,7 +283,7 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
             commande.setEtat(etat);
 
             System.out.println(dateHeureLivraison);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(dateHeureLivraison, formatter);
             commande.setDateHeureLivraison(dateTime);
 

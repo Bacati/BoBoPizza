@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Panier</title>
+    <script type="module" src="/javascript/modal.js" defer></script>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,10 +47,18 @@
                 <span data-th-text="${item.prixTotal + '€' }"></span>
             </p>
     </div>
+
     <div class="btn">
-        <form data-th-object="${produit}" data-th-action="@{/commander}" method="post">
-                <button class="btnAdd" type="submit" id="commander">Passer à la commande</button>
-        </form>
+        <button class="btnAdd" id="myBtn">Passer la commande</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form data-th-object="${produit}" data-th-action="@{/commander}" method="post">
+                    <input id="heureCommande" name="heureCommande" type="datetime-local">
+                    <button class="btnAdd" type="submit" id="commander">Passer à la commande</button>
+                </form>
+            </div>
+        </div>
         <form class="formPanier" data-th-action="@{/deleteCommande}" method="post">
             <button class="btnAdd btnAddForm" type="submit">Supprimer votre panier<img src="/images/x.svg"></button>
         </form>
@@ -57,3 +66,6 @@
 </div>
 </body>
 </html>
+<script>
+
+</script>

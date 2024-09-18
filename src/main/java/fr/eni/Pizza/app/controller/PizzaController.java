@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,10 +168,10 @@ public class PizzaController {
         return "redirect:/commande";
     }
     @PostMapping("/commander")
-    public String passerCommande(@ModelAttribute("clientSession") Client clientSession){
+    public String passerCommande(@ModelAttribute("clientSession") Client clientSession, @RequestParam("heureCommande") String heureCommande){
         if (clientSession.getId_commande_en_cours() != null) {
             // TODO remplacer LocalDateTime.now().toString() par la datetime-local récupérée du Front au moment de la validation panier
-            commandeManager.finishBasket(clientSession.getId_commande_en_cours(), LocalDateTime.now().toString());
+            commandeManager.finishBasket(clientSession.getId_commande_en_cours(), heureCommande);
             System.out.println("Commande passée");
         }else {
             return "redirect:/commande";
