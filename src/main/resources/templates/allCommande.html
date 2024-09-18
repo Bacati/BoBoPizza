@@ -47,18 +47,18 @@
                 <td data-th-text="${commande.getPrixTotal()}"></td>
                 <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
                 <form class="form" data-th-object="${commande}" data-th-action="@{/updateEtat}" method="post">
-                <td th:if="${commande.etat.id != 1}">
-                    <select id="idEtat" name="idEtat" data-th-value="${commande.etat}">
-                        <option value="2" th:selected="${commande.etat.id == 2}">Créée</option>
-                        <option value="3" th:selected="${commande.etat.id == 3}">En préparation</option>
-                        <option value="4" th:selected="${commande.etat.id == 4}">Préparée</option>
-                        <option value="5" th:selected="${commande.etat.id == 5}">En livraison</option>
-                        <option value="6" th:selected="${commande.etat.id == 6}">Livrée</option>
-                        <option value="7" th:selected="${commande.etat.id == 7}">Payée</option>
-                    </select>
-                    <input type="hidden" name="idCommande" data-th-value="${commande.id}" />
-                    <button class="btnAdd" type="submit">Changer l'état</button>
-                </td>
+                    <td th:if="${commande.etat.id != 1}">
+                        <select id="idEtat" name="idEtat" data-th-value="${commande.etat}">
+                            <option th:if="${user.role.libelle == 'PIZZAIOLO' or user.role.libelle == 'GERANT'}" value="2" th:selected="${commande.etat.id == 2}">Créée</option>
+                            <option th:if="${user.role.libelle == 'PIZZAIOLO' or user.role.libelle == 'GERANT'}" value="3" th:selected="${commande.etat.id == 3}">En préparation</option>
+                            <option th:if="${user.role.libelle == 'PIZZAIOLO' or user.role.libelle == 'LIVREUR' or user.role.libelle == 'GERANT'}" value="4" th:selected="${commande.etat.id == 4}">Préparée</option>
+                            <option th:if="${user.role.libelle == 'LIVREUR' or user.role.libelle == 'GERANT'}" value="5" th:selected="${commande.etat.id == 5}">En livraison</option>
+                            <option th:if="${user.role.libelle == 'LIVREUR' or user.role.libelle == 'GERANT'}" value="6" th:selected="${commande.etat.id == 6}">Livrée</option>
+                            <option th:if="${user.role.libelle == 'LIVREUR' or user.role.libelle == 'GERANT'}" value="7" th:selected="${commande.etat.id == 7}">Payée</option>
+                        </select>
+                        <input type="hidden" name="idCommande" data-th-value="${commande.id}" />
+                        <button class="btnAdd" type="submit">Changer l'état</button>
+                    </td>
                 </form>
             </tr>
             </tbody>
