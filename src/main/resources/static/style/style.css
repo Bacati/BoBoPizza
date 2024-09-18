@@ -110,8 +110,8 @@ body{
     display: flex;
     gap:2rem;
     .text{
-        width: 31rem;
-        height: 40rem;
+        width: 42rem;
+        height: 55rem;
         margin-left: 10%;
         background: url('../images/encadre.png') center/cover no-repeat;
         display: flex;
@@ -308,6 +308,21 @@ table{
             background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(223,180,98,1) 48%, rgba(0,0,0,1) 100%);
             text-decoration: none;
         }
+    }
+}
+.form{
+    .btnAdd {
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-bottom: 1%;
+        border-top-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        color: white;
+        background: linear-gradient(90deg, rgba(223, 180, 98, 1) 0%, rgba(0, 0, 0, 1) 48%, rgba(223, 180, 98, 1) 100%);
     }
 }
 .bodyCommande{

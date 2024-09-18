@@ -11,15 +11,6 @@
 </head>
 <body class="bodyDetail">
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
-    <center>
-        <h1>detail de la commande <span th:text="${param.idCommande}"></span></h1>
-        <select data-th-field="*{etat}">
-            <option th:each="item : ${etat}"
-                    th:text="${item.id} + ' - ' + ${item.libelle}"
-                    th:value="${item.id}">
-            </option>
-        </select>
-    </center>
     <table>
         <thead>
         <tr>
@@ -33,7 +24,7 @@
         <tbody>
         <tr data-th-each="product : ${produitBycommande}">
             <td data-th-text="${product.nom}"></td>
-            <td data-th-text="${product.type}"></td>
+            <td data-th-text="${product.type.libelle}"></td>
             <td data-th-text="${product.getQuantite()}"></td>
             <td data-th-text="${product.prixUnitaire}"></td>
             <td data-th-text="${product.getPrixTotal()}"></td>

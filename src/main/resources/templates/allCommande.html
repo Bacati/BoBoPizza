@@ -22,22 +22,23 @@
             </option>
         </select>
     </center>
-    <table class="tableau">
-        <thead>
-            <tr>
-                <th>Client</th>
-                <th class="date">Date et heure de création</th>
-                <th>Etat</th>
-                <th>Préparateur</th>
-                <th>Livreur</th>
-                <th>Date et heure de livraison</th>
-                <th>Prix total</th>
-                <th>Etat</th>
-                <th>Détails</th>
-            </tr>
-        </thead>
-        <tbody id="tbodyInAllCommandes">
-            <tr th:class="'etat-' + ${commande.getEtat().getId()}" data-th-each="commande : ${commandes}">
+    <form class="form" data-th-object="${commande}" data-th-action="@{/updateEtat}" method="post">
+        <table class="tableau">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th class="date">Date et heure de création</th>
+                    <th>Etat</th>
+                    <th>Préparateur</th>
+                    <th>Livreur</th>
+                    <th>Date et heure de livraison</th>
+                    <th>Prix total</th>
+                    <th>Etat</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyInAllCommandes">
+            <tr th:each="commande : ${commandes}" th:class="'etat-' + ${commande.getEtat().getId()}">
                 <td data-th-text="${commande.getClient().getNom() + ' ' + commande.getClient().getPrenom()}"></td>
                 <td data-th-text="${commande.getDateHeureCreation()}"></td>
                 <td data-th-text="${commande.getEtat().getLibelle()}"></td>
@@ -45,10 +46,27 @@
                 <td data-th-text="${commande.getLivreur().getPrenom()}"></td>
                 <td data-th-text="${commande.getDateHeureLivraison()}"></td>
                 <td data-th-text="${commande.getPrixTotal()}"></td>
-                <td data-th-text="${commande.getEtat().getLibelle()}"></td>
+                <form class="form" data-th-object="${commande}" data-th-action="@{/updateEtat}" method="post">
+                <td>
+                    <select id="idEtat" name="idEtat" data-th-value="${commande.etat}">
+                        <option value="1" th:selected="${commande.etat.id == 1}">Panier</option>
+                        <option value="2" th:selected="${commande.etat.id == 2}">Créée</option>
+                        <option value="3" th:selected="${commande.etat.id == 3}">En préparation</option>
+                        <option value="4" th:selected="${commande.etat.id == 4}">Préparée</option>
+                        <option value="5" th:selected="${commande.etat.id == 5}">En livraison</option>
+                        <option value="6" th:selected="${commande.etat.id == 6}">Livrée</option>
+                        <option value="7" th:selected="${commande.etat.id == 7}">Payée</option>
+                    </select>
+                </td>
                 <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
+                <td>
+                        <input type="hidden" name="idCommande" data-th-value="${commande.id}" />
+                        <button class="btnAdd" type="submit">Changer l'état</button>
+                    </form>
+                </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </form>
 </body>
 </html>

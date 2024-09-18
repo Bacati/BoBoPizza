@@ -153,7 +153,6 @@ public class PizzaController {
     }
     @PostMapping("/commander")
     public String passerCommande(@ModelAttribute("clientSession") Client clientSession){
-
         if (clientSession.getId_commande_en_cours() != null) {
             commandeManager.finishBasket(clientSession.getId_commande_en_cours());
             System.out.println("Commande passée");
@@ -162,7 +161,12 @@ public class PizzaController {
         }
         return "redirect:/";
     }
-
+    @PostMapping("/updateEtat")
+    public String updateEtat(@RequestParam(value = "idCommande") Long id,
+                             @RequestParam(value = "idEtat") Long idEtat){
+        commandeManager.updateEtatFromCommande(id, idEtat);
+        return "redirect:/allCommande";
+    }
     @PostMapping("/creerPanier")
     public String creerPanier(@RequestParam(value = "idProduit", required = true) Long idProduit,
                               @RequestParam(value = "quantite", required = true) int quantite,
