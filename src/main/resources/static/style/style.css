@@ -446,3 +446,6 @@ table{
         flex-direction: column;
     }
 }
+.bodyBase{
+    overflow-x: hidden;
+}
