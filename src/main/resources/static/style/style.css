@@ -421,3 +421,28 @@ table{
 .bodyAllCommande{
     height: 150vh;
 }
+.connexion{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    .btnAdd {
+        margin-top: 1rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-top-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        color: white;
+        background: linear-gradient(90deg, rgba(223, 180, 98, 1) 0%, rgba(0, 0, 0, 1) 48%, rgba(223, 180, 98, 1) 100%);
+    }
+    .form{
+        display: flex;
+        flex-direction: column;
+    }
+}

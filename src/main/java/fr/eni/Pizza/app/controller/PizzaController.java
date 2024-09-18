@@ -204,7 +204,14 @@ public class PizzaController {
 
         return "redirect:/commande";
     }
-
+    @GetMapping("/login")
+    public String connexion(){
+        return "connexion";
+    }
+    @GetMapping("/subscribe")
+    public String subscribe(){
+        return "inscription";
+    }
     @ModelAttribute("typeSession")
     public List<TypeProduit> chargerTypeSession(){
         return typeProduitManager.getAllTypeProduits();
