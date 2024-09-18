@@ -89,7 +89,7 @@ public class PizzaController {
         if (user.getRole().getLibelle().equals("PIZZAIOLO")) {
             etatIds = Arrays.asList(2L, 3L, 4L);
         } else if (user.getRole().getLibelle().equals("LIVREUR")) {
-            etatIds = Arrays.asList(5L, 6L);
+            etatIds = Arrays.asList(4l, 5L, 6L, 7L);
         }
 
         if (!etatIds.isEmpty()) {
