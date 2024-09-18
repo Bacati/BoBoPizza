@@ -294,6 +294,7 @@ table{
     td{
         border: 2px solid rgba(223,180,98,1);
         padding: 1rem;
+        height: 100px;
     }
     .btnDetail{
         display: flex;
@@ -319,6 +320,7 @@ table{
         padding-left: 1rem;
         padding-right: 1rem;
         margin-bottom: 1%;
+        margin-top: 10%;
         border-top-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
         color: white;
@@ -415,4 +417,7 @@ table{
 }
 .etat{
     margin-bottom: 1rem;
+}
+.bodyAllCommande{
+    height: 150vh;
 }
