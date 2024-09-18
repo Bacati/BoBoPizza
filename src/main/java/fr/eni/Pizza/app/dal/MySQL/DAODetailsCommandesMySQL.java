@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository;
 
 @Profile("MySQL")
 @Repository
-public class DAODetailsCommandes implements fr.eni.Pizza.app.dal.DAODetailsCommandes {
+public class DAODetailsCommandesMySQL implements fr.eni.Pizza.app.dal.DAODetailsCommandes {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private DAOProduit daoProduit;
 
-    public DAODetailsCommandes (JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, DAOProduit daoProduit) {
+    public DAODetailsCommandesMySQL(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, DAOProduit daoProduit) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.daoProduit = daoProduit;

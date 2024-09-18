@@ -238,7 +238,11 @@ public class DAOCommandeMySQL implements DAOCommande {
         List<Commande> commandes = jdbcTemplate.query(sql, COMMANDE_ROW_MAPPER);
 
         List<Commande> sortedCommandes = commandes.stream()
-                .sorted(Comparator.comparing(Commande::getDateHeureCreation).reversed())
+                .sorted(Comparator.comparing(
+                        commande -> commande.getDateHeureLivraison() != null ?
+                                commande.getDateHeureLivraison() :
+                                commande.getDateHeureCreation())
+                )
                 .collect(Collectors.toList());
 
         return sortedCommandes;

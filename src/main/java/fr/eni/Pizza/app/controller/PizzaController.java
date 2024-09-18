@@ -1,12 +1,11 @@
 package fr.eni.Pizza.app.controller;
 
-
 import fr.eni.Pizza.app.bll.EmployeManager;
-import fr.eni.Pizza.app.bll.MySQL.ClientManager;
-import fr.eni.Pizza.app.bll.MySQL.CommandeManager;
-import fr.eni.Pizza.app.bll.MySQL.EtatManager;
+import fr.eni.Pizza.app.bll.ClientManager;
+import fr.eni.Pizza.app.bll.CommandeManager;
+import fr.eni.Pizza.app.bll.EtatManager;
 import fr.eni.Pizza.app.bll.ProduitManager;
-import fr.eni.Pizza.app.bll.MySQL.TypeProduitManager;
+import fr.eni.Pizza.app.bll.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.List;
 public class PizzaController {
 
     private final ProduitManager produitManager;
-    private final TypeProduitManager typeProduitManager;
-    private final CommandeManager commandeManager;
-    private final EtatManager etatManager;
-    private final ClientManager clientManager;
+    private final fr.eni.Pizza.app.bll.TypeProduitManager typeProduitManager;
+    private final fr.eni.Pizza.app.bll.CommandeManager commandeManager;
+    private final fr.eni.Pizza.app.bll.EtatManager etatManager;
+    private final fr.eni.Pizza.app.bll.ClientManager clientManager;
     private final EmployeManager employeManager;
 
-    public PizzaController(ProduitManager produitManager, TypeProduitManager typeProduitManager, CommandeManager commandeManager, EtatManager etatManager, ClientManager clientManager, EmployeManager employeManager) {
+    public PizzaController(ProduitManager produitManager, fr.eni.Pizza.app.bll.TypeProduitManager typeProduitManager, fr.eni.Pizza.app.bll.CommandeManager commandeManager, fr.eni.Pizza.app.bll.EtatManager etatManager, fr.eni.Pizza.app.bll.ClientManager clientManager, EmployeManager employeManager) {
         this.produitManager = produitManager;
         this.typeProduitManager = typeProduitManager;
         this.commandeManager = commandeManager;
@@ -169,7 +169,8 @@ public class PizzaController {
     @PostMapping("/commander")
     public String passerCommande(@ModelAttribute("clientSession") Client clientSession){
         if (clientSession.getId_commande_en_cours() != null) {
-            commandeManager.finishBasket(clientSession.getId_commande_en_cours());
+            // TODO remplacer LocalDateTime.now().toString() par la datetime-local récupérée du Front au moment de la validation panier
+            commandeManager.finishBasket(clientSession.getId_commande_en_cours(), LocalDateTime.now().toString());
             System.out.println("Commande passée");
         }else {
             return "redirect:/commande";

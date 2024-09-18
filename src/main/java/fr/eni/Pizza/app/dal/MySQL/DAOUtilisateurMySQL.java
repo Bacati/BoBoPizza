@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 
 @Profile("MySQL")
 @Repository
-public class DAOUtilisateur implements fr.eni.Pizza.app.dal.DAOUtilisateur {
+public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public DAOUtilisateur(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public DAOUtilisateurMySQL(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }

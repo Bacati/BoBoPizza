@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -93,6 +94,8 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
 
         return sortedCommandes;
     }
+
+    @Override
     public List<Commande> getCommandesByEtats(List<Long> etatIds) {
         List<Commande> commandes = new ArrayList<>();
         for (Long etatId : etatIds) {
@@ -272,12 +275,18 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
     }
 
     @Override
-    public void finishBasket(Long id_commande_en_cours) {
+    public void finishBasket(Long id_commande_en_cours, String dateHeureLivraison) {
         if (getCommandeById(id_commande_en_cours).getEtat().getId() == 1L){
             Commande commande = daoCommande.findCommandeById(id_commande_en_cours);
             Etat etat = new Etat();
             etat.setId(2L);
             commande.setEtat(etat);
+
+            System.out.println(dateHeureLivraison);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+            LocalDateTime dateTime = LocalDateTime.parse(dateHeureLivraison, formatter);
+            commande.setDateHeureLivraison(dateTime);
+
             daoCommande.saveCommande(commande);
             System.out.println("Commande id°"+id_commande_en_cours+" : en état \"CREEE\" ");
 

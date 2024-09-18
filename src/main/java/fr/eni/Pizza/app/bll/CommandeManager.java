@@ -15,6 +15,8 @@ public interface CommandeManager {
 
     List<Commande> getCommandesByEtat(Long id_etat);
 
+    List<Commande> getCommandesByEtats(List<Long> etatIds);
+
     Commande getCommandeById (Long id_commande);
 
     void saveCommande(Commande commande);
@@ -31,5 +33,5 @@ public interface CommandeManager {
 
     void updateProductInBasket(Long id_commande_en_cours, Produit produit);
 
-    void finishBasket(Long id_commande_en_cours);
+    void finishBasket(Long id_commande_en_cours, String dateHeureLivraison);
 }
