@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,7 +93,23 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
 
         return sortedCommandes;
     }
+    public List<Commande> getCommandesByEtats(List<Long> etatIds) {
+        List<Commande> commandes = new ArrayList<>();
+        for (Long etatId : etatIds) {
+            commandes.addAll(daoCommande.findAllCommandesByEtat(etatId));
+        }
 
+        for (Commande commande : commandes) {
+            List<Produit> produits = daoProduit.findAllProduitsByIdCommande(commande.getId());
+            commande.setProduits(produits);
+        }
+
+        List<Commande> sortedCommandes = commandes.stream()
+                .sorted(Comparator.comparing(Commande::getDateHeureLivraison))
+                .collect(Collectors.toList());
+
+        return sortedCommandes;
+    }
     /**
      * Appelle la DAL
      *

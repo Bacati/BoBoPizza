@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -80,9 +82,22 @@ public class PizzaController {
     }
 
     @GetMapping("/allCommande")
-    public String afficherCommande(Model model){
+    public String afficherCommande(Model model, @ModelAttribute("membreSession") Utilisateur user) {
         model.addAttribute("etat", etatManager.getAllEtats());
-        model.addAttribute("commandes", commandeManager.getAllCommandes());
+
+        List<Long> etatIds = new ArrayList<>();
+        if (user.getRole().getLibelle().equals("PIZZAIOLO")) {
+            etatIds = Arrays.asList(2L, 3L, 4L);
+        } else if (user.getRole().getLibelle().equals("LIVREUR")) {
+            etatIds = Arrays.asList(5L, 6L);
+        }
+
+        if (!etatIds.isEmpty()) {
+            model.addAttribute("commandes", commandeManager.getCommandesByEtats(etatIds));
+        } else if (user.getRole().getLibelle().equals("GERANT")) {
+            model.addAttribute("commandes", commandeManager.getAllCommandes());
+        }
+
         return "allCommande";
     }
     @PostMapping("/produit")
