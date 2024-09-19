@@ -6,12 +6,12 @@
   </h1>
   <nav class="nav">
       <a href="/laCarte">La carte</a>
-      <a href="/commande">Commander</a>
+      <a sec:authorize="!isAuthenticated()" href="/commande">Commander</a>
       <a sec:authorize="hasRole('GERANT', 'PIZZAIOLO, 'LIVREUR')" href="/allCommande">Toutes les commandes</a>
-      <a href="/subscribe">S'inscrire</a>
-      <a href="/login">Se connecter</a>
-      <a href="/logout">Se déconnecter</a>
-      <a href="/profil">Profil</a>
-      <a href="/panier"><img src="/images/shopping-cart.svg"></a>
+      <a sec:authorize="!isAuthenticated()" href="/subscribe">S'inscrire</a>
+      <a sec:authorize="!isAuthenticated()" href="/login">Se connecter</a>
+      <a sec:authorize="isAuthenticated()" href="/logout">Se déconnecter</a>
+      <a sec:authorize="!isAuthenticated()" href="/profil">Profil</a>
+      <a sec:authorize="!isAuthenticated()" href="/panier"><img src="/images/shopping-cart.svg"></a>
   </nav>
 </header>
