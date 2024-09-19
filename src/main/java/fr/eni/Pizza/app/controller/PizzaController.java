@@ -122,43 +122,43 @@ public class PizzaController {
         return "detailCommande";
     }
     @GetMapping("/panier")
-    public String panier(Model model, @ModelAttribute("clientSession") Client clientSession){
-        if (clientSession.getId_commande_en_cours() != null){
-            model.addAttribute("commandes", commandeManager.getCommandeById(clientSession.getId_commande_en_cours()) );
-            model.addAttribute("produit", produitManager.getAllProduitsByIdCommande(clientSession.getId_commande_en_cours()));
+    public String panier(Model model, @ModelAttribute ("membreSession") Utilisateur user){
+        if (user.getId_commande_en_cours() != null){
+            model.addAttribute("commandes", commandeManager.getCommandeById(user.getId_commande_en_cours()) );
+            model.addAttribute("produit", produitManager.getAllProduitsByIdCommande(user.getId_commande_en_cours()));
         }else {
            return "redirect:/commande";
         }
         return "panier";
     }
     @PostMapping("/updateQuantite")
-    public String updateQuantite(@ModelAttribute("clientSession") Client clientSession,
+    public String updateQuantite(@ModelAttribute ("membreSession") Utilisateur user,
                                  @RequestParam("produitId") Long produitId,
                                  @RequestParam(value = "quantite") int quantite) {
         Produit produit = produitManager.getProduitById(produitId);
         produit.setQuantite(quantite);
-        commandeManager.updateProductInBasket(clientSession.getId_commande_en_cours(), produit);
+        commandeManager.updateProductInBasket(user.getId_commande_en_cours(), produit);
         System.out.println("produitId: " + produitId);
         System.out.println("quantite: " + quantite);
         return "redirect:/panier";
     }
 
     @PostMapping("/deleteProductInBasket")
-    public String deleteProductInBasket(@ModelAttribute("clientSession") Client clientSession, @RequestParam("produitId") Long produitId) {
+    public String deleteProductInBasket(@ModelAttribute ("membreSession") Utilisateur user, @RequestParam("produitId") Long produitId) {
 
-        commandeManager.deleteProductInBasket(clientSession.getId_commande_en_cours(), produitId);
+        commandeManager.deleteProductInBasket(user.getId_commande_en_cours(), produitId);
         return "redirect:/panier";
     }
     @PostMapping("/deleteCommande")
-        public String deleteCommande(@ModelAttribute("clientSession") Client clientSession){
-        commandeManager.cancelBasket(clientSession.getId_commande_en_cours());
-        clientSession.setId_commande_en_cours(null);
+        public String deleteCommande(@ModelAttribute ("membreSession") Utilisateur user){
+        commandeManager.cancelBasket(user.getId_commande_en_cours());
+        user.setId_commande_en_cours(null);
         return "redirect:/commande";
     }
     @PostMapping("/commander")
-    public String passerCommande(@ModelAttribute("clientSession") Client clientSession, @RequestParam("heureCommande") String heureCommande){
-        if (clientSession.getId_commande_en_cours() != null) {
-            commandeManager.finishBasket(clientSession.getId_commande_en_cours(), heureCommande);
+    public String passerCommande(@ModelAttribute ("membreSession") Utilisateur user, @RequestParam("heureCommande") String heureCommande){
+        if (user.getId_commande_en_cours() != null) {
+            commandeManager.finishBasket(user.getId_commande_en_cours(), heureCommande);
             System.out.println("Commande passée");
         }else {
             return "redirect:/commande";
@@ -174,17 +174,17 @@ public class PizzaController {
     @PostMapping("/creerPanier")
     public String creerPanier(@RequestParam(value = "idProduit", required = true) Long idProduit,
                               @RequestParam(value = "quantite", required = true) int quantite,
-                              @ModelAttribute("clientSession") Client clientSession) {
+                              @ModelAttribute ("membreSession") Utilisateur user) {
 
         Produit produit = produitManager.getProduitById(idProduit);
         produit.setQuantite(quantite);
 
-        if (clientSession.getId_commande_en_cours() == null) {
-            Long idNouvelleCommande = commandeManager.createBasket(clientSession.getId(), produit);
-            clientSession.setId_commande_en_cours(idNouvelleCommande);
+        if (user.getId_commande_en_cours() == null) {
+            Long idNouvelleCommande = commandeManager.createBasket(user.getId(), produit);
+            user.setId_commande_en_cours(idNouvelleCommande);
             System.out.println("Création d'un nouveau panier avec le produit " + produit.getNom());
         } else {
-            commandeManager.updateProductInBasket(clientSession.getId_commande_en_cours(), produit);
+            commandeManager.updateProductInBasket(user.getId_commande_en_cours(), produit);
             System.out.println("Ajout du produit dans le panier existant : " + produit.getNom());
         }
 
