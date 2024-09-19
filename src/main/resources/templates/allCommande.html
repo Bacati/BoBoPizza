@@ -47,7 +47,7 @@
                 <td data-th-text="${commande.getPrixTotal()}"></td>
                 <td class="btnDetail"><a data-th-href="@{/detailCommande(idCommande=${commande.getId()})}">Détail</a></td>
                 <form class="form" data-th-object="${commande}" data-th-action="@{/updateEtat}" method="post">
-                    <td th:if="${commande.etat.id != 1}">
+                    <td th:if="${commande.etat.id != 1 && commande.etat.id != 7}">
                         <select id="idEtat" name="idEtat" data-th-value="${commande.etat}">
                             <option th:if="${user.role.libelle == 'PIZZAIOLO' or user.role.libelle == 'GERANT'}" value="2" th:selected="${commande.etat.id == 2}">Créée</option>
                             <option th:if="${user.role.libelle == 'PIZZAIOLO' or user.role.libelle == 'GERANT'}" value="3" th:selected="${commande.etat.id == 3}">En préparation</option>
