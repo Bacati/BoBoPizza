@@ -112,11 +112,10 @@ public class PizzaController {
         return "redirect:/laCarte";
     }
     @GetMapping("/commande")
-    public String commander(Model model, @ModelAttribute ("clientSession") Client client) {
+    public String commander(Model model, @ModelAttribute ("membreSession") Utilisateur user) {
         model.addAttribute("produits", produitManager.getAllProduits());
         model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
         model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
-        System.out.println(client);
 
         return "commande";
     }
