@@ -35,11 +35,11 @@ INSERT INTO ROLE (id_role, libelle) VALUES
 
 -- INSERT UTILISATEUR
 INSERT INTO UTILISATEUR (classe, nom, prenom, rue, code_postal, ville, email, mot_de_passe) VALUES 
-('E', 'LIEVRE', 'Lucas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'lucas.lievre@email.com', 'password'),
-('E', 'JOUAND', 'Nicolas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'nicolas.jouand@email.com', 'password'),
-('E', 'GOBIN', 'Stéphane', 'Entreprise BoBoPizza', '44000', 'Nantes', 'stephane.gobin@email.com', 'password'),
-('C', 'DUPONT', 'Martin',  '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN', 'martin.dupont@email.com', 'password'),
-('C', 'DOE', 'John',  '6 rue de la Liberté', '44000', 'NANTES', 'john.doe@email.com', 'password');
+('E', 'LIEVRE', 'Lucas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'lucas.lievre@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm'),
+('E', 'JOUAND', 'Nicolas', 'Entreprise BoBoPizza', '44000', 'Nantes', 'nicolas.jouand@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm'),
+('E', 'GOBIN', 'Stéphane', 'Entreprise BoBoPizza', '44000', 'Nantes', 'stephane.gobin@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm'),
+('C', 'DUPONT', 'Martin',  '2b rue Michael FARADAY', '44300', 'SAINT-HERBLAIN', 'martin.dupont@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm'),
+('C', 'DOE', 'John',  '6 rue de la Liberté', '44000', 'NANTES', 'john.doe@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm');
 
 -- Insertion role_utilisateur
 INSERT INTO ROLE_UTILISATEUR (UTILISATEUR_id_utilisateur, ROLE_id_role) VALUES

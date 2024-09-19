@@ -11,11 +11,13 @@
 </head>
 <body class="bodyDetail">
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
-    <div class="connexion">
-        <h1>Se connecter</h1>
-        <input type="email" placeholder="exemple@bobopizza.com">
-        <input type="password">
-        <button class="btnAdd" type="submit">Connexion</button>
-    </div>
+    <form th:action="@{/login}" method="POST">
+        <div class="connexion">
+            <h1>Se connecter</h1>
+            <input type="email" placeholder="exemple@bobopizza.com" name="username">
+            <input type="password" name="password">
+            <button class="btnAdd" type="submit">Connexion</button>
+        </div>
+    </form>
 </body>
 </html>

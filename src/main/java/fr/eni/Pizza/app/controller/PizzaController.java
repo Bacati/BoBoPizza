@@ -8,6 +8,7 @@ import fr.eni.Pizza.app.bll.ProduitManager;
 import fr.eni.Pizza.app.bll.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"typeSession","membreSession","clientSession"})
+@SessionAttributes({"typeSession","membreSession","clientSession", "connectedUser"})
 public class PizzaController {
 
     private final ProduitManager produitManager;
@@ -194,14 +195,12 @@ public class PizzaController {
 
         return "redirect:/commande";
     }
-    @GetMapping("/login")
-    public String connexion(){
-        return "connexion";
-    }
+
     @GetMapping("/subscribe")
     public String subscribe(){
         return "inscription";
     }
+
     @GetMapping("/profil")
     public String profil(Model model){
         model.addAttribute("users", employeManager.findAllEmployes());
@@ -214,8 +213,11 @@ public class PizzaController {
         return "profilDetail";
     }
     @PostMapping("/user")
-    public String modifUser(@RequestParam(value = "user") Utilisateur user){
-        employeManager.saveEmploye(user);
+    public String modifUser(@ModelAttribute(value = "user") Employe user){
+        System.out.println(user);
+        Utilisateur updateUser = employeManager.findEmployeById(user.getId());
+        updateUser.getRole().setId(user.getRole().getId());
+        employeManager.saveEmploye(updateUser);
         return "redirect:/profil";
     }
     @ModelAttribute("typeSession")

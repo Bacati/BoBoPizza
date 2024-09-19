@@ -16,6 +16,8 @@ public interface DAOUtilisateur {
 
     Utilisateur findUtilisateurByEmailAndPassword(String email, String password);
 
+    Utilisateur findUtilisateurByEmail(String email);
+
     boolean idUtilisateurExist(Long id_utilisateur);
 
     Long obtainIDFromLastCreatedUtilisateur();

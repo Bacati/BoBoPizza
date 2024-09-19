@@ -12,7 +12,7 @@
     <body class="bodyDetail">
     <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
     <form class="formDetail" data-th-object="${user}" data-th-action="@{/user}" method="post">
-        <input name="id" type="hidden" data-th-value="user.id">
+        <input name="id" type="hidden" data-th-value="${user.id}">
           <input name="nom" data-th-value="${user.nom}">
           <input name="prenom" data-th-value="${user.prenom}">
           <select name="role" data-th-value="user.role">

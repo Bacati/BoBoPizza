@@ -14,14 +14,14 @@
 <div class="jsp">
     <h1>Profil</h1>
     <div>
-        <h2>Employer</h2>
+        <h2>Employés</h2>
         <div class="user" data-th-each="user : ${users}">
             <p data-th-text="${user.nom}"></p>
             <p data-th-text="${user.getPrenom()}"></p>
             <p data-th-text="${user.getRole().libelle}"></p>
-            <a sec:authorize="hasRole('GERANT')" class="btnAdd" data-th-href="@{/user(idUser=${user.id})}">Détail</a>
+            <a sec:authorize="hasAuthority('GERANT')" class="btnAdd" data-th-href="@{/user(idUser=${user.id})}">Détail</a>
         </div>
-        <h2>Client</h2>
+        <h2>Clients</h2>
         <div class="user" data-th-each="client : ${clients}">
             <p data-th-text="${client.nom}"></p>
             <p data-th-text="${client.getPrenom()}"></p>

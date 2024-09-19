@@ -16,7 +16,12 @@ public class AuthentificationManager implements fr.eni.Pizza.app.bll.Authentific
     }
 
     @Override
-    public Utilisateur findUtilisateurByEmailAndPassword(String email, String password) {
+    public Utilisateur authenticate (String email, String password) {
         return daoUtilisateur.findUtilisateurByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public Utilisateur getAuthentificatedUser(String email) {
+        return daoUtilisateur.findUtilisateurByEmail(email);
     }
 }

@@ -4,6 +4,7 @@ import fr.eni.Pizza.app.bo.Client;
 import fr.eni.Pizza.app.bo.Utilisateur;
 import fr.eni.Pizza.app.dal.DAOUtilisateur;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class ClientManager implements fr.eni.Pizza.app.bll.ClientManager {
 
     @Override
     public void saveClient(Utilisateur client) {
-        //TODO à décommenter une fois Spring security inclu
-        //client.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(client.getPassword()));
+        if(!client.getPassword().contains("{bcrypt}")) {
+            client.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(client.getPassword()));
+        }
         daoUtilisateur.saveUtilisateur(client);
     }
 

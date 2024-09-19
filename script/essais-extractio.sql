@@ -126,3 +126,10 @@ SELECT * FROM utilisateur
 INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur
 INNER JOIN role ON ROLE_id_role = id_role
 WHERE classe = 'C';
+
+SELECT email, mot_de_passe, 1 FROM utilisateur WHERE email= 'nicolas.jouand@email.com';
+SELECT utilisateur.email, role.libelle
+FROM utilisateur 
+INNER JOIN role_utilisateur ON utilisateur.id_utilisateur = role_utilisateur.UTILISATEUR_id_utilisateur
+INNER JOIN role ON role.id_role = role_utilisateur.ROLE_id_role
+WHERE email = 'nicolas.jouand@email.com';

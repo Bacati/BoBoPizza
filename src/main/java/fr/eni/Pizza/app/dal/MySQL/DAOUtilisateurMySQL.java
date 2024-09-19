@@ -54,7 +54,7 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
             role.setId(rs.getLong("id_role"));
             role.setLibelle(rs.getString("libelle"));
             user.setRole(role);
-            user.setId_commande_en_cours(rs.getLong("id_commande_en_cours"));
+            user.setId_commande_en_cours(rs.getLong("id_commande_en_cours") == 0?  null : rs.getLong("id_commande_en_cours"));
 
             return user;
         }
@@ -101,8 +101,13 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
         if (c != 'E' && c != 'C') {
             return null;
         }
-        String classe = "" + c;
-        String sql = "SELECT * FROM utilisateur INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur INNER JOIN role ON ROLE_id_role = id_role  WHERE classe = ?";
+
+        String classe = ""+c;
+
+        String sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role\n" +
+                "WHERE classe = ?";
 
         List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, classe);
 
@@ -148,7 +153,7 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
 
         sql = "SELECT * FROM utilisateur\n" +
                 "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
-                "INNER JOIN role ON ROLE_id_role = id_role" +
+                "INNER JOIN role ON ROLE_id_role = id_role\n" +
                 "WHERE libelle = ?";
 
         List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, libelleRole);
@@ -210,6 +215,23 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
         }
 
         return utilisateurs.get(0);
+    }
+
+    @Override
+    public Utilisateur findUtilisateurByEmail(String email) {
+        String sql = "SELECT * FROM utilisateur\n" +
+                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
+                "INNER JOIN role ON ROLE_id_role = id_role\n" +
+                "WHERE email = ? ";
+
+        List<Utilisateur> users = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, email);
+
+        //si on ne trouve aucun member avec cet id alors on retourne null
+        if (users.isEmpty()) {
+            return null;
+        }
+
+        return users.get(0);
     }
 
     @Override

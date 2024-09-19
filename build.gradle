@@ -37,6 +37,11 @@ dependencies {
 
 	// dépendance JDBC pour permettre de faire des requêtes à la BDD à la main via Java
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+	// 3 dépendances servant à Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

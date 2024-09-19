@@ -24,7 +24,7 @@
       <p data-th-text="${produit.prixUnitaire}"></p>
       <p data-th-text="${produit.description}"></p>
 
-      <form action="/creerPanier" method="post">
+      <form th:action="@{/creerPanier}" method="post">
         <input type="hidden" name="idProduit" data-th-value="${produit.id}">
         <label for="quantite">Quantité :</label>
         <select id="quantite" name="quantite">
@@ -56,7 +56,7 @@
       <span class="close">&times;</span>
       <p data-th-text="${boisson.nom}"></p>
       <p data-th-text="${boisson.prixUnitaire}"></p>
-      <form action="/creerPanier" method="post">
+      <form th:action="@{/creerPanier}" method="post">
         <input type="hidden" name="idProduit" data-th-value="${boisson.id}">
         <label for="quantite">Quantité :</label>
         <select id="quantite" name="quantite">

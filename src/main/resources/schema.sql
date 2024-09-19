@@ -31,7 +31,7 @@ CREATE TABLE UTILISATEUR
      code_postal NVARCHAR (10) , 
      ville NVARCHAR (50),
      email VARCHAR (50) NOT NULL UNIQUE, 
-     mot_de_passe NVARCHAR (50) NOT NULL,
+     mot_de_passe NVARCHAR (250) NOT NULL,
      id_commande_en_cours INTEGER
     );
     
@@ -235,5 +235,5 @@ ALTER TABLE PRODUIT
     ON UPDATE NO ACTION ;
     
 INSERT INTO UTILISATEUR (classe, nom, prenom, rue, code_postal, ville, email, mot_de_passe) VALUES 
-('E', 'PREPARATEUR NON ATTRIBUE',  'Preparateur non attribue', 'Entreprise BoBoPizza', '44000', 'Nantes', 'preparateur@email.com', 'password'),
-('E', 'LIVREUR NON ATTRIBUE',  'Livreur non attribue', 'Entreprise BoBoPizza', '44000', 'Nantes', 'livreur@email.com', 'password');
+('E', 'PREPARATEUR NON ATTRIBUE',  'Preparateur non attribue', 'Entreprise BoBoPizza', '44000', 'Nantes', 'preparateur@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm'),
+('E', 'LIVREUR NON ATTRIBUE',  'Livreur non attribue', 'Entreprise BoBoPizza', '44000', 'Nantes', 'livreur@email.com', '{bcrypt}$2a$10$is.uot1BQvaGXdAQd/NSaOWKraONCPdJ7/Ch9puRgNQfR8ya/BRYm');
