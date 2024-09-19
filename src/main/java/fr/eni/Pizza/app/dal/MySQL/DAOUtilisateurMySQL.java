@@ -193,30 +193,6 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
         return utilisateurs.get(0);
     }
 
-    /**
-     * Retourne la data {@link Utilisateur} correspondant au duo de {@code email} et {@code password} passés en paramètres présents en table "utilisateur" de la BDD "db_bobopizza"
-     *
-     * @param email : String, email de l'objet attendu {@link Utilisateur}
-     * @param password : String, password de l'objet attendu {@link Utilisateur}
-     *
-     * @return l'objet {@link Utilisateur} ou {@code null} en cas de {@code email} et {@code password} non valides
-     */
-    @Override
-    public Utilisateur findUtilisateurByEmailAndPassword(String email, String password) {
-        String sql = "SELECT * FROM utilisateur\n" +
-                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
-                "INNER JOIN role ON ROLE_id_role = id_role" +
-                "WHERE email = ? AND mot_de_passe = ?";
-
-        List <Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, email, password);
-
-        if(utilisateurs.isEmpty()) {
-            return null;
-        }
-
-        return utilisateurs.get(0);
-    }
-
     @Override
     public Utilisateur findUtilisateurByEmail(String email) {
         String sql = "SELECT * FROM utilisateur\n" +

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 
 @Controller
-@SessionAttributes({"typeSession","membreSession","clientSession", "connectedUser"})
+@SessionAttributes({"membreSession"})
 public class UtilisateurController {
 
     private AuthentificationManager authentificationManager;
@@ -24,7 +24,7 @@ public class UtilisateurController {
     public String login (Model model, RedirectAttributes redirectAttributes) {
 
         //Tester si Utilisateur déjà connecté (le user en session n'est pas null)
-        Utilisateur userConnected = (Utilisateur) model.getAttribute("connectedUser");
+        Utilisateur userConnected = (Utilisateur) model.getAttribute("membreSession");
 
         if (userConnected != null){
             System.out.println(userConnected.getNom() + " " + userConnected.getPrenom() + " est déjà connecté-e.");
@@ -53,7 +53,7 @@ public class UtilisateurController {
         Utilisateur userConnected = authentificationManager.getAuthentificatedUser(email);
 
         //Ajouter le member en session
-        model.addAttribute("connectedUser", userConnected);
+        model.addAttribute("membreSession", userConnected);
 
         if (userConnected != null) {
             System.out.printf("L'utilisateur ayant l'e-mail %s est connecté.%n", userConnected.getEmail());
