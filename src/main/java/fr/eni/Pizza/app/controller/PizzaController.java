@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"typeSession","membreSession","clientSession", "connectedUser"})
+@SessionAttributes({"typeSession","membreSession"})
 public class PizzaController {
 
     private final ProduitManager produitManager;
@@ -40,11 +40,7 @@ public class PizzaController {
         this.employeManager = employeManager;
     }
     @GetMapping("/")
-    public String index( Model model) {
-        Employe user = new Employe(0L, "lievre", "lucas", "3 rue fellonneau", "44000", "Nantes", "lucaslievre@gmail.com", "password", new Role(4L, "GERANT"));
-        Client client = new Client(6L, "DUPONT", "Martin", "2b rue Michael FARADAY", "44300", "SAINT-HERBLAIN", "martin.dupont@email.com", "password", new Role(1L, "CLIENT"));
-        model.addAttribute("membreSession", user);
-        model.addAttribute("clientSession", client);
+    public String index() {
         return "index";
     }
 
