@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail d'un profil</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+</head>
+    <body class="bodyDetail">
+    <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+    <form class="formDetail" data-th-object="${user}" data-th-action="@{/user}" method="post">
+        <input name="id" type="hidden" data-th-value="user.id">
+          <input name="nom" data-th-value="${user.nom}">
+          <input name="prenom" data-th-value="${user.prenom}">
+          <select name="role" data-th-value="user.role">
+              <option value="1" th:selected="${user.role.id == 1}">Client</option>
+              <option value="2" th:selected="${user.role.id == 2}">PIZZAIOLO</option>
+              <option value="3" th:selected="${user.role.id == 3}">LIVREUR</option>
+              <option value="4" th:selected="${user.role.id == 4}">GERANT</option>
+          </select>
+        <button class="btnAdd" type="submit">Modifier</button>
+    </form>
+    </body>
+</html>

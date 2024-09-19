@@ -57,15 +57,6 @@ public class PizzaController {
 
         return "laCarte";
     }
-    @GetMapping("/modifLaCarte")
-    public String modifLaCarte(Model model) {
-
-        model.addAttribute("produits", produitManager.getAllProduits());
-        model.addAttribute("pizzaProduits", produitManager.getAllProduitsByIdTypeProduit(1L));
-        model.addAttribute("boissonProduits", produitManager.getAllProduitsByIdTypeProduit(2L));
-
-        return "modifCarte";
-    }
     @GetMapping("/produit")
     public String afficherOuCreerProduit(@RequestParam(value = "idProduit", required = false) Long id, Model model) {
         Produit p;
@@ -171,7 +162,6 @@ public class PizzaController {
     @PostMapping("/commander")
     public String passerCommande(@ModelAttribute("clientSession") Client clientSession, @RequestParam("heureCommande") String heureCommande){
         if (clientSession.getId_commande_en_cours() != null) {
-            // TODO remplacer LocalDateTime.now().toString() par la datetime-local récupérée du Front au moment de la validation panier
             commandeManager.finishBasket(clientSession.getId_commande_en_cours(), heureCommande);
             System.out.println("Commande passée");
         }else {
@@ -211,6 +201,22 @@ public class PizzaController {
     @GetMapping("/subscribe")
     public String subscribe(){
         return "inscription";
+    }
+    @GetMapping("/profil")
+    public String profil(Model model){
+        model.addAttribute("users", employeManager.findAllEmployes());
+        model.addAttribute("clients", clientManager.findAllClients());
+        return "profil";
+    }
+    @GetMapping("/user")
+    public String user(@RequestParam(value = "idUser")Long id,Model model){
+        model.addAttribute("user", employeManager.findEmployeById(id));
+        return "profilDetail";
+    }
+    @PostMapping("/user")
+    public String modifUser(@RequestParam(value = "user") Utilisateur user){
+        employeManager.saveEmploye(user);
+        return "redirect:/profil";
     }
     @ModelAttribute("typeSession")
     public List<TypeProduit> chargerTypeSession(){

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+</head>
+<body>
+<div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+<div class="jsp">
+    <h1>Profil</h1>
+    <div>
+        <h2>Employer</h2>
+        <div class="user" data-th-each="user : ${users}">
+            <p data-th-text="${user.nom}"></p>
+            <p data-th-text="${user.getPrenom()}"></p>
+            <p data-th-text="${user.getRole().libelle}"></p>
+            <a sec:authorize="hasRole('GERANT')" class="btnAdd" data-th-href="@{/user(idUser=${user.id})}">Détail</a>
+        </div>
+        <h2>Client</h2>
+        <div class="user" data-th-each="client : ${clients}">
+            <p data-th-text="${client.nom}"></p>
+            <p data-th-text="${client.getPrenom()}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -101,13 +101,10 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
         if (c != 'E' && c != 'C') {
             return null;
         }
+        String classe = "" + c;
+        String sql = "SELECT * FROM utilisateur INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur INNER JOIN role ON ROLE_id_role = id_role  WHERE classe = ?";
 
-        String sql = "SELECT * FROM utilisateur\n" +
-                "INNER JOIN role_utilisateur ON UTILISATEUR_id_utilisateur = id_utilisateur\n" +
-                "INNER JOIN role ON ROLE_id_role = id_role" +
-                "WHERE classe = ?";
-
-        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, c);
+        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, UTILISATEUR_ROW_MAPPER, classe);
 
         List<Utilisateur> sortedUtilisateurs = utilisateurs.stream()
                 .sorted((u1, u2) -> {

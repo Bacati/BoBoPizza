@@ -7,11 +7,11 @@
   <nav class="nav">
       <a href="/laCarte">La carte</a>
       <a href="/commande">Commander</a>
-      <a href="/"></a>
-      <a href="/allCommande">Toutes les commandes</a>
+      <a sec:authorize="hasRole('GERANT', 'PIZZAIOLO, 'LIVREUR')" href="/allCommande">Toutes les commandes</a>
       <a href="/subscribe">S'inscrire</a>
       <a href="/login">Se connecter</a>
       <a href="/logout">Se déconnecter</a>
+      <a href="/profil">Profil</a>
       <a href="/panier"><img src="/images/shopping-cart.svg"></a>
   </nav>
 </header>

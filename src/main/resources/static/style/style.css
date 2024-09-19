@@ -449,3 +449,30 @@ table{
 .bodyBase{
     overflow-x: hidden;
 }
+.jsp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+.user {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    .btnAdd {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-top-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        color: white;
+        background: linear-gradient(90deg, rgba(223, 180, 98, 1) 0%, rgba(0, 0, 0, 1) 48%, rgba(223, 180, 98, 1) 100%);
+    }
+    a{
+        text-decoration: none;
+    }
+}
+}
