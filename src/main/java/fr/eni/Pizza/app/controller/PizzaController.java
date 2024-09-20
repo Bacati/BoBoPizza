@@ -98,10 +98,7 @@ public class PizzaController {
     }
 
     @PostMapping("/delete")
-    public String deleteProduit(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "carteDetail";
-        }
+    public String deleteProduit(@ModelAttribute("produit") Produit produit) {
         produitManager.deleteProduitById(produit.getId());
         System.out.println("delete"+ produit.getId());
         return "redirect:/laCarte";

@@ -18,37 +18,34 @@
             <label for="nom">Nom </label>
             <input type="text" data-th-field="*{nom}" placeholder="Nom">
             <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" style="color:red;"></div>
-             </div>
 
             <label for="prenom">Prénom</label>
             <input type="text" name="prenom" data-th-field="*{prenom}" placeholder="Prénom">
             <div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" style="color:red;"></div>
-            </div>
 
             <label for="rue">Rue</label>
             <input type="text" name="rue" data-th-field="*{rue}" placeholder="Rue">
             <div th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}" style="color:red;"></div>
-            </div>
+
 
             <label for="ville">Ville</label>
             <input type="text" name="ville" data-th-field="*{ville}" placeholder="Ville">
             <div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" style="color:red;"></div>
-            </div>
+
 
             <label for="codePostal">Code Postal</label>
             <input type="text" name="codePostal" data-th-field="*{codePostal}" placeholder="Code Postal">
             <div th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}" style="color:red;"></div>
-            </div>
+
 
             <label for="email">E-mail :</label>
             <input type="email" name="email" data-th-field="*{email}" placeholder="exemple@bobopizza.com">
             <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></div>
-            </div>
+
 
             <label for="password">Mot de passe</label>
             <input type="password" data-th-field="*{password}" name="mot_de_passe">
             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
-            </div>
 
             <button class="btnAdd" type="submit">Inscription</button>
         </div>
