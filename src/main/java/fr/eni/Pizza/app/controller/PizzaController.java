@@ -123,10 +123,9 @@ public class PizzaController {
         if (user.getId_commande_en_cours() != null){
             model.addAttribute("commandes", commandeManager.getCommandeById(user.getId_commande_en_cours()) );
             model.addAttribute("produit", produitManager.getAllProduitsByIdCommande(user.getId_commande_en_cours()));
-        }else {
-           return "redirect:/commande";
+            return "panier";
         }
-        return "panier";
+        return "redirect:/commande";
     }
     @PostMapping("/updateQuantite")
     public String updateQuantite(@ModelAttribute ("membreSession") Utilisateur user,
@@ -153,9 +152,11 @@ public class PizzaController {
         return "redirect:/commande";
     }
     @PostMapping("/commander")
-    public String passerCommande(@ModelAttribute ("membreSession") Utilisateur user, @RequestParam("heureCommande") String heureCommande){
+    public String passerCommande(@ModelAttribute ("membreSession") Utilisateur user, @RequestParam("heureCommande") String heureCommande, Model model){
         if (user.getId_commande_en_cours() != null) {
             commandeManager.finishBasket(user.getId_commande_en_cours(), heureCommande);
+            user.setId_commande_en_cours(null);
+            model.addAttribute("membreSession", user);
             System.out.println("Commande passée");
         }else {
             return "redirect:/commande";

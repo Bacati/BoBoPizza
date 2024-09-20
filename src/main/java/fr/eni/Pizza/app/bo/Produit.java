@@ -15,7 +15,7 @@ public final class Produit {
     private String urlImage;
     @Size(max = 500, message = "La description du Produit ne doit pas dépasser 500 caractères.")
     private String description;
-    @Min(value = 0, message = "Le prix unitaire doit être un nombre positif.")
+    @Min(value = 1, message = "Le prix unitaire doit être un nombre positif supérieur à 1€.")
     private double prixUnitaire;
     private Integer quantite;
     private double prixTotal;

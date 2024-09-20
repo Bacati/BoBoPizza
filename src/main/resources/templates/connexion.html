@@ -14,8 +14,10 @@
     <form th:action="@{/login}" method="POST">
         <div class="connexion">
             <h1>Se connecter</h1>
-            <input type="email" placeholder="exemple@bobopizza.com" name="username">
-            <input type="password" name="password">
+            <label for="email">E-mail de connexion : </label>
+            <input id="email" type="email" placeholder="exemple@bobopizza.com" name="username">
+            <label for="password">Mot de passe : </label>
+            <input id="password" type="password" name="password">
             <button class="btnAdd" type="submit">Connexion</button>
         </div>
     </form>
