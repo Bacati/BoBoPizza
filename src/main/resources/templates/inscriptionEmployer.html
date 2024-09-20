@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>S'inscrire</title>
+    <title>Inscrire un employer</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 </head>
 <body class="bodyDetail">
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
-<form th:action="@{/addCLient}" data-th-object="${client}" method="POST">
+<form th:action="@{/addEmployer}" data-th-object="${employe}" method="POST">
     <div class="connexion">
         <div class="form">
             <h1>S'inscrire</h1>
@@ -29,6 +29,14 @@
             </label>
             <label>Code Postal
                 <input type="text" name="code_postal" data-th-field="*{codePostal}" placeholder="Code Postal">
+            </label>
+            <label>
+                <select data-th-field="*{role}">
+                    <option value="1">Client</option>
+                    <option value="2">PIZZAIOLO</option>
+                    <option value="3">LIVREUR</option>
+                    <option value="4">GERANT</option>
+                </select>
             </label>
             <input type="email" name="email" data-th-field="*{email}" placeholder="exemple@bobopizza.com">
             <input type="password" data-th-field="*{password}" name="mot_de_passe">

@@ -190,12 +190,6 @@ public class PizzaController {
 
         return "redirect:/commande";
     }
-
-    @GetMapping("/subscribe")
-    public String subscribe(){
-        return "inscription";
-    }
-
     @GetMapping("/profil")
     public String profil(Model model){
         model.addAttribute("users", employeManager.findAllEmployes());

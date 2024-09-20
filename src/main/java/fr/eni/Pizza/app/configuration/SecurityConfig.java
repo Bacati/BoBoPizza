@@ -33,7 +33,7 @@ public class SecurityConfig {
         return jdbcUserDetailsManager;
     }
 
-    @Bean
+    //@Bean
     public SecurityFilterChain web(HttpSecurity http) throws Exception {
 
         http
@@ -54,8 +54,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/commander").hasAnyAuthority("CLIENT", "PIZZAIOLO", "LIVREUR", "GERANT")
                                 .requestMatchers(HttpMethod.POST, "/updateEtat").hasAnyAuthority("PIZZAIOLO", "LIVREUR", "GERANT")
                                 .requestMatchers(HttpMethod.POST, "/creerPanier").authenticated()
-                                .requestMatchers("/subscribe").permitAll()
+                                .requestMatchers("/addCLient").permitAll()
                                 .requestMatchers("/profil").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/addEmployer").hasAuthority("GERANT")
+                                .requestMatchers(HttpMethod.POST,"/addEmployer").hasAuthority("GERANT")
                                 .requestMatchers(HttpMethod.GET, "/user").hasAuthority("GERANT")
                                 .requestMatchers(HttpMethod.POST, "/user").hasAuthority("GERANT")
                                 //.requestMatchers("/user").permitAll()

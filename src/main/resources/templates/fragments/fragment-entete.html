@@ -8,10 +8,11 @@
       <a href="/laCarte">La carte</a>
       <a sec:authorize="isAuthenticated()" href="/commande">Commander</a>
       <a sec:authorize="hasAnyAuthority('PIZZAIOLO', 'LIVREUR', 'GERANT')" href="/allCommande">Toutes les commandes</a>
-      <a sec:authorize="!isAuthenticated()" href="/subscribe">S'inscrire</a>
+      <a sec:authorize="!isAuthenticated()" href="/addCLient">S'inscrire</a>
       <a sec:authorize="!isAuthenticated()" href="/login">Se connecter</a>
       <a sec:authorize="isAuthenticated()" href="/logout">Se déconnecter</a>
-      <a sec:authorize="isAuthenticated()" href="/profil">Profil</a>
+      <a sec:authorize="isAuthenticated()" href="/profil">Gestion des profils</a>
+      <a sec:authorize="hasAuthority('GERANT')" href="/addEmployer">Ajouter un employer</a>
       <a sec:authorize="isAuthenticated()" href="/panier"><img src="/images/shopping-cart.svg"></a>
   </nav>
 </header>
