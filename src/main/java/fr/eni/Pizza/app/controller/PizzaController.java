@@ -1,21 +1,15 @@
 package fr.eni.Pizza.app.controller;
 
 import fr.eni.Pizza.app.bll.EmployeManager;
-import fr.eni.Pizza.app.bll.ClientManager;
-import fr.eni.Pizza.app.bll.CommandeManager;
-import fr.eni.Pizza.app.bll.EtatManager;
 import fr.eni.Pizza.app.bll.ProduitManager;
-import fr.eni.Pizza.app.bll.TypeProduitManager;
 import fr.eni.Pizza.app.bo.*;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +52,7 @@ public class PizzaController {
     public String afficherOuCreerProduit(@RequestParam(value = "idProduit", required = false) Long id, Model model) {
         Produit p;
         if (id != null) {
-            p = this.produitManager.getProduitById(id);
+            p = produitManager.getProduitById(id);
             model.addAttribute("titre", "Modification d'un produit");
         } else {
             p = new Produit();
@@ -68,6 +62,18 @@ public class PizzaController {
         model.addAttribute("typeSession", typeSession);
         model.addAttribute("produit", p);
         return "carteDetail";
+    }
+
+    @PostMapping("/produit")
+    public String modifCarte(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "carteDetail";
+        }
+        produitManager.saveProduit(produit);
+
+        //TODO ajouter un message flash de type
+        //redirectAttributes.addFlashAttribute("message", "Produit "+ produit.getNom() +" créé avec succès !");
+        return "redirect:/laCarte";
     }
 
     @GetMapping("/allCommande")
@@ -90,14 +96,7 @@ public class PizzaController {
 
         return "allCommande";
     }
-    @PostMapping("/produit")
-    public String modifCarte(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "carteDetail";
-        }
-        produitManager.saveProduit(produit);
-        return "redirect:/laCarte";
-    }
+
     @PostMapping("/delete")
     public String deleteProduit(@Valid @ModelAttribute("produit") Produit produit, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -121,6 +120,7 @@ public class PizzaController {
         model.addAttribute("produitBycommande", produitManager.getAllProduitsByIdCommande(id));
         return "detailCommande";
     }
+
     @GetMapping("/panier")
     public String panier(Model model, @ModelAttribute ("membreSession") Utilisateur user){
         if (user.getId_commande_en_cours() != null){
@@ -167,8 +167,9 @@ public class PizzaController {
     }
     @PostMapping("/updateEtat")
     public String updateEtat(@RequestParam(value = "idCommande") Long id,
-                             @RequestParam(value = "idEtat") Long idEtat){
-        commandeManager.updateEtatFromCommande(id, idEtat);
+                             @RequestParam(value = "idEtat") Long idEtat, Model model){
+        Utilisateur employe = (Utilisateur) model.getAttribute("membreSession");
+        commandeManager.updateEtatFromCommande(id, idEtat, employe.getId());
         return "redirect:/allCommande";
     }
     @PostMapping("/creerPanier")

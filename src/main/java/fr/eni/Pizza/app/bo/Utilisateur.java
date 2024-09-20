@@ -1,14 +1,37 @@
 package fr.eni.Pizza.app.bo;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public abstract class Utilisateur{
 
     private Long id;
+    @NotNull(message = "Le nom est obligatoire.")
+    @Size(min = 2, max = 100, message = "Le nom doit contenir entre 2 et 100 caractères.")
     private String nom;
+    @NotNull(message = "Le prénom est obligatoire.")
+    @Size(min = 2, max = 100, message = "Le prénom doit contenir entre 2 et 100 caractères.")
     private String prenom;
+    @NotNull(message = "Le nom de la rue est obligatoire.")
+    @Size(min = 2, max = 100, message = "Le nom de la rue doit contenir entre 2 et 100 caractères.")
     private String rue;
+    @NotNull(message = "Le code postal est obligatoire.")
+    @Pattern(regexp = "\\d{5}", message = "Le code postal doit être composé de 5 chiffres.")
     private String codePostal;
+    @NotNull(message = "Le nom de la ville est obligatoire.")
+    @Size(min = 2, max = 50, message = "Le nom de la ville doit contenir entre 2 et 50 caractères.")
     private String ville;
+    @NotNull(message = "L'adresse email est obligatoire.")
+    @Email(message = "L'adresse email doit être valide.")
     private String email;
+    @NotNull(message = "Le mot de passe est obligatoire.")
+    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères.")
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+            message = "Le mot de passe doit contenir au moins une majuscule, une minuscule, et un chiffre."
+    )
     private String password;
     private Role role;
     private Long id_commande_en_cours;

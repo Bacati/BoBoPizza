@@ -102,7 +102,7 @@ public class UtilisateurController {
         clientManager.saveClient(client);
 
         //Ajouter un message temporaire (flash card) dans la section "flashMessage"
-        System.out.println("Vous avez ajouté le membre <%s %s> à la session et la BDD avec succès" + client.getNom() + client.getPrenom());
+        System.out.printf("Vous avez ajouté le client <%s %s> à la session et la BDD avec succès", client.getNom(), client.getPrenom());
 
         return "redirect:/";
     }
@@ -124,10 +124,10 @@ public class UtilisateurController {
             System.out.println("Erreur de contrôle surface");
             return "inscriptionEmployer";
         }
+        System.out.println(employe);
+        employeManager.saveEmploye(employe);
 
-        clientManager.saveClient(employe);
-
-        System.out.println("Vous avez ajouté le membre <%s %s> à la session et la BDD avec succès" + employe.getNom() + employe.getPrenom());
+        System.out.printf("Vous avez ajouté l'employé <%s %s> à la session et la BDD avec succès", employe.getNom(), employe.getPrenom());
 
         return "redirect:/";
     }

@@ -140,18 +140,16 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
         daoCommande.saveCommande(commande);
     }
 
-    //TODO quand les Employés seront implémentés, il faudra aussi que cette fonction ajoute les id_utilisateurs des preparateurs et livreurs
     @Override
-    public void updateEtatFromCommande(Long id_commande, Long id_etat/*, Long id_employe*/) {
+    public void updateEtatFromCommande(Long id_commande, Long id_etat, Long id_employe) {
         Commande commande = daoCommande.findCommandeById(id_commande);
         commande.setEtat(new Etat(id_etat, ""));
 
         // si état passe à "EN PREPARATION"
         if (id_etat == 3L){
-            //TODO mettre en UTILISATEUR_id_preparateur id_employe injecté en argument
-            /*Utilisateur preparateur = new Utilisateur();
+            Utilisateur preparateur = new Employe();
             preparateur.setId(id_employe);
-            commande.setPreparateur(preparateur);*/
+            commande.setPreparateur(preparateur);
             commande.setDateHeurePreparation(LocalDateTime.now());
         }
         //si état passe à "PREPAREE"
@@ -160,10 +158,9 @@ public class CommandeManager implements fr.eni.Pizza.app.bll.CommandeManager {
         }
         // si état passe à "EN LIVRAISON"
         if (id_etat == 5L){
-            //TODO mettre en UTILISATEUR_id_livreur id_employe injecté en argument
-            /*Utilisateur livreur = new Utilisateur();
+            Utilisateur livreur = new Employe();
             livreur.setId(id_employe);
-            commande.setLivreur(livreur);*/
+            commande.setLivreur(livreur);
         }
         // si état passe à "LIVREE"
         if (id_etat == 6L){

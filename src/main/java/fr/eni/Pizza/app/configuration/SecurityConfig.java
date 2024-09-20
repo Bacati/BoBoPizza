@@ -33,7 +33,7 @@ public class SecurityConfig {
         return jdbcUserDetailsManager;
     }
 
-    //@Bean
+    @Bean
     public SecurityFilterChain web(HttpSecurity http) throws Exception {
 
         http

@@ -263,7 +263,7 @@ public class DAOUtilisateurMySQL implements fr.eni.Pizza.app.dal.DAOUtilisateur 
             sql = "INSERT INTO utilisateur (classe, nom, prenom, rue, code_postal, ville, email, mot_de_passe) VALUES (:classe, :nom, :prenom, :rue, :codePostal, :ville, :email, :password)";
             namedParameterJdbcTemplate.update(sql, params);
             params.addValue("idUtilisateur", obtainIDFromLastCreatedUtilisateur());
-            sql = "INSERT INTO role_utilisateur (ROLE_id_role) VALUES (:idRole) WHERE UTILISATEUR_id_utilisateur = :idUtilisateur";
+            sql = "INSERT INTO role_utilisateur (UTILISATEUR_id_utilisateur, ROLE_id_role) VALUES (:idUtilisateur, :idRole)";
             namedParameterJdbcTemplate.update(sql, params);
             System.out.println("Utilisateur " + utilisateur.getNom() + " " + utilisateur.getPrenom() + " ajouté en table utilisateur de la BDD db_bobopizza");
         }

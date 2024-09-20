@@ -21,7 +21,7 @@ public interface CommandeManager {
 
     void saveCommande(Commande commande);
 
-    void updateEtatFromCommande(Long id_commande, Long id_etat);
+    void updateEtatFromCommande(Long id_commande, Long id_etat, Long id_employe);
 
     void cancelBasket(Long id_commande_en_cours);
 

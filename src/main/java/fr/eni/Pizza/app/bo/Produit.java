@@ -1,11 +1,21 @@
 package fr.eni.Pizza.app.bo;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public final class Produit {
     private Long id;
+    @NotNull(message = "Le nom du Produit est obligatoire.")
+    @Size(min = 2, max = 100, message = "Le nom du Produit doit contenir entre 2 et 100 caractères.")
     private String nom;
     private TypeProduit type;
+    @NotNull(message = "L'URL de l'image du Produit est obligatoire.")
     private String urlImage;
+    @Size(max = 500, message = "La description du Produit ne doit pas dépasser 500 caractères.")
     private String description;
+    @Min(value = 0, message = "Le prix unitaire doit être un nombre positif.")
     private double prixUnitaire;
     private Integer quantite;
     private double prixTotal;

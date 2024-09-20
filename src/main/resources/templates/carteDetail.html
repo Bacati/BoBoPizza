@@ -12,43 +12,50 @@
 <body class="bodyDetail">
 <div th:replace="~{/fragments/fragment-entete :: frag-entete}"></div>
 <form class="formDetail" data-th-object="${produit}" data-th-action="@{/produit}" method="post">
-  <h1 th:text="${titre}"></h1>
-  <input type="hidden" id="inputId" required data-th-field="*{id}" />
-      <label for="inputGenre">Type : </label>
-      <select id="inputGenre" data-th-field="*{type}">
-        <option th:each="item : ${produit.getType()}"
-                th:if="${produit.getType() != null}"
-                th:text="${item.libelle}"
-                th:value="${item.id}">
-        </option>
 
-        <option th:each="item : ${typeSession}"
-                th:if="${produit.getType() == null}"
-                th:text="${item.libelle}"
-                th:value="${item.id}">
-        </option>
+    <h1 th:text="${titre}"></h1>
+    <input type="hidden" id="inputId" required data-th-field="*{id}" />
 
-      </select>
+    <label for="inputGenre">Type : </label>
+    <select id="inputGenre" data-th-field="*{type}">
+    <option th:each="item : ${produit.getType()}"
+            th:if="${produit.getType() != null}"
+            th:text="${item.libelle}"
+            th:value="${item.id}">
+    </option>
 
-      <label for="inputNom">Nom : </label>
-      <input type="text" id="inputNom" required data-th-field="*{nom}" />
+    <option th:each="item : ${typeSession}"
+            th:if="${produit.getType() == null}"
+            th:text="${item.libelle}"
+            th:value="${item.id}">
+    </option>
 
-      <label for="inputUrl">URL Image : </label>
-      <input type="text" id="inputUrl" required data-th-field="*{urlImage}" />
+    </select>
 
-      <label for="inputPrice">Prix Unitaire : </label>
-      <input type="number" id="inputPrice" min="1" data-th-field="*{prixUnitaire}" />
+    <label for="inputNom">Nom du produit: </label>
+    <input type="text" id="inputNom" data-th-field="*{nom}" placeholder="Nom du produit"/>
+    <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" style="color:red;"></div>
+    </div>
 
-      <label for="inputDescription">Description : </label>
-      <input type="text" id="inputDescription" data-th-field="*{description}" />
+    <label for="inputUrl">URL Image du produit : </label>
+    <input type="text" id="inputUrl" data-th-field="*{urlImage}" placeholder="URL de l'image"/>
+    <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red;"></div>
+
+    <label for="inputPrice">Prix Unitaire du produit : </label>
+    <input type="number" step="0.01" id="inputPrice" min="0" data-th-field="*{prixUnitaire}" />
+    <div th:if="${#fields.hasErrors('prixUnitaire')}" th:errors="*{prixUnitaire}" style="color:red;"></div>
+
+     <label for="inputDescription">Description : </label>
+    <input type="text" id="inputDescription" data-th-field="*{description}" placeholder="Description brève de votre produit"/>
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red;"></div>
 
     <button class="btnAdd" type="submit">Enregistrer</button>
-
-
 </form>
+
 <form class="formDetail" data-th-object="${produit}" data-th-action="@{/delete}" method="post">
   <input type="hidden" id="Id" required data-th-field="*{id}" />
   <button class="btnAdd" type="submit"><img src="/images/x.svg"></button>
 </form>
+
 </body>
 </html>
