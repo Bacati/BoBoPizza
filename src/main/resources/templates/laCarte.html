@@ -31,7 +31,7 @@
                 <img src="/images/logo.png">
                 <div class="donne" data-th-each="produit : ${pizzaProduits}">
                     <div class="btnDetail">
-                        <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p>
+                        <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire} + '€'"></p>
                         <a sec:authorize="hasAuthority('GERANT')" data-th-href="@{/produit(idProduit=${produit.id})}">Détail</a>
                     </div>
                     <p data-th-text="${produit.description}"></p>
@@ -52,7 +52,7 @@
                 <img src="/images/logo.png">
                 <div class="donne" data-th-each="boisson : ${boissonProduits}">
                     <div class="btnDetail">
-                        <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p>
+                        <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire} + '€'"></p>
                         <a sec:authorize="hasAuthority('GERANT')" data-th-href="@{/produit(idProduit=${boisson.id})}">Détail</a>
                     </div>
                     <p data-th-text="${boisson.description}"></p>

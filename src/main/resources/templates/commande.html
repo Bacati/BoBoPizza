@@ -12,7 +12,7 @@
 
 <div class="donne" data-th-each="produit : ${pizzaProduits}">
   <div class="panier">
-    <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire}"></p><hr>
+    <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire} + '€'"></p><hr>
     <p data-th-text="${produit.description}"></p>
     <button class="myBtn" type="button" data-th-attr="data-id=${produit.id}">Ajouter au panier <img src="/images/shopping-cart.svg"></button>
   </div>
@@ -20,8 +20,7 @@
   <div class="myModal modal" data-th-attr="data-id=${produit.id}">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <p data-th-text="${produit.nom}"></p>
-      <p data-th-text="${produit.prixUnitaire}"></p>
+      <p data-th-text="${produit.nom} + ' ' + ${produit.prixUnitaire} + '€'"></p>
       <p data-th-text="${produit.description}"></p>
 
       <form th:action="@{/creerPanier}" method="post">
@@ -47,15 +46,14 @@
 
 <div class="donne" data-th-each="boisson : ${boissonProduits}">
   <div class="panier">
-    <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire}"></p> <hr>
+    <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire} + '€'"></p><hr>
     <p data-th-text="${boisson.description}"></p>
     <button class="myBtn" type="button" data-th-attr="data-id=${boisson.id}">Ajouter au panier <img src="/images/shopping-cart.svg"></button>
   </div>
   <div class="myModal modal" data-th-attr="data-id=${boisson.id}">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <p data-th-text="${boisson.nom}"></p>
-      <p data-th-text="${boisson.prixUnitaire}"></p>
+      <p data-th-text="${boisson.nom} + ' ' + ${boisson.prixUnitaire} + '€'"></p>
       <form th:action="@{/creerPanier}" method="post">
         <input type="hidden" name="idProduit" data-th-value="${boisson.id}">
         <label for="quantite">Quantité :</label>
