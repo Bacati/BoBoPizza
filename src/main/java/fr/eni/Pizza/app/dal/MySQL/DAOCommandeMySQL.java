@@ -439,27 +439,5 @@ public class DAOCommandeMySQL implements DAOCommande {
             System.out.println("Commande du " + commande.getDateHeureCreation() + " du client " + commande.getClient().getNom() + " " + commande.getClient().getPrenom() + " ajoutée en table commande de la BDD db_bobopizza");
         }
         namedParameterJdbcTemplate.update(sql, params);
-
-        /**
-         List<Produit> produits = commande.getProduits();
-
-         if (!produits.isEmpty()) {
-         for (Produit produit : produits) {
-         MapSqlParameterSource map = new MapSqlParameterSource();
-         map.addValue("quantite", produit.getQuantite());
-         map.addValue("idProduit", produit.getId());
-         map.addValue("nom", produit.getNom());
-         map.addValue("description", produit.getDescription());
-         map.addValue("prixUnitaire", produit.getPrixUnitaire());
-         map.addValue("imageURL", produit.getUrlImage());
-         map.addValue("idTypeProduit", produit.getType().getId());
-
-         sql = "INSERT INTO detail_commande (quantite, COMMANDE_id_commande, PRODUIT_id_produit, PRODUIT_nom, PRODUIT_description, PRODUIT_prix, PRODUIT_image_url, TYPE_PRODUIT_id_type_produit) VALUES\n" +
-         "(:quantite, LAST_INSERT_ID(), :idProduit, :nom, :description, :prixUnitaire, :imageURL, :idTypeProduit)";
-         namedParameterJdbcTemplate.update(sql, map);
-         System.out.println(" - quantité " + produit.getQuantite() + " de " + produit.getNom() + " inséré en table detail_commande de la BDD db_bobopizza");
-         }
-         }
-         **/
     }
 }

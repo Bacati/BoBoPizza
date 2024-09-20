@@ -53,12 +53,49 @@ INSERT INTO ROLE_UTILISATEUR (UTILISATEUR_id_utilisateur, ROLE_id_role) VALUES
 
 -- Insertion commande & details commande associes
 INSERT INTO commande (UTILISATEUR_id_client, date_heure_creation, ETAT_id_etat, UTILISATEUR_id_preparateur, UTILISATEUR_id_livreur, date_heure_livraison, livraison, prix_total, est_paye) VALUES
-(6, '2024-10-05 11:30:00', 1, 1, 2, '2024-10-05 14:30:00', 0, 28, 0),
-(7, '2024-10-05 11:40:00', 1, 1, 2, '2024-10-05 12:30:00', 0, 39, 0);
+(6, '2024-09-20 17:00:00', 1, 1, 2, '2024-09-20 17:00:00', 0, 28, 0),
+(7, '2024-09-20 14:55:00', 2, 1, 2, '2024-09-20 16:00:00', 0, 39, 0),
+(6, '2024-09-20 14:15:00', 3, 3, 2, '2024-09-20 15:00:00', 0, 28, 0),
+(7, '2024-09-20 13:55:00', 4, 3, 2, '2024-09-20 15:00:00', 0, 39, 0),
+(6, '2024-09-20 14:40:00', 5, 3, 4, '2024-09-20 14:45:00', 0, 28, 0),
+(7, '2024-09-20 14:05:00', 6, 3, 4, '2024-09-20 15:00:00', 1, 39, 0),
+(6, '2024-09-19 11:30:00', 7, 3, 4, '2024-09-19 12:30:00', 1, 28, 1);
+
+UPDATE commande
+SET date_heure_preparation = '2024-09-20 14:18:00'
+WHERE id_commande = 3;
+
+UPDATE commande
+SET date_heure_preparation = '2024-09-20 14:00:00'
+WHERE id_commande = 4;
+
+UPDATE commande
+SET date_heure_preparation = '2024-09-20 14:50:00'
+WHERE id_commande = 5;
+
+UPDATE commande
+SET date_heure_preparation = '2024-09-20 14:10:00'
+WHERE id_commande = 6;
+
+UPDATE commande
+SET date_heure_preparation = '2024-09-19 11:38:00'
+WHERE id_commande = 7;
 
 INSERT INTO detail_commande (quantite, COMMANDE_id_commande, PRODUIT_id_produit, PRODUIT_nom, PRODUIT_description, PRODUIT_image_url, PRODUIT_prix, TYPE_PRODUIT_id_type_produit) VALUES
 (1, 1, 2, 'Pepperoni', 'Pizza avec sauce tomate, mozzarella et pepperoni', '/images/pizza-pepperoni.jpg', 20.00, 1),
 (2, 1, 4, 'Coca-Cola', 'Boisson gazeuse', '/images/cocacola-33cl.webp', 4.00, 2),
 (1, 2, 1, 'Margherita', 'Pizza avec sauce tomate, mozzarella et basilic', '/images/pizza-margherita.jpg', 14.00, 1),
 (1, 2, 3, 'Quattro Formaggi', 'Pizza avec sauce tomate et quatre fromages', '/images/pizza-4-fromages.jpg', 18.00, 1),
-(2, 2, 6, 'Eau Minérale Badoit', 'Eau minérale naturelle', '/images/badoit-33cl.jpg', 3.50, 2);
+(2, 2, 6, 'Eau Minérale Badoit', 'Eau minérale naturelle', '/images/badoit-33cl.jpg', 3.50, 2),
+(1, 3, 2, 'Pepperoni', 'Pizza avec sauce tomate, mozzarella et pepperoni', '/images/pizza-pepperoni.jpg', 20.00, 1),
+(2, 3, 4, 'Coca-Cola', 'Boisson gazeuse', '/images/cocacola-33cl.webp', 4.00, 2),
+(1, 4, 1, 'Margherita', 'Pizza avec sauce tomate, mozzarella et basilic', '/images/pizza-margherita.jpg', 14.00, 1),
+(1, 4, 3, 'Quattro Formaggi', 'Pizza avec sauce tomate et quatre fromages', '/images/pizza-4-fromages.jpg', 18.00, 1),
+(2, 4, 6, 'Eau Minérale Badoit', 'Eau minérale naturelle', '/images/badoit-33cl.jpg', 3.50, 2),
+(1, 5, 2, 'Pepperoni', 'Pizza avec sauce tomate, mozzarella et pepperoni', '/images/pizza-pepperoni.jpg', 20.00, 1),
+(2, 5, 4, 'Coca-Cola', 'Boisson gazeuse', '/images/cocacola-33cl.webp', 4.00, 2),
+(1, 6, 1, 'Margherita', 'Pizza avec sauce tomate, mozzarella et basilic', '/images/pizza-margherita.jpg', 14.00, 1),
+(1, 6, 3, 'Quattro Formaggi', 'Pizza avec sauce tomate et quatre fromages', '/images/pizza-4-fromages.jpg', 18.00, 1),
+(2, 6, 6, 'Eau Minérale Badoit', 'Eau minérale naturelle', '/images/badoit-33cl.jpg', 3.50, 2),
+(1, 7, 2, 'Pepperoni', 'Pizza avec sauce tomate, mozzarella et pepperoni', '/images/pizza-pepperoni.jpg', 20.00, 1),
+(2, 7, 4, 'Coca-Cola', 'Boisson gazeuse', '/images/cocacola-33cl.webp', 4.00, 2);
